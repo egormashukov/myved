@@ -1,0 +1,58 @@
+%h1 Архив тендеров
+- if notice
+  %p#notice= notice
+
+- if current_contractor.supplier? && @tender_invitations.any?
+  %h2 Приглашения для участия
+  %table
+    %tr
+      %th Номер тендера
+      %th Покупатель
+      %th Наименование тендера
+      %th
+      %th
+      %th
+    - @tender_invitations.each do |tender|
+      %tr
+        %td= tender.id
+        %td= link_to tender.owner.title, tender.owner
+        %td= link_to tender.title, tender
+        %td= link_to t(:show), tender
+        %td= link_to t(:confirm), [:confirm, tender.tender_contractors.where(contractor_id:current_contractor.id).first]
+        %td= link_to t(:decline), [:decline, tender.tender_contractors.where(contractor_id:current_contractor.id).first]
+
+- if current_contractor.supplier? && @tender_participations.any?
+  %h2 Участие в тендерах
+  %table
+    %tr
+      %th Номер тендера
+      %th Наименование тендера
+      %th Информация
+      %th
+      %th
+      %th
+    - @tender_participations.each do |tender|
+      %tr
+        %td= tender.id
+        %td= link_to tender.title, tender
+        %td= link_to t(:show), tender
+
+- if current_contractor.buyer? && @my_tenders.any?
+  %h2 Мои тендеры
+  %table
+    %tr
+      %th Номер тендера
+      %th Информация
+      %th
+      %th
+      %th
+    - @my_tenders.each do |tender|
+      %tr
+        %td= tender.id
+        %td= link_to tender.title, tender
+        %td= link_to t(:show), tender
+        %td= link_to t(:edit), edit_tender_path(tender)
+        %td= link_to t(:destroy), tender, :method => :delete, :data => { :confirm => 'Are you sure?' }
+        
+= link_to 'текущие тендеры', tenders_path
+

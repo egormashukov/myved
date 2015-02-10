@@ -1,0 +1,50 @@
+%tr
+  %td 
+    .contractor_link
+      = image_tag("#{root_url}#{@contractor.logo.presence ? @contractor.logo_url(:icon) : asset_path(@contractor.logo_url(:icon))}", alt: @contractor.title, class: 'small_image')
+      = @contractor.title
+  %td
+    %p= @title
+
+    #form_ns_body
+      %p= "Сайт myVED приглашает Вас принять участие в торгах #{@tender.title} за право заключить сделку."
+      %p
+        Для этого Вам нужно совершить следующее:
+        %ol
+          %li 
+            Пройти по 
+            = link_to "ссылке на сайт myVED", new_contractor_registration_path(profile: 'supplier', ic: @tender.owner.invitation_cod, td: @tender.id, locale: "en")
+          %li Пройти экспресс регистрацию на сайте
+          %li Принять участие в торгах. После регистрации Вы автоматически получите доступ к запросу Клиента и сможете на него ответить.
+      %p Участие на сайте Бесплатно!
+      %p
+        После регистрации на сайте myVED Вы сможете:
+        %ol
+          %li Получать запросы от клиентов из России и участвовать в торгах.
+          %li Решить любые вопросы, связанные с доставкой товара в России и таможенным оформлением
+          %li Решить любый вопрос по международной торговли.
+
+      %p= link_to 'зарегистрироваться на сайте', new_contractor_registration_path(profile: 'supplier', ic: @tender.owner.invitation_cod, td: @tender.id, locale: "en"), class: 'to_myved'
+
+      %br
+      %br
+
+      %p= "Take part in a new Bidding #{@tender.title}"
+      %p= "myVED.com invites you to take part in the Bidding #{@tender.title}."
+      %p
+        For this you need following:
+        %ol
+          %li 
+            Go directly to the site
+            = link_to "myVED.com", new_contractor_registration_path(profile: 'supplier', ic: @tender.owner.invitation_cod, td: @tender.id, locale: "en")
+          %li Take express registration online
+          %li Participate in the Bidding. 
+      %p After registration you will automatically receive access to the Buyer's request and will be able to answer it.
+      %p Participation on myVED.com is FREE!
+      %p 
+        After registration in myVED you can:
+        %ol
+          %li Receive requests from Russian Byers and participate in Biddings.
+          %li Resolve any issues related to the delivery of goods to Russia and customs clearance
+          %li Resolve any questions of the international trade.
+      %p= link_to 'Register on myVED.com', new_contractor_registration_path(profile: 'supplier', ic: @tender.owner.invitation_cod, td: @tender.id, locale: "en"), class: 'to_myved'

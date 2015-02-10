@@ -1,0 +1,5 @@
+= render 'layouts/bar', header_t: @page.title, background_image: 'top_panel_card', left: true, current_step: ''
+.page-body= raw @page.body
+= link_to "перейти к авторизации", @authorization.active? ? @authorization.authorization_execution : "/contractor/authorizations/#{@authorization.step || 'general_info'}", class: "main_button wide_button"
+
+ 

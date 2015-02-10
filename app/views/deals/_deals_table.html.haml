@@ -1,0 +1,55 @@
+%table
+  %tr
+    %th №
+    -#%th= t(:projects)
+    %th= t(:tasks)
+    %th= t(:task_status)
+    %th= t(:start_date)
+    %th= t(:end_date)
+    %th
+  -#
+    - @ved_requests.each do |ved_request|
+      %tr
+        %td= "-"
+        %td.left= link_to ved_request.title, ved_request
+        %td= ved_request.human_state
+        %td= ved_request.created_at.strftime("%d/%m/%y")
+        %td
+        %td
+          - if ved_request.completed?
+            = link_to (ved_request.archived? ? 'вернуть' : 'убрать с главной'), [:toggle_archived, ved_request], method: :put, confirm: 'Вы уверены, что хотите убрать в архив'
+          - else
+            = link_to t(:remove), ved_request, method: :delete, confirm: 'Вы уверены, что хотите удалить проект?'
+
+  - deals.each_with_index do |deal, i|
+    - if deal.tender.try(:title).presence || deal.cost_calculation.try(:title).presence
+      %tr
+        %td= i + 1
+        %td.left= raw deal.current_task
+        %td= deal.current_task_states
+        %td= deal.created_at.strftime("%d/%m/%y")
+        %td= deal.try(:end_date)
+        %td= deal_destroy_button(deal).presence || decide_link(deal) || to_archive_link(deal)
+
+  - unless deals.select{|d| d.tender.presence}.presence
+    %tr.fake_info
+      %td{colspan: 5} Здесь размещается информация о ваших торгах. Примеры:
+    %tr.fake_info
+      %td= 1
+      %td.left Закупка: "Тележки багажные"
+      %td= I18n.t('statuses.tender.new')
+      %td= Time.now.strftime("%d/%m/%y")
+      %td= (Time.now + 5.days).strftime("%d/%m/%y")
+    %tr.fake_info
+      %td= 2
+      %td.left Закупка: "Ручки шариковые"
+      %td= t('statuses.tender.waiting')
+      %td= (Time.now - 4.days).strftime("%d/%m/%y")
+      %td= (Time.now + 2.days).strftime("%d/%m/%y")
+  - unless deals.select{|d| d.cost_calculation.presence}.presence
+    %tr.fake_info
+      %td= 3
+      %td.left= CostCalculation.model_name.human
+      %td= t('statuses.cost_calculation.waiting')
+      %td= (Time.now - 2.days).strftime("%d/%m/%y")
+      %td= t(:remove)

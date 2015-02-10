@@ -1,0 +1,31 @@
+- content_for :page_header do
+  %p= link_to t('back'), admin_cost_calculations_path, :class => "bright_link"
+  %h1
+    - if @cost_calculation.new_record?
+      = "#{t 'add'} #{CostCalculation.model_name.human}"
+    - else
+      = "#{t 'edit'} #{CostCalculation.model_name.human}"
+
+= form_for [:admin, @cost_calculation], builder: AdminFormBuilder do |f|
+  = f.error_messages
+  %table
+    = f.text_field_row :conditions_of_supply
+    = f.text_field_row :terms_of_payment 
+
+    - if @cost_calculation.has_tender?
+      %tr
+        %td= f.label :currency
+        %td
+          = raw @deal.tender.currency
+          = f.hidden_field :currency, value: @deal.tender.currency
+    - else
+      = f.select_field_row :currency, CostCalculation.currency_options.collect{|co| [raw(co), co]}
+    = f.text_field_row :destination
+    = f.text_field_row :shipment_port
+  #accordion
+    
+    -#
+      = f.fields_for :cost_calculation_products do |builder|
+        = render 'cost_calculation_product_fields', f: builder
+      = link_to_add_fields 'добавить товар', f, :cost_calculation_products, 'cost_calculation_product_fields', 'minor_button centered'
+  = f.submit_main

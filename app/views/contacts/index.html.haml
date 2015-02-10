@@ -1,0 +1,21 @@
+- if notice
+  %p#notice= notice
+
+%h1= t(:list_of_contacts)
+%table
+  %tr
+    %th= t(:company)
+
+  - @contacts.each do |contact|
+    - friend = @contractors.detect{|c| contact.second_id(current_contractor) == c.id}
+    %tr
+      %td= link_to friend.title, friend
+      %td
+        - if !contact.approved? && contact.contractor_contact_id == current_contractor.id
+
+          = link_to t(:accept_request), [:approve, current_contractor, contact], method: :post
+
+      %td= link_to t(:remove_contact), contact, method: :delete, confirm: "Вы действительно хотите удалить компанию #{friend.title} из Вашего списка"
+
+= render 'invitation_form'
+

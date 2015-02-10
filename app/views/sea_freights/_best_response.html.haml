@@ -1,0 +1,28 @@
+.dashed_container{class: "#{'js-accordion-wr' if hideable}"}
+  %h2{class: "#{'js-accordion-trigger' if hideable}"}
+    - if hideable
+      %i.fa.fa-chevron-up
+      %i.fa.fa-chevron-down
+    Предложение
+  %div{class: "#{'js-accordion-content' if hideable}"}
+    = render :layout => 'layouts/main_left' do
+      %h2 Общая информация
+      %table
+        = best_response.labeled_row(:filo_currecied)
+        = best_response.labeled_row(:port_charges_currecied)
+        = best_response.labeled_row(:tracking_currecied)
+        = best_response.labeled_row(:railway_charges_currecied)
+        = best_response.labeled_row(:total_currecied)
+
+    = render :layout => 'layouts/main_right' do
+      %h2 Условия
+      %table
+
+        = best_response.labeled_row(:destination_port)
+        = best_response.labeled_row(:transit)
+        = best_response.labeled_row(:free_container)
+        = best_response.labeled_row(:free_port)
+        = best_response.labeled_row(:free_car)
+        = best_response.labeled_row(:stoppage)
+        = best_response.labeled_row(:overbalance)
+        = best_response.labeled_row(:additional_charges)

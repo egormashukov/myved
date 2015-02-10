@@ -1,0 +1,21 @@
+= form_for [:admin, :payments, obj], builder: AdminFormBuilder do |f|
+  = f.error_messages
+  %table
+    = f.select_field_row :contractor_id, options_for_select(Contractor.all.collect{|c| [c.title, c.id]}, params[:contractor_id].presence || obj.try(:contractor_id)), {include_blank: true}, class: 'multiselect'
+    = f.text_field_row :invoice_numb
+    = f.text_field_row :purpose
+    = f.text_field_row :sum
+
+    = f.select_field_row :currency, options_for_select(Payment.currency_options.collect{|co| [raw(co), co]}, f.object.currency)
+
+    = f.file_field_row :invoice
+    = f.text_field_row :invoice_on, class: "datepicker"
+
+    = f.text_field_row :paid_on, class: "datepicker"
+    = f.text_area_row :comment, rows: 3
+
+    - if (params[:paidable_type].present? && params[:paidable_id].present?) || f.object.paidable_id.presence
+      = f.hidden_field :paidable_type, value: params[:paidable_type].presence || f.object.paidable_type
+      = f.hidden_field :paidable_id, value: params[:paidable_id].presence || f.object.paidable_id
+
+  = f.submit_main

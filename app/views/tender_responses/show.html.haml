@@ -1,0 +1,55 @@
+- if @tender_response.new?
+  %h1= TenderResponse.model_name.human
+- else
+  %h1= "#{TenderResponse.model_name.human} \'#{@tender.title}\'"
+  
+- if notice 
+  %p#notice= notice
+-#= render 'messages/messages', resource: @tender, messages: @messages, receivers: @receivers
+
+%h2= t(:trading_conditions)
+= two_colums_string(@tender, :title)
+.string
+  .third= TenderResponse.human_attribute_name(:delivery_time)
+  .two_thirds
+    - if @tender_response.delivery_time.presence
+      = @tender_response.delivery_time_view
+      = tender_date_unites(@tender)
+= two_colums_string(@tender_response, :terms_of_payment)
+= two_colums_string(@tender_response, :conditions_of_supply)
+= two_colums_string(@tender_response, :service)
+= two_colums_string(@tender_response, :body)
+
+- if @tender_response.attachments.presence
+  %h2= t(:add_files)
+  - @tender_response.attachments.each do |attachment|
+    = link_to_attachment attachment
+
+%h2= t(:products)
+%table
+  %tr
+    %th= ProductRequest.model_name.human
+    %th= Product.human_attribute_name(:title)
+    %th= Product.human_attribute_name(:quantity)
+    %th= Product.human_attribute_name(:price)
+    %th= Product.human_attribute_name(:cost)
+    
+  - @tender_response.product_responses.each do |product_response|
+    %tr
+      %td= product_response.product_request.title#, [@tender, product_response.product_request]
+      %td= product_response.supplier_product.title#, product_response.supplier_product
+      %td= product_response.product_request.quantity_string
+      %td= raw price_string(product_response.price, product_response.tender_response.tender.currency)
+      %td= raw product_response.cost_string
+
+%h2= raw "#{t(:summ_cost)} #{price_string(@tender_response.summ_cost, @tender_response.tender.currency)}"
+.clear
+
+.actions
+  - if @tender_response.new?
+    = button_to t(:send_response), [:send_to_ns, @tender, @tender_response], class: "main_button right"
+  - if @tender_response.owner?(current_contractor) || current_contractor.ns?
+    = link_to t(:update_response), [:edit, @tender ,@tender_response], class: 'minor_button wide_button'
+
+
+  

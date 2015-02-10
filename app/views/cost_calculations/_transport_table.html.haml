@@ -1,0 +1,11 @@
+%h2= t(:transport_units)
+%table.transport_units_table
+  %tr
+    %th.short= TransportUnit.human_attribute_name(:quantity)
+    %th= TransportUnit.human_attribute_name(:transport)
+  - cost_calculation.transport_units.each do |transport_unit|
+    %tr
+      %td.short= obj_field_or_bip(transport_unit, :quantity)
+      %td= product_select_or_bip(transport_unit, :transport)
+      
+      

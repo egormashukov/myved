@@ -1,0 +1,22 @@
+%ul
+  %li= link_to t(:main), main_path
+  - if contractor_signed_in?
+    %li= link_to t(:dashboard), root_path
+
+  - if contractor_signed_in?
+    - if current_contractor.supplier?
+      %li= link_to t(:sell_to_russia), participate_tender_pth
+      %li= link_to t(:door_to_door_russia), ved_request_pth, method: :post
+      %li= link_to t(:all_for_world_trade), solve_import_problems_pth
+    - else
+      %li= link_to t(:buy_product), buy_product_pth
+      %li= link_to t(:ved_request), ved_request_pth, method: :post
+      %li= link_to t(:ved_tender), ved_tender_pth
+  - elsif I18n.locale == :ru
+    %li= link_to t(:buy_product), buy_product_pth, class: 'find_suppliers_link'
+    %li= link_to t(:solve_ved_problems), ved_tender_pth, class: 'ved_request_link'
+    %li= link_to t(:get_best_offer), ved_request_pth, class: 'get_best_offer_link'   
+  - else
+    %li= link_to t(:sell_to_russia), buy_product_pth, class: 'find_suppliers_link'
+    %li= link_to t(:door_to_door_russia), ved_tender_pth, class: 'ved_request_link'
+    %li= link_to t(:all_for_world_trade), ved_request_pth, class: 'get_best_offer_link'

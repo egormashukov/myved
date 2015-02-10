@@ -1,0 +1,7 @@
+- content_for :page_header do
+  %p= link_to t('back'), admin_privacies_path, class: 'bright_link'
+  %h1
+    = action_accusative('privacies', 'add')
+
+= form_for [:admin, @privacy], builder: AdminFormBuilder do |f|
+  = render 'form', f: f

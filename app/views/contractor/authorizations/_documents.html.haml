@@ -1,0 +1,12 @@
+.dashed_container
+  %h3 Регистрационные документы
+  = render :layout => 'layouts/main_left' do
+    = f.file_field_inline_captioned :doc_by_law
+    = f.file_field_inline_captioned :doc_ogrn
+    = f.file_field_inline_captioned :doc_inn
+    = f.file_field_inline_captioned :doc_egrul
+
+
+  = render :layout => 'layouts/main_right' do
+    = f.file_field_inline_captioned :doc_director
+    = f.file_field_inline_captioned :doc_proxy

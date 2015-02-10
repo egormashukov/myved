@@ -1,0 +1,39 @@
+%h2 Входящие запросы
+%table.numero
+  %tr
+    %th №
+    %th Название
+    %th= t(:task_status)
+    %th= t(:start_date)
+    %th= t(:end_date)
+    %th
+  - current_contractor.sea_freight_responses.order("created_at DESC").each do |sfr|
+    - if sfr.sea_freight.active?
+      %tr
+        %td
+          %dt
+        %td= link_to sfr.sea_freight.full_title, sfr.sea_freight
+        %td= sfr.sea_freight.state_string
+        %td= sfr.sea_freight.start_date
+        %td= sfr.sea_freight.end_date
+        %td
+          - if sfr.new?
+            = link_to "удалить", sfr, method: :delete
+
+%h2 Запросы на исполнении
+%table.numero
+  %tr
+    %th №
+    %th Название
+    %th= t(:task_status)
+    %th= t(:start_date)
+    %th= t(:end_date)
+  - current_contractor.sea_freight_responses.order("created_at DESC").each do |sfr|
+    - if sfr.sea_freight.successful?
+      %tr
+        %td
+          %dt
+        %td= link_to sfr.sea_freight.full_title, sfr.sea_freight
+        %td= sfr.sea_freight.state_string
+        %td= sfr.sea_freight.start_date
+        %td= sfr.sea_freight.end_date

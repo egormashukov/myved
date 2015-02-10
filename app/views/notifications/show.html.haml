@@ -1,0 +1,26 @@
+%h1= @notification.full_title
+= link_to 'назад к уведомлениям', notifications_path, class: 'blue_link'
+
+%br
+%br
+= @notification.labeled_datetime :created_at
+= @notification.labeled_field :full_body, :body
+
+%h2 Другие уведомления по теме
+%table.numero
+  %tr
+    %th №
+    %th Тема
+    %th Предпросмотр
+    %th Отправлено
+    %th
+  - @notify_notifications.each do |notification|
+    %tr
+      %td{class: "#{'_not-read' unless notification.read?}"}
+        %dt
+      %td.left{class: "#{'bold' unless notification.read?}"}= link_to notification.full_title, notification
+      %td.left= truncate strip_tags(notification.body), length: 50
+      %td.left._datetime= notification.datetime_string(:created_at)
+      %td= link_to 'открыть', notification
+
+      

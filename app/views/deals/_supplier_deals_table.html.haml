@@ -1,0 +1,45 @@
+%table
+  %tr
+    %th= t(:buyer)
+    %th= t(:tasks)
+    %th= t(:task_status)
+    %th= t(:start_date)
+    %th
+
+  - @deals.each do |deal|
+    - if deal.tender.try(:title).presence || deal.cost_calculation.try(:title).presence
+      - if deal.try(:buyer)
+        %tr
+          %td= link_to_if deal.buyer.in_contacts?(current_contractor), deal.buyer.title, deal.buyer, target: '_blank'
+          %td.left= link_to "#{t(:bidding)}: #{deal.tender.title}", deal.tender
+          %td= deal.tender.supplier_status(current_contractor)
+          %td= deal.tender.created_at.strftime("%d/%m/%y")
+          %td= to_supplier_archive_link(deal)
+      - else
+        %tr
+          %td= '-'
+          %td.left= raw deal.current_task
+          %td= deal.current_task_state
+          %td= deal.cost_calculation.created_at.strftime("%d/%m/%y")
+          %td= deal_destroy_button(deal).presence || decide_link(deal) || to_archive_link(deal)
+
+  - unless @deals.select{|d| d.tender.presence}.presence
+    %tr.fake_info
+      %td{colspan: 4}= t(:info_activities)
+    %tr.fake_info
+      %td= t(:buyer_from_russia) + " 1"
+      %td.left= "#{t(:bidding)}: #{t(:baggage_trolleys)}"
+      %td= t('statuses.tender_response.new')
+      %td= Time.now.strftime("%d/%m/%y")
+    %tr.fake_info
+      %td= t(:buyer_from_russia) + " 2"
+      %td.left= "#{t(:bidding)}: #{t(:furniture)}"
+      %td= I18n.t('statuses.tender_response.waiting')
+      %td= (Time.now - 4.days).strftime("%d/%m/%y")
+  - unless deals.select{|d| d.cost_calculation.presence}.presence
+
+    %tr.fake_info
+      %td= '-'
+      %td.left= CostCalculation.model_name.human
+      %td= I18n.t('statuses.cost_calculation.waiting')
+      %td= (Time.now - 2.days).strftime("%d/%m/%y")

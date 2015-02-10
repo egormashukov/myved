@@ -1,0 +1,134 @@
+= render :layout => 'form' do |f|
+  .half_left
+    %h3 Общая информация
+    .field
+      .left.third= Tender.human_attribute_name(:title)
+      .right.two_thirds= best_in_place @tender, :title
+
+    .field
+      .left.third= Tender.human_attribute_name(:body)
+      .two_thirds= best_in_place @tender, :body, :type => :textarea
+
+    .field
+      .left.third= Tender.human_attribute_name(:currency)
+      .right.two_thirds= best_in_place @tender, :currency, :type => :select, collection: Tender.currency_options.collect{|co| [raw(co), raw(co)]}
+
+    .field
+      .left.two_thirds= Tender.human_attribute_name(:duration)
+      .right.third= best_in_place @tender, :duration
+
+  .half_right
+    %h3 Торговые условия
+    .field
+      .left.third= Tender.human_attribute_name(:delivery_time)
+      .right.two_thirds
+        = best_in_place @tender, :delivery_time
+        = best_in_place @tender, :delivery_time_unit,:type => :select, :collection =>Tender.terms_of_payment_units.collect{|t| [t[1], t[0]]}
+
+    .field
+      .left.third= Tender.human_attribute_name(:conditions_of_supply)
+      .right.two_thirds= @tender.conditions_of_supply
+
+    .field
+      .left.third= Tender.human_attribute_name(:terms_of_payment)
+      .right.two_thirds= best_in_place @tender, :terms_of_payment
+
+    - if @tender.service.presence
+      .field
+        .left.third= Tender.human_attribute_name(:service)
+        .right.two_thirds= best_in_place @tender, :service, :type => :select, :collection => [['',''],['OEM Service','OEM Service'],['ODM Service', 'ODM Service']]
+  
+    .field
+      .left.third= Tender.human_attribute_name(:requirements)
+      .two_thirds= best_in_place @tender, :requirements, :type => :textarea
+
+  -#= render 'tenders/form_steps/add_contractors_step', f: f
+
+  %h3 Условия рассылки
+  .field
+    .left.third Компании для рассылки
+    %ul.right.two_thirds.hor_list
+      - @tender.project_contractors.not_this(current_contractor).each do |project_contractor|
+        %li= project_contractor.contractor.title
+
+  
+  %h3= t(:product_requests)
+  %table
+    %tr
+      %th= ProductRequest.human_attribute_name(:title)
+      %th= ProductRequest.human_attribute_name(:application_field)
+      %th= ProductRequest.human_attribute_name(:price)
+      %th= ProductRequest.human_attribute_name(:quantity)
+      %th= t(:properties)
+
+    - @tender.product_requests.each do |product_request|
+      %tr
+        %td= best_in_place product_request, :title
+        %td= best_in_place product_request, :application_field
+        %td
+          = raw @tender.currency
+          = best_in_place product_request, :price
+        %td
+          = best_in_place product_request, :quantity
+          = best_in_place product_request, :quantity_unit
+        %td
+          - product_request.properties.order("created_at").each do |property|
+            .left
+              - if property.obligatory?
+                %span.bold
+                  = best_in_place property, :title
+                  = ':'
+                  = best_in_place property, :body
+              - else
+                = best_in_place property, :title
+                = ':'
+                = best_in_place property, :body
+
+  -#
+    - @tender.product_requests.each do |product_request|
+      .half_item
+        .field
+          %strong= best_in_place product_request, :title
+        - if product_request.image_url
+          = link_to image_tag(product_request.image_url(:icon), class: 'form_image'), product_request.image_url, target: '_blank'
+        .field.bold
+          = ProductRequest.human_attribute_name(:id_code) + ':'
+          = best_in_place product_request, :id_code
+        .field
+          = ProductRequest.human_attribute_name(:application_field) + ':'
+          = best_in_place product_request, :application_field
+        .field.bold
+          = ProductRequest.human_attribute_name(:price) + ':'
+          = raw @tender.currency
+          = best_in_place product_request, :price
+        .field.bold
+          = ProductRequest.human_attribute_name(:quantity) + ':'
+          = best_in_place product_request, :quantity
+          = best_in_place product_request, :quantity_unit
+
+        - product_request.properties.order("created_at").each do |property|
+          .field
+            - if property.obligatory?
+              %span.bold
+                = best_in_place property, :title
+                = ':'
+                = best_in_place property, :body
+            - else
+              = best_in_place property, :title
+              = ':'
+              = best_in_place property, :body
+
+  .summ_field.bold
+    .left.half Итоговая стоимость
+    .right.half= raw price_string(@tender.summ_expected_cost, @tender.currency)
+
+  %h3 Прикрепленные файлы
+  .field
+    .left.half Файлы
+    .right.half 
+      - @tender.attachments.each do |attachment|
+        %div
+          = best_in_place attachment, :title
+          = raw "(#{link_to_file(t(:show), attachment.file_location_url)})"
+
+= back_button(previous_wizard_path, 'fixed_button')

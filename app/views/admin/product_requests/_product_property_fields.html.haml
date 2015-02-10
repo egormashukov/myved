@@ -1,0 +1,10 @@
+%fieldset
+  %p
+    = f.label :title
+    = f.text_field :title
+  %p
+    = f.label :body
+    = f.text_area :body, rows: 2
+  %p
+    = f.hidden_field :_destroy
+    = link_to 'удалить', '#', class: 'remove_fields'

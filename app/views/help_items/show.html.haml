@@ -1,0 +1,4 @@
+= content_for :centered do
+  = render 'layouts/bar', header_t: @help_item.category.camelize.constantize.human_attribute_name(@help_item.title), background_image: 'top_panel_card', left: false
+
+  = raw @help_item.try(:body)

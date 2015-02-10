@@ -1,0 +1,142 @@
+= render 'layouts/bar', header_t: CertificationRequest.model_name.human, background_image: 'top_panel_card', left: true
+
+%h2 Шаг 1. Первичный запрос
+.dashed_container
+  = render :layout => 'layouts/main_left' do
+    %h3= t(:basic_information)
+    .string
+      .third статус
+      .two_thirds
+        = t("statuses.certification_request.#{@certification_request.state}")
+    .string
+      .third статус оплаты
+      .two_thirds
+        = @certification_request.paid? ? "оплачено" : 'нет оплаты'
+        = link_to "оплата пришла", [:pay, @certification_request], method: :put, class: "blue_link" if current_contractor.ns? && !@certification_request.paid?
+    = two_colums_string(@certification_request, :title)
+    = two_colums_string(@certification_request, :body)
+
+  = render :layout => 'layouts/main_right' do
+    %h3= t(:attachments)
+    - @certification_request.attachments.where(category: "new").each do |a|
+      .string= link_to a.title, a.file_location_url, target: "blank"
+
+%h2{class: "#{"_not-active" unless @certification_response.presence}"} Шаг 2. Ответ от myVED
+
+- if @certification_request.waiting? && current_contractor.ns?
+  = form_for [@certification_request, @certification_response], :html => {:multipart => true}, builder: MainFormBuilder do |f|
+    = f.error_messages
+    .dashed_container
+      = render :layout => 'layouts/main_left' do
+        = f.text_area_inline :body, rows: 5
+
+      = render :layout => 'layouts/main_right' do
+        %h3 Добавить файлы
+        = f.fields_for :attachments do |builder|
+          = render 'certification_requests/attachment_fields', f: builder, category: 'new'
+
+        = link_to_add_attachments 'загрузить еще файл', f, :attachments, 'certification_requests/attachment_fields', 'new', 'minor_button centered wide_button'
+    .field
+      = f.check_box :ready
+      = f.label :ready
+    = f.submit t(:send), class: 'main_button'
+- else
+  .dashed_container
+    = render :layout => 'layouts/main_left' do
+      = raw @certification_response.body
+    = render :layout => 'layouts/main_right' do
+      %h3= t(:attachments) if @certification_response.attachments.presence
+      - @certification_response.attachments.where(category: "new").each do |a|
+        .string= link_to a.title, a.file_location_url, target: "blank"
+
+
+- if @certification_request.answered? && !current_contractor.ns?
+  .actions
+    = link_to "Принять предложение", [:accept, @certification_request], class: 'main_button wide_button', method: :put
+    = link_to "Отклонить предложение", [:decline, @certification_request], method: :put, class: 'minor_button right wide_button'
+
+%h2{class: "#{"_not-active" unless @certification_request.after_acceptance?}"} Шаг 3. Оформление запроса
+- if @certification_request.after_acceptance?
+  - if current_contractor.ns? && @certification_request.myved_instructions?
+    = form_for [@certification_request, @certification_response], :html => {:multipart => true}, builder: MainFormBuilder do |f|
+      = f.error_messages
+      .dashed_container
+        = render :layout => 'layouts/main_left' do
+          = f.text_area_inline :body_instructions, rows: 5
+
+        = render :layout => 'layouts/main_right' do
+          %h3 Добавить файлы
+          = f.fields_for :attachments do |builder|
+            = render 'certification_requests/attachment_fields', f: builder, category: 'instructions'
+
+          = link_to_add_attachments 'загрузить еще файл', f, :attachments, 'certification_requests/attachment_fields', 'instructions', 'minor_button centered wide_button'
+      .field
+        = f.check_box :ready
+        = f.label :ready
+      = f.submit t(:send), class: 'main_button'
+
+  - else
+    .dashed_container
+      = render :layout => 'layouts/main_left' do
+        = raw @certification_response.body_instructions
+      = render :layout => 'layouts/main_right' do
+        %h3= t(:attachments) if @certification_response.attachments.where(category: "instructions").presence
+        - @certification_response.attachments.where(category: "instructions").each do |a|
+          .string= link_to a.title, a.file_location_url, target: "blank"
+
+%h2{class: "#{"_not-active" unless @certification_request.after_instructions?}"} Шаг 4. Подтверждение макета
+- if @certification_request.after_instructions?
+  - if @certification_request.owner?(current_contractor) && @certification_request.instructions?
+    = form_for @certification_request, :html => {:multipart => true}, builder: MainFormBuilder do |f|
+      = f.error_messages
+      .dashed_container
+        = render :layout => 'layouts/main_left' do
+          = f.text_area_inline :body_instructions, rows: 5
+
+        = render :layout => 'layouts/main_right' do
+          %h3 Добавить файлы
+          = f.fields_for :attachments do |builder|
+            = render 'certification_requests/attachment_fields', f: builder, category: 'instructions'
+
+          = link_to_add_attachments 'загрузить еще файл', f, :attachments, 'certification_requests/attachment_fields', 'instructions', 'minor_button centered wide_button'
+      .field
+        = f.check_box :ready
+        = f.label :ready
+      = f.submit t(:send), name: "send", class: 'main_button'
+  - else 
+    .dashed_container
+      = render :layout => 'layouts/main_left' do
+        = raw @certification_request.body_instructions
+      = render :layout => 'layouts/main_right' do
+        %h3= t(:attachments) if @certification_request.attachments.where(category: "instructions").presence
+        - @certification_request.attachments.where(category: "instructions").each do |a|
+          .string= link_to a.title, a.file_location_url, target: "blank"
+
+%h2{class: "#{"_not-active" unless @certification_request.last_steps?}"} Шаг 5. Разрешительный документ
+- if @certification_request.last_steps?
+  - if current_contractor.ns? && @certification_request.wait_result?
+    = form_for @certification_response, :html => {:multipart => true}, builder: MainFormBuilder do |f|
+      = f.error_messages
+      .dashed_container
+        = render :layout => 'layouts/main_left' do
+          = f.text_area_inline :result_comment, rows: 5
+
+        = render :layout => 'layouts/main_right' do
+          %h3 Добавить файлы
+          = f.fields_for :attachments do |builder|
+            = render 'certification_requests/attachment_fields', f: builder, category: 'results'
+
+          = link_to_add_attachments 'загрузить еще файл', f, :attachments, 'certification_requests/attachment_fields', 'results', 'minor_button centered wide_button'
+      .field
+        = f.check_box :ready
+        = f.label :ready
+      = f.submit t(:send), class: 'main_button'
+  - else 
+    .dashed_container
+      = render :layout => 'layouts/main_left' do
+        = raw @certification_response.result_comment
+      = render :layout => 'layouts/main_right' do
+        %h3= t(:attachments)  if @certification_response.attachments.where(category: "results").presence
+        - @certification_response.attachments.where(category: "results").each do |a|
+          .string= link_to a.title, a.file_location_url, target: "blank"
+

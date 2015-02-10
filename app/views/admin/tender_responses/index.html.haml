@@ -1,0 +1,6 @@
+- content_for(:page_header) do
+  %h1= link_to t(:tender_responses), admin_tender_responses_path
+-#= paginate @tender_responses
+
+#index_wr
+  = render 'index' 

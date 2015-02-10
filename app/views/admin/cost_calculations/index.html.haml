@@ -1,0 +1,7 @@
+- content_for(:page_header) do
+  -#%p= link_to "#{t 'add'}  #{CostCalculation.model_name.human}", new_admin_cost_calculation_path, :class => "bright_link"
+  %h1= link_to 'расчеты себестоимости', admin_cost_calculations_path
+-#= paginate @cost_calculations
+
+#index_wr
+  = render 'index' 

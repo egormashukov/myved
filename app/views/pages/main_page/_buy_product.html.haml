@@ -1,0 +1,43 @@
+.buy_button_frame
+  .buy_button_frame_in
+    %h2.main_page_box= t(:buy_product)
+    %p.full_text Часто при работе с иностранными продавцами Российские компании сталкиваются с разными проблемами.
+    .problem_title= t(:problem)
+    .problem_content
+      %p.span0
+        = image_tag 'main_page/arrow.png', class: 'arrow'
+        Как найти надежного <br/> иностранного продавца?
+      %p.span30
+        = image_tag 'main_page/arrow.png', class: 'arrow'
+        Как получить более <br/> выгодные условия от <br/> существующих продавцов?
+      %p.span90
+        = image_tag 'main_page/arrow.png', class: 'arrow'
+        Как снизить закупочные цены?
+      %p.span150
+        = image_tag 'main_page/arrow.png', class: 'arrow'
+        Часто не известно, насколько выгодное предложение по рынку Вы получили.
+      %p.span180
+        = image_tag 'main_page/arrow.png', class: 'arrow'
+        Закупка товара каждый раз <br/> занимает много времени и сил
+    .past_title= t(:help_from_myved)
+    .problem_title= t(:there_is_solvation)
+    -#= image_tag 'main_page/arrow.png', class: 'arrow down'
+    .ved_solvation_content
+      %p.span0
+        = image_tag 'main_page/arrow.png', class: 'arrow'
+        myVED поможет найти <br/> по вашему индивидуальному запросу иностранных продавцов
+      %p.span30
+        = image_tag 'main_page/arrow.png', class: 'arrow'
+        Сократите закупочную <br/> стоимость товара в среднем на 13,5%.
+      %p.span90
+        = image_tag 'main_page/arrow.png', class: 'arrow'
+        Экономьте время на закупку
+      %p.span150
+        = image_tag 'main_page/arrow.png', class: 'arrow'
+        Оцените разом все <br/> предложения и получайте ясную картину по рынку
+      %p.span180
+        = image_tag 'main_page/arrow.png', class: 'arrow'
+        Устройте торги среди иностранных продавцов и получите лучшие условия
+    .advertizing_self= link_to 'узнать больше о "Торгах по товару"', page_path("torgi-po-tovaru")
+    -#.advertizing_self= t(:advertizing_self)
+    = start_for_free_button("buyer")

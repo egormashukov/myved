@@ -1,0 +1,237 @@
+@import "variables";
+/* ==========================================================================
+   09. FOOTER
+   ========================================================================== */
+
+#features {
+  padding-top: 60px;
+  padding-bottom: 30px;
+}
+
+/*------------------------------------------*/
+/*    Feature Box
+/*------------------------------------------*/
+
+.feature-box {
+  margin-bottom: 50px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+/*------------------------------------------*/
+/*    Feature Box Icon
+/*------------------------------------------*/
+
+.feature-box-icon {
+    background-color: rgba(240, 18, 18, 0.85);
+    display: block;
+    width: 35px;
+    height: 35px;
+    position: absolute;
+ 
+    border-radius: 4px;
+    color: #FFF;
+    line-height: 35px;
+    text-align: center;
+    font-size: 18px;
+}
+
+.feature-box-icon2 {
+    background-color: rgba(7, 179, 23, 0.85);
+    display: block;
+    width: 35px;
+    height: 35px;
+    position: absolute;
+ 
+    border-radius: 4px;
+    color: #FFF;
+    line-height: 35px;
+    text-align: center;
+    font-size: 18px;
+}
+
+.feature-box-icon3 {
+    background-color: rgba(4, 100, 148, 0.85);
+    display: block;
+    width: 35px;
+    height: 35px;
+    position: absolute;
+ 
+    border-radius: 4px;
+    color: #FFF;
+    line-height: 35px;
+    text-align: center;
+    font-size: 18px;
+}
+
+.feature-footer {
+    background-color: rgba(4, 100, 148, 0.85);
+    display: block;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+ 
+    border-radius: 4px;
+    color: #FFF;
+    line-height: 30px;
+    text-align: center;
+    font-size: 16px;
+  margin-top: 5px;
+}
+
+
+#footer {
+  background-color: #1A1E23;
+  padding: 20px 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  height: 303px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+.footer_cont a {
+  color: #428BCA; 
+}
+/*------------------------------------------*/
+/*   Footer Navigation Menu
+/*------------------------------------------*/  
+
+.footer-nav li {
+  float: left;
+  padding: 5px 10px 10px;
+}
+
+.footer-nav li a {
+  color: #999;
+  font-size: 15px;
+  font-family: 'Lato', sans-serif;
+}
+
+.footer-nav li a:hover {
+  color: #428bca;
+}
+
+.footer-cont {  color: #999;
+  font-size: 15px;
+  font-family: 'Lato', sans-serif;}  
+  
+.f1 {color: #999;
+  font-size: 15px;
+  font-family: 'Lato', sans-serif;} 
+
+
+/*------------------------------------------*/
+/*   Footer Copy 
+/*------------------------------------------*/  
+
+#footer_copy p {
+  color: #666;
+  font-size: 13px;
+  font-family: 'Lato', sans-serif;
+  margin-left: 10px;
+}
+.footer_p {color:#fff;}
+
+#footer_copy p span {
+  color: #428bca;
+}
+.li1 { height: 45px;} 
+.feature-box-content2 h2 {color:#0e7fb4;}
+/*------------------------------------------*/
+/*   Footer Social Icons  
+/*------------------------------------------*/
+
+#footer_icons {
+  margin:3px 0;
+}
+
+.footer-socials {
+  display: inline-block; 
+}
+
+.footer-socials li {
+  float: left;
+  width: auto !important;
+    display: inline-block !important;
+    vertical-align: top;
+    clear: none !important;
+  line-height: 70px;
+}
+
+.foo_social {
+    width: 40px;
+    height: 40px;
+  text-align: center;
+  color: #1A1E23;
+  font-size: 20px;
+    line-height: 40px;
+  margin: 0 5px;
+  background-color: #999;
+  -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    display: block;
+    text-decoration: none;
+  -webkit-transition: all 250ms ease-in-out;
+  -moz-transition: all 250ms ease-in-out;
+  -o-transition: all 250ms ease-in-out;
+  -ms-transition: all 250ms ease-in-out;
+  transition: all 250ms ease-in-out;
+}
+
+/*------------------------------------------*/
+/*    Feature Box Content
+/*------------------------------------------*/
+
+.feature-box-content {
+  padding-left: 50px; 
+  padding-top: 5px;
+  color: #fff;
+  
+}
+
+.feature-box-content2 {
+  padding-left: 50px; 
+  padding-top: 0px;
+  padding-bottom: 10px;
+  
+}
+
+.feature-box-content2 a {
+  color: #428bca;
+}
+
+.feature-box-content h4 {
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+}
+
+.footer__mail {
+  color: #428BCA; 
+}
+
+/*------------------------------------------*/
+/*   Footer Icons Hover 
+/*------------------------------------------*/
+
+.ico-facebook:hover {background-color: #3b5998;color: #f8f8f8;}
+.ico-twitter:hover {background-color: #00a9ed;color: #f8f8f8;}
+.ico-google-plus:hover {background-color: #cd1111;color: #f8f8f8;}
+.ico-linkedin:hover {background-color: #015886;color: #f8f8f8;}
+.ico-dribbble:hover {background-color: #d92d84;color: #f8f8f8;}
+.ico-instagram:hover {background-color: #beb3a8;color: #f8f8f8;}
+.ico-pinterest:hover {background-color: #ac281a;color: #f8f8f8;}
+.ico-dropbox:hover {background-color: #008ad2;color: #f8f8f8;}
+.ico-skype:hover {background-color: #00a9ed;color: #f8f8f8;}
+.ico-youtube:hover {background-color: #cd1b20;color: #f8f8f8;}
+.ico-tumblr:hover {background-color: #3a5976;color: #f8f8f8;}
+.ico-vimeo:hover {background-color: #00adee;color: #f8f8f8;}
+.ico-flickr:hover {background-color: #d2d2d2;color: #f8f8f8;}
+.ico-github:hover {background-color: #222;color: #f8f8f8;}
+.ico-renren:hover {background-color: #364a83;color: #f8f8f8;}
+.ico-vk:hover {background-color: #3b5998;color: #f8f8f8;}
+.ico-xing:hover {background-color: #015f5e;color: #f8f8f8;}
+.ico-weibo:hover {background-color: #be4443;color: #f8f8f8;}
+.ico-rss:hover {background-color: #ff6600;color: #f8f8f8;}

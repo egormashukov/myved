@@ -1,0 +1,17 @@
+.msg-window.js-msg-window
+  .msg-window__top-panel
+    = "#{receiver.title}."
+    = resource.subject
+    = link_to '#', class: 'msg-window__top-panel__close js-messages-window-close' do
+      %i.fa.fa-times
+
+  .msg-window__dialogue.js-msg-dialogue
+    - messages.each do |msg|
+      = render 'messages/window_message', msg: msg
+
+  .msg-window__form
+    = form_for [resource, Message.new], builder: MainFormBuilder, remote: true, class: 'js-msg-form' do |f|
+      = f.hidden_field :receiver_id, value: receiver.id
+      = f.text_area :body, rows: 2, class: 'msg-window__textarea js-enter-autosubmit'
+      = button_tag type: 'submit', class: 'msg-window__btn' do
+        %i.fa.fa-paper-plane

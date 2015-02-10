@@ -1,0 +1,14 @@
+%fieldset
+  = f.text_field_inline :title
+  - if f.object.class.name == 'ContractorDocument'
+    = f.text_area_inline :description, rows: 2
+  .field
+    .half= f.label :file_location
+    .right.half.file_location
+      - if f.object.try(:file_location_url)
+        = link_to_attachment(f.object)
+  .field
+    .half= f.file_field_as_button :file_location
+    .right.half
+      = f.destroy_field
+      = f.hidden_field :file_location_cache

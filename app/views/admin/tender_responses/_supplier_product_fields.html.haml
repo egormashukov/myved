@@ -1,0 +1,81 @@
+- product_request = product_request || product_response.product_request
+%tr
+  %td{colspan:2}
+    %h2 Общие сведения
+%tr
+  %th Характеристика
+  %th Запрос
+  %th Ваш товар
+%tr
+  %td= f.label :title
+  %td
+    %span{class: "product_request_title_#{product_request.id}"}= product_request.title
+
+  %td{class: "product_request_title_#{product_request.id}"}= f.text_field :title, class: 'first_title_in_fieldset'
+%tr
+  %td= f.label :model
+
+  %td
+  %td= f.text_field :model
+%tr
+  %td= f.label :marking_of_goods
+  %td
+  %td= f.text_field :marking_of_goods
+%tr
+  %td= f.label :application_field
+  %td
+    %span{class: "product_request_application_field_#{product_request.id}"}= product_request.application_field
+  %td{class: "product_request_application_field_#{product_request.id}"}= f.text_field :application_field
+%tr
+  %td= f.label :hs_code
+  %td
+  %td= f.text_field :hs_code
+
+%tr
+  %td
+    = '*' if product_request.id_code_obligatory?
+    = f.label :id_code
+  %td
+    %span{class: "product_request_id_code_#{product_request.id}"}= product_request.id_code
+  %td{class: "product_request_id_code_#{product_request.id}"}= f.text_field :id_code
+%tr
+  %td{colspan:2}
+    = link_to image_tag(product_request.image_url), product_request.image_url, target: '_blank'
+    %br
+    = f.label :image
+  %td
+    = image_tag(f.object.image_url) if f.object.image_url
+    %br
+    = f.file_field :image
+
+%tr
+  %td{colspan:3}
+    %h2 Описание продукта
+
+%tr
+  %td{colspan:3}
+    = f.fields_for :properties do |builder|
+      = render 'product_request_property_fields', f: builder, request_properties: product_request.properties
+
+%tr
+  %td= f.label :net_weight
+
+  %td
+  %td= f.text_field :net_weight
+%tr
+  %td= f.label :gross_weight
+
+  %td
+  %td= f.text_field :gross_weight
+- product_request.properties.each do |property|
+  - unless f.object.properties.collect(&:title).include?(property.title)
+    = fields_for_nested_properties f, :properties, property
+%tr
+  %td{colspan:3}
+    %h2 Конкурентные преимущества
+= f.fields_for :advantages do |builder|
+  = render 'supplier_products/advantage_fields', f: builder
+
+
+-# Слабое место! юзер может перебить значение
+= f.hidden_field :contractor_id, value: current_contractor.id

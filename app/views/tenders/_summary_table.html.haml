@@ -1,0 +1,145 @@
+%h3.summary_h= t(:summary_table)
+.table_wr
+  %table.summary2
+    %tbody.general
+
+      %tr
+        %th 
+        %th= t(:requirements)
+        - tender_responses.each do |tender_response|
+          %th= link_to tender_response.contractor.title, tender_response.contractor
+
+        - if tender.deal.owner?(current_contractor)
+          - tender.tender_contractors.not_respond(tender_responses).each do |tc|
+            %th= link_to tc.contractor.title, tc.contractor
+      %tr
+        %td
+        %td
+        - tender_responses.each do |tender_response|
+          %td= link_to_messages(tender, tender_response.contractor) if tender.owner?(current_contractor)
+        - if tender.deal.owner?(current_contractor)
+          - tender.tender_contractors.not_respond(tender_responses).each do |tc|
+            %td= link_to_messages(tender, tc.contractor) if tender.owner?(current_contractor)
+
+      = tender.chose_row(tender_responses) if tender.deal.owner?(current_contractor)
+      - if tender_responses.presence
+        %tr
+          %td 
+            = help_item(HelpItem.where(category: 'page', title: 'updated_count').first)
+            = Page.human_attribute_name(:updated_count)
+          %td
+          - tender_responses.each do |tender_response|
+            %td
+              - if tender_response.updated_left - 1 < 1
+                окончательное предложение
+              - else
+                = tender_response.updated_left - 1 
+
+          = tender.empty_cells
+      %tr
+        %td= TenderResponse.human_attribute_name(:cost)
+        %td= price_string(tender.summ_expected_cost, tender.currency)
+        - tender_responses.each do |tender_response|
+          %td{class: summary_cell_style_more(tender_response.summ_cost, tender.summ_expected_cost)}
+            = price_string(tender_response.summ_cost, tender.currency)
+        = tender.empty_cells
+      %tr.main
+        %td{colspan: "#{tender.tender_contractors.size + 2}"}
+          %h3= t(:basic_information)
+      %tr
+        %td= TenderResponse.human_attribute_name(:created_at)
+        %td
+        - tender_responses.each do |tender_response|
+          %td= tender_response.created_at.strftime("%H:%M %d.%m.%y")
+        = tender.empty_cells
+      %tr
+        %td= TenderResponse.human_attribute_name(:terms_of_payment)
+        %td= tender.terms_of_payment
+        - tender_responses.each do |tender_response|
+          %td{class: summary_cell_style_eq(tender_response.terms_of_payment, tender.terms_of_payment)}= tender_response.terms_of_payment
+        = tender.empty_cells
+      %tr
+        %td= TenderResponse.human_attribute_name(:conditions_of_supply)
+        %td= tender.conditions_of_supply
+        - tender_responses.each do |tender_response|
+          %td{class: summary_cell_style_eq(tender_response.conditions_of_supply, tender.conditions_of_supply)}= tender_response.conditions_of_supply
+        = tender.empty_cells
+      %tr
+        %td= TenderResponse.human_attribute_name(:delivery_time)
+        %td
+          = tender.delivery_time_view
+          = tender_date_unites(tender)
+        - tender_responses.each do |tender_response|
+          %td{class: summary_cell_style_more(tender_response.delivery_time, tender.delivery_time)}
+            = tender_response.delivery_time_view
+            = tender_date_unites(tender)
+        = tender.empty_cells
+      - if tender_responses.collect(&:service).reject { |c| c.nil? || c.empty? }.presence
+        %tr
+          %td= TenderResponse.human_attribute_name(:service)
+          %td
+          - tender_responses.each do |tender_response|
+            %td{class: summary_cell_style_eq(tender_response.service, tender.service)}= tender_response.service
+          = tender.empty_cells
+
+      %tr
+        %td= t(:attachments)
+        %td
+          %table.not_table_view
+            - tender.attachments.each do |attachment|
+              %tr
+                %td= link_to_attachment attachment
+        - tender_responses.each do |tender_response|
+          %td 
+            %table.not_table_view
+              - tender_response.attachments.each do |attachment|
+                %tr
+                  %td= link_to_attachment(attachment)
+
+        = tender.empty_cells
+
+      - if tender_responses.presence
+        %tr
+          %td
+          %td
+          - tender_responses.each do |tender_response|
+            %td= link_to t(:more), [tender, tender_response]
+          = tender.empty_cells
+
+      %tr.main
+        %td{colspan: "#{tender.tender_contractors.size + 2}"}
+          %h3= t(:products)
+    - tender.product_requests.each do |product_request|
+      %tbody.product_request
+        - ProductRequest.summary_table_attrs.each do |attr|
+          %tr
+            %td= ProductRequest.human_attribute_name(attr)
+            %td= product_request.try(attr)
+            - tender_responses.each do |tender_response|
+              %td= tender_response.product_responses.detect{|pr| pr.product_request == product_request}.supplier_product.try(attr)
+            = tender.empty_cells
+        - product_request.properties.each do |property|
+          %tr
+            %td{class: "#{'bold' if property.obligatory?}"}= property.title
+            %td{class: "#{'bold' if property.obligatory?}"}= property.body
+            - tender_responses.each do |tender_response|
+              %td{class: "#{'bold' if property.obligatory?}"}= tender_response.product_responses.detect{|pr| pr.product_request == product_request}.supplier_product.properties.detect{|p| property.title == p.title}.try(:body)
+            = tender.empty_cells    
+        %tr
+          %td= Advantage.model_name.human 
+          %td
+          - tender_responses.each do |tender_response|
+            %td
+              %table.not_table_view
+                - tender_response.product_responses.detect{|pr| pr.product_request == product_request}.supplier_product.advantages.each do |advatage|
+                  %tr
+                    %td= advatage.title
+          = tender.empty_cells
+        %tr
+          %td= ProductRequest.human_attribute_name(:price)
+          %td= price_string(product_request.try(:price),product_request.tender.currency )
+          - tender_responses.each do |tender_response|
+            %td= price_string(tender_response.product_responses.detect{|pr| pr.product_request == product_request}.try(:price), product_request.tender.currency)
+          = tender.empty_cells
+    
+        

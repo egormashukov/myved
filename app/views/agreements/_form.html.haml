@@ -1,0 +1,12 @@
+= form_for @agreement do |f|
+  - if @agreement.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@agreement.errors.count, "error")} prohibited this agreement from being saved:"
+      %ul
+        - @agreement.errors.full_messages.each do |msg|
+          %li= msg
+  = f.label :title
+  = f.text_field :title
+  = render @agreement.messages.for_current_contractor(current_contractor), agreement: @agreement
+  .actions
+    = f.submit t(:save)

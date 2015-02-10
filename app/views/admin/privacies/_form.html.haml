@@ -1,0 +1,9 @@
+= f.error_messages
+= f.hidden_field :type, value: @privacy.type || params[:type].try(:camelcase) || 'GeneralRule'
+%table
+  = f.check_box_row :visible
+  = f.text_field_row :title
+  -# TODO save uploaded file with original name or with 'title' field name ?
+  = f.file_field_row :file_location
+
+= f.submit_main

@@ -1,0 +1,41 @@
+.bordered
+  .fieldset_title.bold
+    Товар
+    %span.numerical_item
+  %fieldset
+    .dashed_container
+      = render :layout => 'layouts/main_left' do
+        %h3= t(:description)
+        .string
+          .third= Product.human_attribute_name(:title)
+          .two_thirds= @product_request.title
+        .string
+          .third= Product.human_attribute_name(:application_field)
+          .two_thirds= @product_request.application_field
+        .string
+          .third= Product.human_attribute_name(:nice_good_id)
+          .two_thirds= @product_request.nice_good.try(:title_en)
+        - if @product_request.image.presence
+          .string= image_tag @product_request.image_url(:icon)
+        %h3 Цена/ Количество
+        .string
+          .third
+            = Product.human_attribute_name(:price)
+          .two_thirds
+            = raw @tender.currency
+            = @product_request.price
+        .string
+          .left.third
+            = Product.human_attribute_name(:quantity)
+          .two_thirds
+            = @product_request.quantity
+            = @product_request.quantity_unit
+      = render :layout => 'layouts/main_right' do
+        %h3= t(:properties)
+        - @product_request.properties.each do |property|
+          .string
+            .half= property.title
+            .half= property.body
+
+.actions
+  = link_to t(:back), @product_request.tender, class: 'main_button'

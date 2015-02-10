@@ -1,0 +1,10 @@
+%h2= t(:main_info)
+= two_colums_string(contractor, :title)
+= two_colums_string(contractor, :site)
+- if Country.all.detect{|c| c[1] == contractor.country}.presence
+  .string
+    .third= Contractor.human_attribute_name(:country)
+    .two_thirds= Country.all.detect{|c| c[1] == contractor.country}[0]
+
+= two_colums_string contractor, :description
+= two_colums_string contractor, :filials

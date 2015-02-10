@@ -1,0 +1,6 @@
+= content_for :centered do
+  .select_region
+    %h1 Where is your company registered?
+    = link_to "В России", new_contractor_registration_url, class: "minor_button"
+    = link_to "not Russia", new_contractor_registration_url(profile: 'supplier'), class: "minor_button"
+    = link_to "Я контрагент", new_contractor_registration_url(profile: 'ved_contractor'), class: "minor_button"

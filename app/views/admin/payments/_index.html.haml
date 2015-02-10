@@ -1,0 +1,52 @@
+%table.zebra
+  %thead
+    %tr
+      %th= sortable_columns "paidable", Payment.human_attribute_name("paidable")
+      %th= sortable_columns "contractor_id", Payment.human_attribute_name("contractor_id")
+      %th= sortable_columns "invoice_numb", Payment.human_attribute_name("invoice_numb")
+      %th= sortable_columns "purpose", Payment.human_attribute_name("purpose")
+      %th= sortable_columns "sum", Payment.human_attribute_name("sum")
+      %th= sortable_columns "invoice_on", Payment.human_attribute_name("invoice_on")
+      %th= sortable_columns "paid_on", Payment.human_attribute_name("paid_on")
+      %th= sortable_columns "invoice", Payment.human_attribute_name("invoice")
+      %th= sortable_columns "state", Payment.human_attribute_name("state")
+      %th= sortable_columns "comment", Payment.human_attribute_name("comment")
+      %th
+      %th
+      %th
+      
+  %tbody
+    - payments.each do |payment|
+      %tr{class: "#{'_highlighted' if payment.new?}"}
+        %td
+          - if payment.paidable
+            = link_to payment.paidable.try(:mail_subject), payment.paidable, target: '_blank'
+            - if payment.class == InboxPayment
+              %p --------
+              = link_to 'добавить', new_admin_payments_inbox_payment_path(paidable_type: payment.paidable_type, paidable_id: payment.paidable_id, contractor_id: payment.contractor_id)
+            - elsif payment.class == OutboxPayment
+              %p --------
+              = link_to 'добавить', new_admin_payments_outbox_payment_path(paidable_type: payment.paidable_type, paidable_id: payment.paidable_id, contractor_id: payment.contractor_id)
+
+        %td= link_to_if payment.contractor.present?, payment.contractor.try(:title), payment.contractor, target: '_blank'
+        %td= payment.invoice_numb
+        %td= payment.purpose
+        %td= price_string(payment.currency, "#{payment.sum} ")
+        %td= payment.invoice_on
+        %td= payment.paid_on
+        %td= link_to 'открыть файл', payment.invoice_url, target: '_blank' if payment.invoice.present?
+        %td= payment.human_state
+        %td= payment.comment
+        %td
+          - if payment.new?
+            = link_to 'отправить', admin_payment_path(payment, payment: {to_state: :send_invoice}), method: :put
+            %p --------
+          - if payment.sent? || payment.new?
+            = link_to 'оплатить', admin_payment_path(payment, payment: {to_state: :pay}), method: :put
+
+        %td= link_to 'редактировать', [:edit, :admin, :payments, payment]
+
+        %td.right
+          = link_to admin_payment_path(payment), :method => :delete, :confirm => "#{t 'confirm.delete'}", class: :del do
+            %span Удалить
+            %i{:class => "icon-trash icon-large"}

@@ -1,0 +1,32 @@
+- tender_id ||= nil
+
+
+= render :layout => 'layouts/main_half_centered' do
+  %br
+  = form_for Contact.new, builder: MainFormBuilder do |f|
+    %h3= t(:add_myved_company)
+    = f.text_field_inline :invitation_cod
+    = f.main_button t(:add)
+  %br
+  %br
+  %h3= t(:send_invitation)
+  .string
+    %h4= "#{t(:option)} 1"
+    %b= t(:give_partners_code)
+    %h3
+      = t(:your_code)
+      = invite_link(current_contractor) #registrations helper
+    %b
+      = t(:link_for_partners)
+      .blue_link= new_contractor_registration_url(profile: current_contractor.opposite_profile, ic: invite_link(current_contractor))
+
+  .string
+    %h4= "#{t(:option)} 2"
+    %b= t(:emails_to_myved_invit)
+    = form_tag [:send_invitations, :contacts], method: :post do
+      .field
+        = text_field_tag "emails", '', placeholder: "user@expample.com, guest@ex.ru, myved@test.cn"
+      = submit_tag t(:send), class: 'main_button'
+
+      -#= mail_to "me@domain.com", "Отослать код по email", subject: "Приглашение в myVED", body: raw("Компания #{current_contractor.title} приглашает Вас зарегистрироваться на сервисе myVED. Код приглашения: #{invite_link(current_contractor)}")
+

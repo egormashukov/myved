@@ -1,0 +1,34 @@
+.top_solutions
+  .top_solutions_in
+    .al_centered 
+      %h2.all_inclusive= t(:myved_can_help_you_to_solve_three_problems)
+      .solutions_list
+        = link_to "#", class: "find_suppliers_link solution_item sticker_cart" do
+          %strong= t(:buy_product)
+          -#.italic Поможет найти <br/> иностранного продавца <br/> без посредников
+          .italic
+            • найти иностранных продавцов<br/>
+            • снизить закупочные цены <br/>
+            • получить лучшие условия от существующих продавцов
+
+          -#.know_more= link_to t(:more), '#', class: 'red_bordered_button find_suppliers_link'
+        = link_to "#", class: "ved_request_link solution_item sticker_question" do
+          %strong= t(:solve_ved_problems)
+          -#.italic Снизить закупочную <br/> стоимость товара
+          .italic
+            • оценить затраты по импорту <br/>
+            • получить сертификаты, декларации и т.д.<br/>
+            • проверить продавца <br/>
+            • решить другие вопросы ВЭД
+
+          -#.know_more= link_to t(:more), '#', class: 'red_bordered_button ved_request_link'
+        = link_to "#", class: "get_best_offer_link solution_item sticker_calculator" do
+          %strong= t(:get_best_offer)
+          -#.italic Решить любые <br/> вопросы ВЭД
+          .italic
+            Получить лучшие предложения: <br>
+            • по морскому фрахту <br/>
+            • по авиадоставке <br/>
+            • по другим видам транспорта
+
+          -#.know_more= link_to t(:more), '#', class: 'red_bordered_button get_best_offer_link'

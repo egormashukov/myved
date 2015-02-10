@@ -1,0 +1,10 @@
+.bordered.removeable.transport_unit
+  .fieldset_title.bold= t(:transport_unit)
+  %fieldset{class: "fs_#{f.object.object_id}"}
+    .half= f.select_inline :transport, grouped_options_for_select(TransportUnit.transport_options, f.object.try(:transport)), {include_blank: true}, class: 'selectto', placeholder: 'выберите тип транспортной единицы'
+    .clear
+    .field
+      .half
+        = f.label :quantity
+        = f.number_field :quantity, in: 1...100
+      .half.right= f.destroy_field

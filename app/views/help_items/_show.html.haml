@@ -1,0 +1,33 @@
+.help_frame
+  .help_frame_title
+    - if @help_item.column_help?
+      = @help_item.category.camelize.constantize.human_attribute_name(@help_item.title)
+    - else
+      = raw (@help_slide.try(:title).presence || @help_item.try(:title))
+    = raw "(#{t(:step)} #{@help_slide.element_index(@help_slides)}/#{@help_slides.count})" if @help_slides.count > 1
+    = link_to '#', class: 'close_help_frame' do
+      %i.fa.fa-times-circle
+    - if @help_slides.count > 1
+      = link_to help_help_item_path(@help_item), class: 'expand_help_frame', target: "_blank" do
+        %i.fa.fa-arrows-alt  
+
+  .scrollable_frame
+    - if @help_item.column_help?
+      = raw @help_item.try(:body)
+    - else
+      = raw @help_slide.try(:body)
+    - if @help_item.main_page?
+      = link_to t(:site_tour), "#", class: "red_button upper wide_button vote_button medium_button close_help_frame_with_tour"
+
+  - unless (@help_item.voted?(current_contractor) && @help_slides.first == @help_slide && @help_slides.last == @help_slide) || @help_item.column_help?
+    .help_bottom_panel
+      - unless @help_item.voted?(current_contractor) || !@help_item.wanted?
+        = link_to HelpItem.human_attribute_name("wanted"), [:vote, @help_item], class: "red_button upper wide_button vote_button medium_button", method: :post, remote: true
+
+
+      - unless @help_slides.first == @help_slide
+        = link_to t(:prev), prev_help_item_path(help_slide_id: @help_slide.id), class: 'other_help_slide minor_button prev', method: :post
+      - unless @help_slides.last == @help_slide
+        = link_to t(:next), next_help_item_path(help_slide_id: @help_slide.id), class: 'other_help_slide minor_button next', method: :post
+
+

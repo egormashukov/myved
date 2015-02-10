@@ -1,0 +1,4 @@
+%h1= "Новый тендер. Шаг #{@tender.current_step_number}/#{@tender.steps.size}"
+= render 'form'
+
+= link_to t(:back), @deal

@@ -1,0 +1,18 @@
+- if tender_responses.presence && current_contractor != tender_responses.best.try(:contractor)
+  .tour.best_response{"data-step" => 3, "data-intro" => tour_item("tender_best")}
+    %h3= t(:best_offer)
+    - if tender.deal.owner?(current_contractor)
+      .string 
+        .third= t(:company)
+        .two_thirds.right= tender_responses.best.try(:contractor).try(:title)
+    .string 
+      .third= TenderResponse.human_attribute_name(:cost)
+      .two_thirds.right= price_string(tender.best_response(tender_responses), tender.currency)
+    .string 
+      .third= Tender.human_attribute_name("terms_of_payment")
+      .two_thirds.right= tender_responses.best.try(:terms_of_payment)
+    .string 
+      .third= Tender.human_attribute_name("delivery_time")
+      .two_thirds.right
+        = tender_responses.best.try(:delivery_time_view)
+        = tender_date_unites(@tender)

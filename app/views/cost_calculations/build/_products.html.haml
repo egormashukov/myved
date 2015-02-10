@@ -1,0 +1,6 @@
+- unless @cost_calculation.cost_calculation_products.present?
+  Добавьте описание по товарам для расчета таможенных платежей. Для этого нажмите на кнопку "Добавить товар"
+
+= render 'cost_calculations/table', cost_calculation: @cost_calculation
+
+.actions= link_to t(:add_product), [:new, @cost_calculation, :cost_calculation_product], class: 'main_button'

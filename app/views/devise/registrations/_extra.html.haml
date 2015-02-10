@@ -1,0 +1,11 @@
+%h2= t(:extra)
+
+= f.text_field_inline :main_markets
+
+.field
+  .third= f.label :shipment_types
+  .two_thirds.right= f.select :shipment_types, options_for_select(Contractor.shipment_types_options, f.object.shipment_types), { include_blank: true }, class: 'selectto'
+
+
+
+

@@ -1,0 +1,18 @@
+= render 'layouts/bar', header_t: Contractor::Authorization.model_name.human, background_image: 'top_panel_card', left: true
+
+= form_for @authorization, url: wizard_path, builder: MainFormBuilder, html: { onsubmit: "#{'yaCounter23557672.reachGoal(\'SEND_SEA_FREIGHTS_TO_MYVED\'); return true;' if @step == :final}" } do |f|
+  = f.error_messages
+  = yield f
+  = f.hidden_field :step, value: @step
+
+  - if @step == :final
+    .final_step
+      = f.submit_or_send(@step)
+      .ready_box
+        = f.label :ready
+        = f.check_box :ready
+  - else
+    = f.submit_or_send(@step)
+  - unless @step == :general_info
+    = back_button(previous_wizard_path, 'fixed_button')
+.clear

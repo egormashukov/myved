@@ -1,0 +1,66 @@
+.i-txt {color: #fff; text-align: right; border-right: #fff dotted 1px; padding: 5px 20px 0px 20px; float: left; width:70%;
+  a {
+    color: #428BCA; 
+  }
+} 
+.i-logo { color: #fff;background-color: #333; font-size:12px; border-radius: 1px; padding:5px 5px 0px 10px; float: left;  }
+.i-logo h3 { float: left; color: #ccffff; font-size: 18px;}
+.i-logo p {text-align:right;}
+
+.t-left{float: left; color: #fff; text-align: right; border-right: #fff dotted 1px;padding: 5px 10px 2px 0px; width:80%; margin-right: 20px; }
+.t-left h3 { clear:both; color: #ccffff; font-size: 18px;}
+.t-right { padding: 10px 0px 5px 0px;}
+
+#header {
+  line-height: 20px;
+  font-size: 14px;
+  .navbar-brand {
+    padding: 10px 15px 0 10px;
+  }   
+  h1, h2, h3, h4, h5 {
+    margin: 0;
+    margin-bottom: 10px;
+  } 
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /*------------------------------------------*/
+  /*   Navigation Menu    
+  /*------------------------------------------*/
+
+  .navbar { 
+    background-color: #FEFEFE;
+    border-bottom: 1px solid #666;
+  }
+  .nav.navbar-nav.navbar-right, nav#navigation-menu, .container, .navbar {
+    &:after, :before {
+      display: block !important;
+      height: 0 !important;
+    }
+  }
+  .navbar-nav > li > a {
+    color: #333;  
+    display: block;
+    padding: 0 15px;
+    font-size: 14px;
+    font-family: 'Lato', sans-serif;
+    text-transform: uppercase;
+    font-weight: 900;
+    line-height: 65px;
+    border-bottom: 3px solid transparent;
+    -webkit-transition: all 250ms ease-in-out;
+    -moz-transition: all 250ms ease-in-out;
+    -o-transition: all 250ms ease-in-out;
+    -ms-transition: all 250ms ease-in-out;
+    transition: all 250ms ease-in-out;
+  }
+
+  .navbar-nav > li > a:hover,
+  .navbar-nav > li > a.selected-nav {
+    background: none;
+    color: #06619c;
+  }
+}

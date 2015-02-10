@@ -1,0 +1,36 @@
+%table.zebra
+  %thead
+    %tr
+      %th= sortable_columns "title", CostCalculation.human_attribute_name("title")
+      %th= sortable_columns "state", CostCalculation.human_attribute_name("state")
+      %th= sortable_columns "contractor_id", CostCalculation.human_attribute_name("contractor_id")
+      %th= sortable_columns "conditions_of_supply", CostCalculation.human_attribute_name("conditions_of_supply")
+      %th= sortable_columns "terms_of_payment", CostCalculation.human_attribute_name("terms_of_payment")
+      %th= sortable_columns "destination", CostCalculation.human_attribute_name("destination")
+      %th= sortable_columns "shipment_port", CostCalculation.human_attribute_name("shipment_port")
+      %th
+      %th
+      %th
+      %th
+      
+  %tbody
+    - @cost_calculations.each do |cost_calculation|
+      %tr{class: "#{'_highlighted' if cost_calculation.waiting?}"}
+        %td= link_to cost_calculation.title, cost_calculation, target: '_blank'
+        %td= cost_calculation.current_state
+        %td= link_to cost_calculation.contractor.title, cost_calculation.contractor, target: '_blank'
+        %td= cost_calculation.conditions_of_supply
+        %td= cost_calculation.terms_of_payment
+        %td= cost_calculation.destination
+        %td= cost_calculation.shipment_port
+        %td= link_to 'открыть на сайте', cost_calculation, target: '_blank'
+        %td= link_to 'редактировать', [:edit, cost_calculation], target: '_blank'
+        %td
+          - if cost_calculation.cost_calculation_response.presence
+            = link_to 'изм. ответ', [:edit, :admin, cost_calculation.cost_calculation_response]
+          - else
+            = link_to 'ответить', [:new, :admin, cost_calculation, :cost_calculation_response]
+        %td.right
+          = link_to [:admin, cost_calculation], :method => :delete, :confirm => "#{t 'confirm.delete'}", class: :del do
+            %span Удалить
+            %i{:class => "icon-trash icon-large"}

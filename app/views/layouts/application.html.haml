@@ -1,0 +1,43 @@
+!!!
+
+%html
+  %head
+    %title= t(:myved_title)
+    = stylesheet_link_tag    "application", :media => "all"
+    = javascript_include_tag "application"
+    =# javascript_include_tag "http://static.calc.fingrd.ru/default/fingrd-calc.js"
+    = csrf_meta_tags
+    %meta{:charset=>"utf-8"}
+    - if Rails.env.production?
+      = render "layouts/metrics/google_analytics"
+
+  %body{class: "#{'landing_page' if (params[:controller] == 'help_items' ||devise_controller?) && !contractor_signed_in? }"}
+    #wrapper
+      - if contractor_signed_in?
+        -# = render "layouts/messages"
+        .top_bar_wr
+          .top_bar= render 'layouts/topbar'
+        %header= render 'layouts/header'
+      - else
+        = render "header"
+
+      %section.main.clearfix
+
+        .main_in{class: "#{'widescreen' unless contractor_signed_in?}"}
+          .centered_section= yield(:centered)
+          .clear
+          .left_section
+            - if contractor_signed_in?
+              .left_menu= render 'layouts/left_menu'
+              .reviews= render "reviews/form"
+            = yield(:left_bar)
+          .right_section
+            #mycalculator
+            = yield
+      .clear
+      = render "footer"
+      -#%footer.f= render "layouts/footer"
+      - if Rails.env.production?
+        = render "layouts/metrics/yandex_metrika"
+    - if Rails.env.production?
+      = render "shared/siteheart"

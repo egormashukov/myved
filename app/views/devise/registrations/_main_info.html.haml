@@ -1,0 +1,20 @@
+%h2= t(:main_info)
+
+%fieldset
+  .field
+    .half= f.label :logo
+    .right.half
+      = f.file_field_as_button :logo
+      = f.hidden_field :logo_cache
+  .field
+    .half= t(:file_name)
+    .right.half.file_location= f.object.logo_url.split('/').last if f.object.try(:logo_url)
+
+- if resource.logo.presence
+  = image_tag resource.logo_url(:profile), class: 'profile-img'
+
+= f.text_field_inline :site
+
+= f.select_with_label :country, Country.all.sort, {prompt: t(:choose_country)}, class: 'selectto'
+= f.text_area_inline :description, rows: 3
+= f.text_area_inline :filials, rows: 3

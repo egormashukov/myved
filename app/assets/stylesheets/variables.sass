@@ -1,0 +1,38 @@
+$blue_color: #3179AE
+$wr_width: 1200px
+$light_grey: #e1e1e1
+$dark_grey: #363636
+$border_color: #999
+$green_color: #449C2D
+$red_color: #b20d0d
+
+=dark_zone
+  color: $light_grey
+  a
+    color: $light_grey
+    &:hover
+      color: #FFF
+  background: $dark_grey
+
+=regular
+  font-family: "Trebuchet MS" !important
+
+=bold
+  font-weight: normal
+  font-family: "Trebuchet MS Bold" !important
+
+=italic
+  font-family: "Trebuchet MS Italic" !important
+  
+=clearfix
+  &:after
+    content: " "
+    visibility: hidden
+    display: block
+    height: 0
+    clear: both
+
+=box-sizing
+  box-sizing: border-box
+  -moz-box-sizing: border-box
+  -webkit-box-sizing: border-box

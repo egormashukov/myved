@@ -1,0 +1,7 @@
+- content_for(:page_header) do
+  %p= link_to "#{t 'add'}  #{Deal.model_name.human}", new_admin_deal_path, :class => "bright_link"
+  %h1= link_to 'deals', admin_deals_path
+-#= paginate @deals
+
+#index_wr
+  = render 'index' 

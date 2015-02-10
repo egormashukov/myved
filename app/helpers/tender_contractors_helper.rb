@@ -1,0 +1,2 @@
+module TenderContractorsHelper
+end

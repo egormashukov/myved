@@ -1,0 +1,17 @@
+= content_for :centered do
+  %h1= t(:sign_in)
+  = form_for(resource, :as => resource_name, :url => session_path(resource_name), builder: MainFormBuilder) do |f|
+    - if flash.presence
+      .error_messages
+        - flash.each do |name, msg|
+          %li= content_tag :div, msg, :id => "flash_#{name}" if msg.is_a?(String)
+
+    = f.email_field_inline :email, :autofocus => true
+    = f.password_field_inline :password
+
+    - if devise_mapping.rememberable?
+      = f.check_box_inline :remember_me
+    .field
+      
+      = render "devise/shared/links"
+      = f.submit t(:sign_in), class: 'main_button login_button'

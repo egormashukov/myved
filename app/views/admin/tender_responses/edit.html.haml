@@ -1,0 +1,122 @@
+- content_for :page_header do
+  %p= link_to t('back'), admin_tender_responses_path, :class => "bright_link"
+  %h1
+    - if @tender_response.new_record?
+      = "#{t 'add'} #{TenderResponse.model_name.human}"
+    - else
+      = "#{t 'edit'} #{TenderResponse.model_name.human}"
+
+
+%table
+  %tr
+    %th Требования по тендеру
+    %th Предложение
+  %tr
+    %td
+      = number_with_precision(@tender.delivery_time, :precision => 0)
+      = tender_date_unites(@tender) if @tender.delivery_time
+    %td
+      = best_in_place @tender_response, :delivery_time, path: admin_tender_response_path(@tender_response)
+      = tender_date_unites(@tender) if @tender.delivery_time
+  %tr
+    %td= @tender.terms_of_payment
+    %td= best_in_place @tender_response, :terms_of_payment, path: [:admin, @tender_response]
+  %tr
+    %td= @tender.conditions_of_supply
+    %td= @tender_response.conditions_of_supply
+
+  - if @tender.service.presence
+    %tr
+      %td= @tender.service
+      %td= best_in_place @tender_response, :service, :type => :select, :collection => [['',''],['OEM Service','OEM Service'],['ODM Service', 'ODM Service']], path: [:admin, @tender_response]
+  %tr
+    %td
+    %td= best_in_place @tender_response, :body, :type => :textarea, path: [:admin, @tender_response]
+
+%h2 Товары
+%table
+  - i = 0
+  - @tender_response.product_responses.each do |product_response|
+    - i += 1
+    %tr
+      %td{colspan: 3}
+        %h3= "Товар #{i}"
+    %tr
+      %td= Product.human_attribute_name(:title)
+      %td= product_response.product_request.title
+      %td= best_in_place product_response.supplier_product, :title, path: [:admin, product_response.supplier_product]
+    %tr
+      %td= Product.human_attribute_name(:application_field)
+      %td= product_response.product_request.application_field
+      %td= best_in_place product_response.supplier_product, :application_field, path: [:admin, product_response.supplier_product]
+    %tr
+      %td= Product.human_attribute_name(:id_code)
+      %td= product_response.product_request.id_code
+      %td= best_in_place product_response.supplier_product, :id_code, path: [:admin, product_response.supplier_product]
+    %tr
+      %td= Product.human_attribute_name(:hs_code)
+      %td= product_response.product_request.hs_code
+      %td= best_in_place product_response.supplier_product, :hs_code, path: [:admin, product_response.supplier_product]
+    %tr
+      %td= Product.human_attribute_name(:model)
+      %td= product_response.product_request.model
+      %td= best_in_place product_response.supplier_product, :model, path: [:admin, product_response.supplier_product]
+    %tr
+      %td= Product.human_attribute_name(:marking_of_goods)
+      %td= product_response.product_request.marking_of_goods
+      %td= best_in_place product_response.supplier_product, :marking_of_goods, path: [:admin, product_response.supplier_product]
+    %tr
+      %td= Product.human_attribute_name(:package)
+      %td= product_response.product_request.package
+      %td= best_in_place product_response.supplier_product, :package, path: [:admin, product_response.supplier_product]
+    %tr
+      %td= Product.human_attribute_name(:net_weight)
+      %td= product_response.product_request.net_weight
+      %td= best_in_place product_response.supplier_product, :net_weight, path: [:admin, product_response.supplier_product]
+    %tr
+      %td= Product.human_attribute_name(:gross_weight)
+      %td= product_response.product_request.gross_weight
+      %td= best_in_place product_response.supplier_product, :gross_weight, path: [:admin, product_response.supplier_product]
+
+    %tr
+      %td= Product.human_attribute_name(:price)
+      %td= product_response.product_request.price
+      %td= best_in_place product_response, :price, path: [:admin, product_response] 
+    %tr
+      %td= Product.human_attribute_name(:quantity)
+      %td
+        = product_response.product_request.quantity
+        = product_response.product_request.quantity_unit
+      %td
+        = product_response.product_request.quantity
+        = product_response.product_request.quantity_unit
+-#   
+  = form_for [:admin, @tender_response], builder: AdminFormBuilder do |f|
+    = f.error_messages
+
+      -#
+        %tr
+          %td{colspan: 4}
+            %h3 Товары
+        %tr
+          %td{colspan:4}
+            = f.fields_for :product_responses do |builder|
+              = render 'product_response_fields', f: builder
+
+            - if @tender_response.product_responses.empty?
+              - @tender.product_requests.each do |product_request|
+                = fields_for_nested_responses f, :product_responses, product_request
+
+      %tr
+        %td{colspan:2} 
+          %h3 Добавить файлы
+      %tr
+        %td= t(:attachments)
+        %td
+          = f.fields_for :attachments do |builder|
+            = render 'attachment_fields', f: builder
+          = link_to_add_fields 'добавить файл', f, :attachments, 'attachment_fields'
+
+  
+  .actions
+    = f.submit t('save')

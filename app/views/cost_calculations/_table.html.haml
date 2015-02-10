@@ -1,0 +1,57 @@
+%h2= t(:products)
+%table.products_table
+  %tr
+    %th= Product.human_attribute_name(:title)
+    %th= Product.human_attribute_name(:ved_code)
+    %th= Product.human_attribute_name(:quantity)
+    %th= Product.human_attribute_name(:price)
+    %th= Product.human_attribute_name(:net_weight)
+    %th= Product.human_attribute_name(:gross_weight)
+    %th= Product.human_attribute_name(:volume)
+    %th= Product.human_attribute_name(:image)
+    %th= Product.human_attribute_name(:cost)
+    - if cost_calculation.new? && @step != :final
+      %th
+    
+  - cost_calculation.cost_calculation_products.order('created_at').each do |cost_calculation_product|
+    %tr
+      %td
+        = link_to cost_calculation_product.supplier_product.title, [:edit, cost_calculation, cost_calculation_product]
+        -#= supplier_product_field_or_bip(cost_calculation_product.supplier_product, cost_calculation_product, :title)
+      %td= supplier_product_field_or_bip(cost_calculation_product.supplier_product, cost_calculation_product, :hs_code)
+      %td
+        = product_field_or_bip(cost_calculation_product, :quantity)
+        = product_field_or_bip(cost_calculation_product, :quantity_unit)
+      %td= raw price_string(cost_calculation_product.price, @cost_calculation.currency)
+      %td= product_field_or_bip(cost_calculation_product, :sum_net_weight)
+      %td= product_field_or_bip(cost_calculation_product, :sum_gross_weight)
+      %td= product_field_or_bip(cost_calculation_product, :sum_volume)
+      %td
+        - if cost_calculation_product.supplier_product.image_url
+          = link_to cost_calculation_product.supplier_product.image_url, class: "fancybox", target: "_blank" do
+            %i.fa.fa-picture-o
+      %td= raw price_string(cost_calculation_product.summ_cost, @cost_calculation.currency)
+      - if cost_calculation.new? && @step != :final
+        %td= link_to t(:remove), [cost_calculation, cost_calculation_product], method: :delete, class: 'destroy_link', confirm: 'Вы уверены, что хотите удалить товар из расчета?'
+  
+  - unless cost_calculation.cost_calculation_products.present?
+    %tr.fake_info
+      %td Электроталь
+      %td 8425110000
+      %td 95 pcs.
+      %td 520 $/pcs
+      %td 16455
+      %td 19250
+      %td 42,13
+      %td
+      %td 49400
+    %tr.fake_info
+      %td Электродвигатель 0.4kw
+      %td 8501522001
+      %td 15 pcs.
+      %td 40 $/pcs
+      %td 195
+      %td 210
+      %td 0,3
+      %td
+      %td 600

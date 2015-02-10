@@ -1,0 +1,120 @@
+//*= require default
+//*= require redactor
+//*= require select2
+
+//*= require libs/datepicker
+//*= require_self
+
+.user_panel {
+  color: #FFF;
+}
+#nav {
+  color: #d4d4d4;
+}
+.bordered_box fieldset {
+  border: none;
+}
+.field {
+  width: 100%;
+  margin-bottom: 1.2em;
+  float: none;
+  display: inline-block;
+  input[type='text'],input[type='email'], input[type='password'], select, textarea {
+    width: 100%;
+  }
+  &:after {
+    content: ".";
+    display: block;
+    height: 0;
+    font-size: 0;
+    clear: both;
+    visibility: hidden;
+  }
+}
+.third, .two_thirds, .three_fourths, .fourth, .two_thirds, .half {
+  float: left;
+  position: relative;
+}
+.third {
+  width: 33.3%;
+}
+.three_fourths {
+  width: 75%;
+}
+.fourth {
+  width: 25%;
+}
+.two_thirds {
+  width: 66.7%;
+}
+.right {
+  text-align: right;
+  vertical-align: top;
+}
+.left {
+  vertical-align: top;
+}
+.half {
+  width: 50%;
+}
+.half_centered {
+  width: 60%;
+  margin: 0 auto;
+}
+.dashed_container, .container {
+  width: 100%;
+  overflow: hidden;
+  .column1, .column2 {
+    float: left;
+    margin: 0;
+    margin-bottom: -99999px;
+    padding-bottom: 99999px;
+    vertical-align: top;
+  }
+}
+.dashed_container {
+  border-collapse: collapse;
+  .column1, .column2 {
+    background: none;
+    width: 47.8%;
+  }
+  .column1 {
+    padding-right: 2%;
+    border-right: 1px solid #EEE;
+  }
+  .column2 {
+    padding-left: 2%;
+  }
+}
+tr.header {
+  background: #555 !important;
+  color: #FFF;
+}
+fieldset.color:nth-child(odd) {
+  background: #FDFFFF;
+  margin-bottom: 1.0em;
+}
+.horizontal_items li a.selected {
+  background: #000;
+  color: #FFF;
+}
+.redactor_box {
+  ul li {
+    list-style-type: disc !important;
+  }
+  ol li {
+    list-style-type: decimal !important;
+  }
+}
+
+.ui-datepicker {
+  background: #FFF;
+  border: 1px solid #555;
+  .ui-state-active {
+    background: #009900; 
+    color: #FFF;
+  } 
+}
+tr._highlighted {
+  td {background: rgba(255,0,0,0.1);}
+}

@@ -1,0 +1,78 @@
+- if notice
+  %p#notice= notice
+.home_page
+  - unless current_contractor.ved_contractor?
+    = autorun_help(HelpItem.where(category: 'page', title: 'main_page').first) if params[:hello].presence
+  %ul{"data-step" => 2, "data-intro" => tour_item('home_page'), "data-position" => 'top', class: 'home_page_tour'}
+    - if current_contractor.buyer?
+      .column
+        -#.col_img= image_tag 'home/home_tender.png'
+        = link_to t(:buy_product), buy_product_pth, class: 'big_button _buy-product'
+        %ul
+          - h_buy_product(@help_items).each do |help_item|
+            - if controller.action_name == 'home' && h_buy_product(@help_items).first == help_item
+              %div{"data-step" => 6, "data-intro" => tour_item('help_items')}= raw help_item_link(help_item)
+            - else
+              = raw help_item_link(help_item)
+      .column
+        -#.col_img= image_tag 'home/home_ved_request.png'
+        = button_to t(:ved_request), ved_request_pth, class: 'big_button _ved-request'
+        %ul
+          %li._header.with_help
+            = help_item_i HelpItem.find(3)
+
+            = link_to 'Оценить расходы <br> по импорту/экспорту'.html_safe, ved_request_pth, method: :post
+          - h_ved_request(@help_items).each do |help_item|
+            = raw help_item_link(help_item)
+      .column
+        -#.col_img= image_tag 'home/home_ved_tender.png'
+        = button_to t(:ved_tender), ved_tender_pth, class: 'big_button _ved-tender', method: :post
+
+        %ul._sublist
+          %li._header.with_help
+            = help_item_i HelpItem.find(8)
+            = link_to 'Доставка контейнера', ved_tender_pth, method: :post
+          - h_ved_tender(@help_items).each do |help_item|
+            = raw help_item_link(help_item)
+
+    - elsif current_contractor.supplier?
+      .column
+        -#.col_img= image_tag 'home/home_tender.png'
+        = link_to t(:sell_to_russia), participate_tender_pth, class: 'big_button'
+        %ul
+          - h_sell_to_russia(@help_items).each do |help_item|
+            - if controller.action_name == 'home' && h_sell_to_russia(@help_items) == help_item
+              %div{"data-step" => 6, "data-intro" => tour_item('help_items')}= raw help_item_link(help_item)
+            - else
+              = raw help_item_link(help_item)
+
+      .column
+        -#.col_img= image_tag 'home/home_ved_tender.png'
+        = button_to t(:door_to_door_russia), ved_request_pth, class: 'big_button'
+        %ul
+          - h_door_to_door_russia(@help_items).each do |help_item|
+            = raw help_item_link(help_item)
+      .column
+        -#.col_img= image_tag 'home/home_ved_request.png'
+        = button_to t(:all_for_world_trade), solve_import_problems_pth, class: 'big_button'
+        %ul
+          - h_all_for_world_trade(@help_items).each do |help_item|
+            = raw help_item_link(help_item)
+
+  = render "project_contractors/ved_tables", projects: @projects
+  -# - if current_contractor.ved_contractor?
+  -#   = render "project_contractors/ved_tables", projects: @projects
+  -# - else
+  -#   %h2 Текущие проекты
+  -#   = render "project_contractors/table", projects: @projects
+
+
+  -#
+    -#= render 'deals/switch_panel'
+    .deals_table{"data-step" => 3, "data-intro" => tour_item("deals_table"), "data-position" => 'top', class: 'home_page_tour'}
+      - if current_contractor.buyer?
+        = render 'deals/deals_table', deals: @deals
+      - elsif current_contractor.supplier?
+        = render 'deals/supplier_deals_table', deals: @deals
+      - elsif current_contractor.ved_contractor?
+        = render 'deals/ved_contractor_table'

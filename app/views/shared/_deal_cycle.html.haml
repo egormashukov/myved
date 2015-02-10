@@ -1,0 +1,8 @@
+%b Схема работы
+%ul
+  - Deal.transactions_list_by_position.each do |t|
+    %li{:class => transaction_class(t, deal_transactions)}
+      = link_to t.values[0][:in_russian], deal_transactions.detect{|dt| dt.transaction_type == t.keys[0].to_s}.transaction_link
+      %ul
+        - Deal.child_transactions(t).each do |ct|
+          %li{:class => transaction_class(ct, deal_transactions)}= link_to ct.values[0][:in_russian], deal_transactions.detect{|dt| dt.transaction_type == ct.keys[0].to_s}.transaction_link

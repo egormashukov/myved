@@ -1,0 +1,8 @@
+.dialogue_form
+  - create_path = resource.presence ? [resource, message] : message
+  = form_for create_path, builder: MainFormBuilder, remote: true do |f|
+    = f.hidden_field :receiver_id, value: receiver.id
+    = f.redactor :body
+    = f.main_button t(:send)
+
+  .clear

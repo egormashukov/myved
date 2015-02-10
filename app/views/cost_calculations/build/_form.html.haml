@@ -1,0 +1,8 @@
+= form_for @cost_calculation, url: wizard_path, builder: MainFormBuilder do |f|
+  = f.error_messages
+  = yield f
+  = f.hidden_field :status, value: @step
+  .clear
+  = f.submit_or_send(@step)
+  - unless @step == :general_info
+    = back_button(previous_wizard_path)

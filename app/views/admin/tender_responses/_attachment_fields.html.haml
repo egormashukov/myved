@@ -1,0 +1,8 @@
+%fieldset
+  = f.label :title
+  = f.text_field :title
+  %br
+  = f.label :file_location
+  = f.file_field :file_location
+  = f.hidden_field :file_location_cache
+  = link_to 'удалить', '#', class: 'remove_fields'

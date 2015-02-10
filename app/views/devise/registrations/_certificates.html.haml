@@ -1,0 +1,4 @@
+%h2= t(:certificates)
+= f.fields_for :certificates do |builder|
+  = render 'contractors/documents/certificate_fields', f: builder
+= link_to_add_fields t(:add_certificates), f, :certificates, 'contractors/documents/certificate_fields', 'minor_button centered wide_button'

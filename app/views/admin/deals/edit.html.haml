@@ -1,0 +1,24 @@
+- content_for :page_header do
+  %p= link_to t('back'), admin_deals_path, :class => "bright_link"
+  %h1
+    - if @deal.new_record?
+      = "#{t 'add'} #{Deal.model_name.human}"
+    - else
+      = "#{t 'edit'} #{Deal.model_name.human}"
+
+= form_for [:admin, @deal] do |f|
+  - if @deal.errors.any?
+    #error_explanation
+      %h2= "#{t 'save_errors'}: #{@deal.errors.count}"
+      %ul
+        - @deal.errors.full_messages.each do |msg|
+          %li= msg
+  %table
+
+    %tr
+      %th{colspan: 2}
+        = f.check_box :successful
+        = f.label :successful
+  
+  .actions
+    = f.submit t('save')

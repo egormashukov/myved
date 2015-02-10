@@ -1,0 +1,9 @@
+= form_for @cost_calculation, :html => {:multipart => true}, builder: MainFormBuilder do |f|
+  = f.error_messages
+  
+  = render 'cost_calculations/build/general_info', f: f
+  %br
+  = render 'cost_calculations/build/products', f: f
+      
+  .actions
+    = f.submit t(:save), class: 'main_button right'

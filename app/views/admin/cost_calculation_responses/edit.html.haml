@@ -1,0 +1,101 @@
+- content_for :page_header do
+  %p= link_to t('back'), [:edit, :admin, @cost_calculation], :class => "bright_link"
+  %h1
+    - if @cost_calculation_response.new_record?
+      = "#{t 'add'} #{CostCalculationResponse.model_name.human}"
+    - else
+      = "#{t 'edit'} #{CostCalculationResponse.model_name.human}"
+
+%h1 Расчет себестоимости
+%table.zebra
+  %tr.header
+    %td{colspan: 2}
+      %h3 Основные сведения
+  %tr
+    %td= CostCalculation.human_attribute_name("title")
+    %td= @cost_calculation.title
+  %tr
+    %td= CostCalculation.human_attribute_name("contractor_id")
+    %td= @cost_calculation.contractor.title
+  %tr
+    %td= CostCalculation.human_attribute_name("conditions_of_supply")
+    %td= @cost_calculation.conditions_of_supply
+  %tr
+    %td= CostCalculation.human_attribute_name("terms_of_payment")
+    %td= @cost_calculation.terms_of_payment
+  %tr
+    %td= CostCalculation.human_attribute_name("destination")
+    %td= @cost_calculation.destination
+  %tr
+    %td= CostCalculation.human_attribute_name("shipment_port")
+    %td= @cost_calculation.shipment_port
+  %tr
+    %td= t(:total)
+    %td
+      = raw @cost_calculation.currency
+      = @cost_calculation.summ_cost
+%h2 Товары
+%table
+  - @cost_calculation.cost_calculation_products.each do |cost_calculation_product|
+    %tr.header
+      %td{colspan: 2}
+        %h3= cost_calculation_product.supplier_product.title
+    %tr
+      %td= CostCalculationProduct.human_attribute_name("quantity")
+      %td
+        = raw cost_calculation_product.quantity
+        = cost_calculation_product.quantity_unit
+    %tr
+      %td= Product.human_attribute_name("price")
+      %td
+        = raw @cost_calculation.currency
+        = cost_calculation_product.price
+    %tr
+      %td= Product.human_attribute_name("application_field")
+      %td= cost_calculation_product.supplier_product.application_field
+    %tr
+      %td= CostCalculationProduct.human_attribute_name("sum_net_weight")
+      %td= cost_calculation_product.sum_net_weight
+    %tr
+      %td= CostCalculationProduct.human_attribute_name("sum_gross_weight")
+      %td= cost_calculation_product.sum_gross_weight
+    %tr
+      %td= Product.human_attribute_name("hs_code")
+      %td= cost_calculation_product.supplier_product.hs_code
+    %tr
+      %td= Product.human_attribute_name("package")
+      %td= cost_calculation_product.supplier_product.package
+    %tr
+      %td= CostCalculationProduct.human_attribute_name("sum_volume")
+      %td= cost_calculation_product.sum_volume
+    - cost_calculation_product.supplier_product.properties.each do |property|
+      %tr
+        %td= property.title
+        %td= property.body
+%h2 Транспортные единицы
+%table
+  %tr.header
+    %td= TransportUnit.human_attribute_name("quantity")
+    %td= TransportUnit.human_attribute_name("transport")
+  - @cost_calculation.transport_units.each do |tu|
+    %tr
+      %td= tu.quantity
+      %td= tu.transport
+
+%h1 Ответ на запрос расчета себестоимости
+= form_for @pth, builder: AdminFormBuilder do |f|
+  = f.error_messages
+  %table
+    %tr
+      %th= f.label :currency
+      %td{colspan: 2}= f.select :currency, CostCalculation.currency_options.collect{|co| [raw(co), co]}
+    = f.field_with_cost_and_comment :delivery_cost, :delivery_comment
+    = f.field_with_cost_and_comment :custom_duty_cost, :custom_duty_comment
+    = f.field_with_cost_and_comment :customs_cost, :customs_comment
+    = f.field_with_cost_and_comment :ns_outsourcing_cost, :ns_outsourcing_comment
+    = f.field_with_cost_and_comment :currency_transactions_cost, :currency_transaction_comment
+    = f.field_with_cost_and_comment :permits_cost, :permits_comment
+    %tr
+      %th= f.label :risks
+      %td{colspan: 2}= f.text_area :risks, rows: 3
+  = f.submit_main

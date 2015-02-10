@@ -1,0 +1,7 @@
+#accordion.insertion_point
+  - (f.object.product_requests.build) if f.object.product_requests.empty?
+  = f.fields_for :product_requests do |builder|
+    = render 'tenders/product_request_fields', f: builder
+
+
+  = link_to_add_fields 'добавить запрос товара', f, :product_requests, 'tenders/product_request_fields', 'main_button centered wide_button'

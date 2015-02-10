@@ -1,0 +1,10 @@
+- if notice
+  %p#notice= notice
+
+%h1= @agreement.title
+
+= render @agreement.messages.for_current_contractor(current_contractor)
+
+= link_to 'редактировать', edit_agreement_path(@agreement)
+\|
+= link_to 'другие соглашения по проекту', [@agreement.deal, :agreements]

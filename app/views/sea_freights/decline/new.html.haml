@@ -1,0 +1,10 @@
+= render :layout => 'layouts/main_half_centered' do
+  = form_for @sea_freight_decline, url: sea_freight_decline_index_path, method: :post, builder: MainFormBuilder do |f|
+    = f.error_messages
+    .field
+      %h2 Отметьте галочкой главную причину отказа:
+    - SeaFreight::Decline.failure_cause_options.each do |fco|
+      .field
+        = f.radio_button :failure_cause, fco[1]
+        = f.label "failure_cause_#{fco[1]}", fco[0]
+    = f.submit t(:send), class: 'main_button'

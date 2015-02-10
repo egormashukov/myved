@@ -1,0 +1,15 @@
+= render 'layouts/bar', header_t: t(:cost_accouting), background_image: 'top_panel_card', left: true
+
+Проверьте форму и нажмите "Отправить"
+
+= render :layout => 'cost_calculations/build/form' do |f|
+  %h2= t(:basic_information)
+  = two_colums_string(@cost_calculation, :title)
+  = two_colums_string(@cost_calculation, :current_state)
+  = two_colums_string(@tender, :title) if @tender
+  = two_colums_string(@cost_calculation, :conditions_of_supply)
+  = two_colums_string(@cost_calculation, :terms_of_payment)
+  = two_colums_string(@cost_calculation, :shipment_port)
+  = two_colums_string(@cost_calculation, :destination)
+  = render "cost_calculations/transport_table", cost_calculation: @cost_calculation
+  = render 'cost_calculations/table', cost_calculation: @cost_calculation

@@ -1,0 +1,7 @@
+= form_for @certification_request, :html => {:multipart => true}, builder: MainFormBuilder do |f|
+  
+  = f.error_messages
+  = f.fields_for :ved_messages do |builder|
+    = render "ved_messages/ved_message_fields", f: builder
+
+  = f.submit t(:send), class: 'main_button'

@@ -1,0 +1,57 @@
+%h1= @supplier_product.title
+
+- if notice
+  #notice= notice
+
+%table
+  %tr
+    %td{colspan: 2}
+      %h2 Общая информация о товаре
+  %tr
+    %td= Product.human_attribute_name(:model)
+    %td= @supplier_product.model
+  %tr
+    %td= Product.human_attribute_name(:marking_of_goods)
+    %td= @supplier_product.marking_of_goods
+  %tr
+    %td= Product.human_attribute_name(:hs_code)
+    %td= @supplier_product.hs_code
+  %tr
+    %td= Product.human_attribute_name(:id_code)
+    %td= @supplier_product.id_code
+  %tr
+    %td{colspan: 2}
+      = Product.human_attribute_name(:image)
+      %br
+      = image_tag @supplier_product.image_url if @supplier_product.image_url
+
+  %tr
+    %td{colspan:2}
+      %h2 Описание продукта
+  %tr
+    %td= Product.human_attribute_name(:application_field)  
+    %td= @supplier_product.application_field
+  %tr
+    %td= Product.human_attribute_name(:performance_attributes)  
+    %td= @supplier_product.performance_attributes
+  %tr
+    %td= Product.human_attribute_name(:net_weight)  
+    %td= @supplier_product.net_weight
+  %tr
+    %td= Product.human_attribute_name(:gross_weight)  
+    %td= @supplier_product.gross_weight
+  %tr
+    %td= Product.human_attribute_name(:package)  
+    %td= @supplier_product.package
+  - @supplier_product.properties.each do |property|
+    %tr
+      %td= property.title
+      %td= property.body
+  %tr
+    %td{colspan: 2}
+      %h2 Конкурентные преимущества
+  - @supplier_product.advantages.each do |advantage|
+    %tr
+      %td= advantage.title
+      %td= advantage.body
+  

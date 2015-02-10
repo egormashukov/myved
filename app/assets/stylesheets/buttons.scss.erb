@@ -1,0 +1,236 @@
+$blue: #4584B5;
+$dark_grey:#363636;
+$light_grey: #e1e1e1;
+$wr_width: 1200px;
+$blue_color: #3179AE;
+$light_blue:#1991bf;
+$left_width:130px;
+$border_color:#999;
+
+$table_header:#a5cdf0;
+@mixin regular {
+  font-family: "Trebuchet MS" !important;
+}
+@mixin bold {
+  font-family: "Trebuchet MS Bold";
+}
+@mixin italic {
+  font-family: "Trebuchet MS Italic";
+}
+
+@mixin buttons {
+  @include bold;
+  width: 150px;
+  -webkit-border-radius: 3px;
+          border-radius: 3px;
+  background:#FFF;
+  border:1px solid $blue;
+  cursor:pointer;
+  color: $blue;
+  font-size: 0.75em;
+  text-transform: uppercase;
+  text-decoration: none !important;
+  padding: 0.9em 0;
+  text-align: center !important;
+  display: inline-block;
+  vertical-align: top;
+  outline-style: none;
+  
+  &:hover {
+    color: $blue;
+  }
+  &.wide_button {
+    width: 200px;
+  }
+  &.most_wide_button {
+    width: 300px;
+  }
+  &.right {
+    float: right;
+  }
+  &.centered {
+    margin: 0 auto;
+  }
+  &.small_button {
+    width: auto !important;
+    padding: 0.5em 1%;
+    font-size: 0.75em;
+    opacity: 0.5;
+    &:hover {
+      opacity: 1;
+      padding: 0.3em 1%;
+    }
+  }
+  &.medium_button {
+    font-size: 1.0em;
+    text-transform: none;
+    padding: 0.4em 5px !important;
+  }
+}
+@mixin square_buttons {
+  @include buttons;
+  -webkit-border-radius: 5px;
+          border-radius: 5px;
+  border:none;
+  text-transform: none;
+  font-size: 1em;
+  &.most_wide_button {
+    width: 300px;
+  }
+  &.centered {
+    margin: 0 auto;
+  }
+}
+@mixin light_button_gradient {
+  color: #3C8DC7;
+  &:hover {
+    color: #3C8DC7;
+  }
+  // background: #3C8DC7; /* Old browsers */
+  // background: -moz-linear-gradient(top, #ffffff 0%, #cfcfcf 100%); /* FF3.6+ */
+  // background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#cfcfcf)); /* Chrome,Safari4+ */
+  // background: -webkit-linear-gradient(top, #ffffff 0%,#cfcfcf 100%); /* Chrome10+,Safari5.1+ */
+  // background: -o-linear-gradient(top, #ffffff 0%,#cfcfcf 100%); /* Opera 11.10+ */
+  // background: -ms-linear-gradient(top, #ffffff 0%,#cfcfcf 100%); /* IE10+ */
+  // background: linear-gradient(to bottom, #ffffff 0%,#cfcfcf 100%); /* W3C */
+  // filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#cfcfcf',GradientType=0 ); /* IE6-9 */
+}
+
+@mixin blue_light_gradient {
+  color: #FFF;
+  &:hover {
+    color: #FFF;
+  }
+  border-color: #FFF;
+  background: #EF5A18; /* Old browsers */
+  // background: -moz-linear-gradient(top, #7cc0df 0%, #669db7 100%); /* FF3.6+ */
+  // background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#7cc0df), color-stop(100%,#669db7)); /* Chrome,Safari4+ */
+  // background: -webkit-linear-gradient(top, #7cc0df 0%,#669db7 100%); /* Chrome10+,Safari5.1+ */
+  // background: -o-linear-gradient(top, #7cc0df 0%,#669db7 100%); /* Opera 11.10+ */
+  // background: -ms-linear-gradient(top, #7cc0df 0%,#669db7 100%); /* IE10+ */
+  // background: linear-gradient(to bottom, #7cc0df 0%,#669db7 100%); /* W3C */
+  // filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7cc0df', endColorstr='#669db7',GradientType=0 ); /* IE6-9 */
+}
+@mixin main_page_blue_button_gradient {
+  color: #FFF;
+  &:hover {
+    color: #FFF;
+  }
+  background: #256194; /* Old browsers */
+  background: -moz-linear-gradient(top, #256194 0%, #1b466b 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#256194), color-stop(100%,#1b466b)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #256194 0%,#1b466b 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #256194 0%,#1b466b 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #256194 0%,#1b466b 100%); /* IE10+ */
+  background: linear-gradient(to bottom, #256194 0%,#1b466b 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#256194', endColorstr='#1b466b',GradientType=0 ); /* IE6-9 */ 
+}
+
+@mixin red_button_gradient {
+  color: #FFF !important;
+  &:hover {
+    color: #FFF !important;
+  }
+  background: #cb0909; /* Old browsers */
+  background: -moz-linear-gradient(top, #cb0909 0%, #930606 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#cb0909), color-stop(100%,#930606)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #cb0909 0%,#930606 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #cb0909 0%,#930606 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #cb0909 0%,#930606 100%); /* IE10+ */
+  background: linear-gradient(to bottom, #cb0909 0%,#930606 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cb0909', endColorstr='#930606',GradientType=0 ); /* IE6-9 */
+}
+@mixin light_red_gradient {
+  color: #af0707 !important;
+  &:hover {
+    color: #af0707 !important;
+  }
+  border-color: #4584b5 !important;
+  background: #ffffff; /* Old browsers */
+  background: -moz-linear-gradient(top, #ffffff 0%, #cfcfcf 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#cfcfcf)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #ffffff 0%,#cfcfcf 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #ffffff 0%,#cfcfcf 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #ffffff 0%,#cfcfcf 100%); /* IE10+ */
+  background: linear-gradient(to bottom, #ffffff 0%,#cfcfcf 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#cfcfcf',GradientType=0 ); /* IE6-9 */
+}
+.red_button {
+  @include square_buttons;
+  @include red_button_gradient;
+}
+.destroy_button {
+  @include buttons;
+  @include light_red_gradient;
+  border-color: #FFF;
+  font-size: 0.6em;
+  width: 100px;
+}
+.main_page_blue_button {
+  @include square_buttons;
+  @include main_page_blue_button_gradient; 
+}
+.minor_button {
+  @include buttons;
+  @include light_button_gradient;
+}
+
+.main_button {
+  @include buttons;
+  @include blue_light_gradient;
+  &._green {
+    background: #449C2D; 
+  }
+}
+
+.file_field_as_button {
+  @include buttons;
+  @include light_button_gradient;
+  overflow:hidden;
+  width:150px;
+  height:36px;
+  padding: 0;
+  margin: 0;
+  position: relative;
+  div {
+    position: absolute;
+    top: 12px;
+    left: 22px;
+    display: inline;
+    z-index: 0;
+  }
+  .field_with_errors {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 170px;
+    height: 40px;
+    background: rgba(255,0,0,0.3);
+    z-index: 5;
+  }
+  input {
+    opacity:0;
+    font-size:199px;
+    cursor:pointer;
+    padding:0px;
+    margin:0px;
+    border:none;
+    margin-left:-450px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 10;
+  }
+}
+.plus_button {
+  display: inline-block;
+  color: $blue_color;
+  &:hover {
+    color: $blue_color;
+  }
+  padding-left: 30px;
+  font-size: 0.75em;
+  background:url(<%= asset_path "forms/plus_button.png" %>) no-repeat;
+  background-position: left center;
+  text-transform: uppercase;
+}

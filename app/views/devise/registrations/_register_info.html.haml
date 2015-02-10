@@ -1,0 +1,23 @@
+%h2= t(:register_info)
+
+= f.text_field_inline :pattern_of_ownership
+= f.text_field_inline :director
+-#= f.text_field_inline :business_kind
+
+- unless current_contractor.ved_contractor?
+  = f.select_with_label :business_kind, @contractor.business_kind_options, {include_blank: true}, class: 'selectto'
+
+= f.text_field_inline :register_number
+-#= f.text_field_inline :id_field
+
+.field
+  .third= f.label :authorized_capital
+  .two_thirds.right
+    = f.number_field :authorized_capital
+    = f.select :authorized_capital_units, Contractor.currency_options.collect{|co| [raw(co), co]}
+.field
+  .third= f.label :foundation_year
+  .two_thirds.right= f.select :foundation_year, (((Time.now - 100.years).year)..Time.now.year).to_a.reverse,  {include_blank: true}
+= f.text_area_inline :belongings, rows: 2
+
+= f.number_field_inline :staff

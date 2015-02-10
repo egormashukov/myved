@@ -1,0 +1,18 @@
+.dialogue_message{class: "#{'my_message' if message.sender == current_contractor} #{'not_read' if !message.read?}"}
+  .sender_logo
+    -#= image_tag message.sender.logo_url, class: "logo_small"
+    = contractor_logo message.sender, 'logo_small'
+  .message_time= message.created_at.strftime('%H:%M %d.%m.%Y')
+  .message_content
+    %span.message_title= raw "#{message.sender.title.presence}"
+    %span.message_title= raw "#{message.title.presence || t(:no_topics)}"
+    %br
+    = raw message.body
+  -#
+    - if message.agreements.for_contractor(current_contractor).presence
+      .message_agreements
+        соглашения:
+        = raw message.agreements.for_contractor(current_contractor).collect{|a| link_to(a.title, a)}.join(', ')
+
+  
+  .clear

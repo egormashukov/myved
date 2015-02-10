@@ -1,0 +1,42 @@
+.buy_button_frame
+  .buy_button_frame_in
+    .main_page_box.abroad= t(:sell_to_russia)
+    .full_text
+      Every day the number of Russian myVED users increases. Don’t miss the chance - register on the website, receive current inquiries from Russian buyers and participate in bidding.
+    .past_title= t(:help_from_myved)
+    -#= image_tag 'main_page/arrow.png', class: 'arrow down'
+    .ved_solvation_content.abroad
+      .span0
+        = image_tag 'main_page/arrow.png', class: 'arrow'
+        Attract new Russian customers 
+      .span90
+        = image_tag 'main_page/arrow.png', class: 'arrow'
+        Respond to urgent inquiries from Russian clients 
+      .span180
+        = image_tag 'main_page/arrow.png', class: 'arrow'
+        Participate in the bidding
+
+    .problem_title.bold= t(:how_does_it_work)
+    .problem_content
+      .span0
+        = image_tag 'main_page/arrow.png', class: 'arrow'
+        -#Доставить и <br/> растаможить товар
+        1. You pass the express check-in. You do not need to provide the detailed information about your goods.
+      .span90
+        = image_tag 'main_page/arrow.png', class: 'arrow'
+        2. Receive  current requests from Russian clients 
+      .span180
+        = image_tag 'main_page/arrow.png', class: 'arrow'
+        -#Сократить затраты <br/> на импорт/экспорт
+        3. The chance to participate in the bidding
+    %br
+    .full_text.margined
+      .bold Bidding on goods - it's an easy and effective way to make a deal.
+      -#.advertizing_self= link_to 'Learn more about "Bidding on goods"', page_path("torgi-po-tovaru")
+
+    
+      .al_centered.upper.bold.dark_title 
+        Free registration and tender participation!!!
+      %br
+    -#.advertizing_self= t(:advertizing_self)
+    = start_for_free_button("supplier")

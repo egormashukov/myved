@@ -1,0 +1,62 @@
+%h1 Пригласите иностранных продавцов на myVED
+- if notice
+  %p#notice= notice
+
+= render :layout => 'layouts/main_half_centered' do
+  .string.find_suppliers
+    Перед запуском торгов вам необходимо добавить компании в контакты. Для этого воспользуйтесь одним из следующих способов.
+    -#
+      %h4.title= t(:send_invitations)
+      %ol
+        %li 
+          Передайте продавцу адрес сайта (myved.com) и Ваш код для приглашения партнеров
+          %br
+          Ваш код:
+          %span.blue_link= current_contractor.invitation_cod
+        %li Дождитесь, когда продавцы зарегистрируются на myVED и автоматически добавятся в список ваших контактов
+        %li Перейдите к торгам по товару
+
+
+  -#%h3 Добавление компаний в контакты
+
+  .string.find_suppliers
+    %h3.title= t(:add_myved_company)
+    = form_for Contact.new, builder: MainFormBuilder do |f|
+      = f.text_field_inline :invitation_cod
+      = f.main_button t(:add), 'minor_button'
+    %br
+    %br
+    %br
+    %h3.title= t(:send_invitation)
+    .string
+      %h4
+        = "#{t(:option)} 1."
+        Отправка ссылки
+      %b
+        = t(:link_for_partners)
+        .blue_link= new_contractor_registration_url(profile: current_contractor.opposite_profile, ic: invite_link(current_contractor))
+
+    .string
+      %h4
+        = "#{t(:option)} 2."
+        Автоматическая рассылка
+      %b= t(:emails_to_myved_invit)
+      = form_tag [:send_invitations, :contacts], method: :post do
+        .field
+          = text_field_tag "emails", '', placeholder: "user@expample.com, guest@ex.ru, myved@test.cn"
+        = submit_tag t(:send), class: 'minor_button'
+
+  %br
+  %br
+
+  Если у вас уже есть продавцы в контактах или вы хотите добавить их после размещения основной информации о торгах, перейдите по следующей ссылке:
+  .actions 
+    = link_to t(:to_tender), tenders_building_path, method: 'post', class: 'main_button'
+-#
+  .half
+    %h4.title= t(:find_with_myved)
+    %ol
+      %li Перейдите к торгам по товару и на шаге 1 поставьте галочку в разделе "Найти продавцов с помощью myVED"
+      %li Заполните остальные поля формы и подтвердите отправку
+      %li Специалисты myVED сами найдут продавцов и пригласят их участвовать в торгах
+    = link_to t(:to_tender), tenders_building_path, method: 'post', class: 'main_button'

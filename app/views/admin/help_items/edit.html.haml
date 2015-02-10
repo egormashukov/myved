@@ -1,0 +1,91 @@
+- content_for :page_header do
+  %p= link_to t('back'), admin_help_items_path, :class => "bright_link"
+  %h1
+    - if @help_item.new_record?
+      = action_accusative("help_items", "add")
+    - else
+      = action_accusative("help_items", "edit")
+
+= form_for [:admin, @help_item] do |f|
+  - if @help_item.errors.any?
+    #error_explanation
+      %h2= "#{t 'save_errors'}: #{@help_item.errors.count}"
+      %ul
+        - @help_item.errors.full_messages.each do |msg|
+          %li= msg
+  %table
+    %tr
+      %th{colspan: 2}
+        = f.check_box :visible
+        = f.label :visible
+    %tr
+      %th{colspan: 2}
+        = f.check_box :show_help
+        = f.label :show_help
+    - unless @help_item.column_help? && !@help_item.new_record?
+      %tr
+        %th{colspan: 2}
+          = f.check_box :wanted
+          = f.label :wanted
+      %tr
+        %th{colspan: 2}
+          = f.check_box :soon
+          = f.label :soon
+    %tr
+      %th= f.label :title
+      %td
+        - if @help_item.column_help? && !@help_item.try(:new_record?)
+          = f.object.category.camelize.constantize.human_attribute_name(@help_item.title)
+        - else
+          = f.text_field :title
+
+    - if !@help_item.column_help? || @help_item.new_record?
+      %tr
+        %th= f.label :url
+        %td= f.text_field :url
+      %tr
+        %th= f.label :category
+        %td= f.select :category, HelpItem.categories.collect{|c| [t(c), c]}
+    %tr
+      %td{colspan: 2}
+        = f.label :body
+        %br
+        = f.text_area :body, :class => 'redactor'
+    %tr
+      %td{colspan: 2}
+        %h3 ENGLISH
+    = f.globalize_fields_for :en do |g|
+      %tr
+        %th= g.label :title
+        %td
+          - if @help_item.column_help? && !@help_item.new_record?
+          - else
+            = g.text_field :title
+      %tr
+        %td{colspan: 2}
+          = g.label :body
+          %br
+          = g.text_area :body, :class => 'redactor'
+  .actions
+    = f.submit t('save')
+
+- unless @help_item.column_help? && !@help_item.new_record?
+  - content_for :page_sidebar do
+    - unless @help_item.new_record?
+      %h2 Слайды
+      %table.zebra#sort-list
+        - @help_item.help_slides.by_position.each do |help_slide|
+          %tr{id: "help_slide_#{help_slide.id}"}
+            %td.icon.handle
+              %i{:class => "icon-move icon-large"}
+            %td.icon.visibility
+              = link_to [:toggleshow, :admin, help_slide], method: :post, :remote => true do
+                %i{:class => (help_slide.visible? ? "icon-eye-open icon-large" : "icon-eye-close icon-large not-work")}
+            %td= link_to help_slide.title.presence || "(ред)" , [:edit, :admin, @help_item, help_slide]
+            %td.right
+              = link_to [:admin, help_slide], :method => :delete, :confirm => "#{t 'confirm.delete'}", class: :del do
+                %span Удалить
+                %i{:class => "icon-trash icon-large"}
+
+      = sortable sort_admin_help_slides_path
+      = link_to 'Добавить слайд', [:new, :admin, @help_item, :help_slide], class: 'black_button n'

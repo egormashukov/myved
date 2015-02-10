@@ -1,0 +1,46 @@
+- product_request = product_request || f.object.product_request
+
+.block_top_margined
+  .third
+    %h2.as_simple_text.indexed= "#{Product.model_name.human} №"
+  .third
+    - unless current_contractor.ns? || current_contractor.supplier_products.empty?
+      = f.select :supplier_product_attr, options_from_collection_for_select(current_contractor.supplier_products, 'id', 'title', f.object.supplier_product_attr || f.object.supplier_product_id), {:include_blank => true}, {class: "select_supplier_product selectto", id: "fs_#{f.object_id}"}
+  .third
+    .new_product_checkbox{class: "pnc_fs_#{f.object_id}"}
+      - unless current_contractor.ns? || current_contractor.supplier_products.empty?
+        - if f.object.new_record?
+          = f.check_box :edit_product
+        - else
+          = f.check_box :edit_product, checked: true
+        = f.label :edit_product, "#{t(:change_product)} (?)"
+  .clear
+%fieldset{class: "fs_#{f.object_id}"}
+  .bordered_block
+    = f.fields_for :supplier_product do |builder|
+      = render 'supplier_product_fields', f: builder, product_response: f.object
+
+    - unless f.object.supplier_product
+      = fields_for_nested_suppliers f, :supplier_product, product_request
+
+    %h3
+      = help_item(HelpItem.visible.where(category: 'supplier_product', title: "trading_conditions").first)
+      = t(:trading_conditions)
+    .string
+      .third.left 
+        = help_item(HelpItem.visible.where(category: 'supplier_product', title: "quantity").first)
+        = t(:quantity)
+      .two_thirds.left= product_request.quantity_string
+      .clear
+    .string
+      .third
+        = help_item(HelpItem.visible.where(category: 'supplier_product', title: "price").first)
+        = f.label :price
+      .third
+        = raw price_string(product_request.price, product_request.tender.currency)
+      .third.left
+        = f.number_field :price, step: "any"
+        = raw product_request.tender.currency
+        = required_field
+      .clear
+    = f.hidden_field :product_request_id, value: product_request.id

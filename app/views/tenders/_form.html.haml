@@ -1,0 +1,11 @@
+= form_for [@deal, @tender], :html => {:multipart => true}, builder: MainFormBuilder do |f|
+  = f.error_messages
+  = render 'tenders/build/general_info', f: f
+  %br
+  = render 'tenders/build/conditions_of_supply', f: f
+  %br
+  = render 'tenders/build/add_product_requests', f: f
+      
+  .actions
+    = f.submit t(:save), class: 'main_button right'
+    = link_to t(:back), [@tender, @tender_response], class: 'minor_button'

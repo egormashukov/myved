@@ -1,0 +1,25 @@
+- product_request = product_request || f.object.product_request
+%fieldset
+  %table
+
+    = f.fields_for :supplier_product do |builder|
+      = render 'supplier_product_fields', f: builder, product_response: f.object
+
+    - unless f.object.supplier_product
+      = fields_for_nested_suppliers f, :supplier_product, product_request
+    %tr
+      %td{colspan:2}
+        %h2 Торговые условия
+    %tr
+      %td Количество
+      %td
+      %td= product_request.quantity_string
+    %tr
+      %td= f.label :price
+      %td= price_string(product_request.price, product_request.tender.currency)
+      %td
+        = f.number_field :price
+        = product_request.tender.currency
+
+        
+  = f.hidden_field :product_request_id, value: product_request.id

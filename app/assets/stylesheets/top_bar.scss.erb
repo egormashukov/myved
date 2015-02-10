@@ -1,0 +1,121 @@
+$dark_grey:#1A1E23;
+$light_grey: #e1e1e1;
+$wr_width: 1200px;
+$blue_color: #3179AE;
+$light_blue:#1991bf;
+$left_width:130px;
+$border_color:#999;
+$red_color: #b20d0d;
+$red_bright:#fc4e4e;
+$table_header:#a5cdf0;
+
+@mixin dark_zone {
+  color: $light_grey;
+  a {
+    color:$light_grey;
+    &:hover {
+      color: #FFF;
+    }
+  }
+  background: $dark_grey;
+}
+
+
+.top_bar_wr {
+  @include dark_zone;
+  width: 100%;
+  .tel {
+    display: block;
+    position: relative;
+    font-size: 1.5em;
+    line-height: 1.5;
+    padding-left: 40px;
+    width: 250px;
+    // background:url(<%= asset_path "top_bar/tel.png" %>) no-repeat;
+    .support_mail {
+      font-size: 0.5em;
+      border-bottom: 1px dashed $light_grey;
+    }
+  }
+}
+.top_bar {
+  padding: 0.8em 0 0.8em 0;
+  width: $wr_width;
+  margin: 0 auto;
+  a {
+    color: $light_grey;
+  }
+
+  .user_titles {
+    display: inline-block;
+    vertical-align: top;
+    font-size: 0.9em;
+    margin-right: 30px;
+  }
+  .profile_logo {
+    display: inline-block;
+    img {
+      -webkit-border-radius: 5px;
+              border-radius: 5px;
+    }
+  }
+  .acts {
+    display: inline-block;
+    vertical-align: top;
+  }
+  .top_menu {
+    display: inline-block;
+    vertical-align: top;
+  }
+
+  .auth_block__auth-link {
+    color: #F00;
+    position: absolute;
+    left: 0;
+    bottom: -12px;
+    font-size: 0.70em;
+  }
+  .auth_block {
+    float: right;
+    position: relative;
+    ul {
+      font-size: 0.83333em;
+      margin-top: 0.5em;
+    }
+    .not_read_messages {
+      right: auto;
+      left: 9px;
+    }
+    li {
+      margin-right: 10px;
+      display: inline-block;
+      text-transform: capitalize;
+      position: relative;
+      a {
+        padding-left: 26px;
+        background-position: left center !important;
+        .fa {
+          position: absolute;
+          right: auto;
+          left: 0;
+          top: 2px;
+        }
+        &.blog {
+          padding-left: 0;
+        }
+        &.profile {
+          background:url(<%= asset_path "top_bar/profile.png" %>) no-repeat;
+        }
+        &.messages {
+          background:url(<%= asset_path "top_bar/messages.png" %>) no-repeat;
+        }
+        &.signout {
+          background:url(<%= asset_path "top_bar/signout.png" %>) no-repeat;
+        }
+      }
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+}

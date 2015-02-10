@@ -1,0 +1,8 @@
+%h1 Редактировать торги по товару
+- if notice
+  %p#notice= notice
+= render 'form'
+
+-#= link_to t(:back), @tender, class: "minor_button"
+
+-#= render 'messages/messages', resource: @tender, messages: @messages, receivers: @receivers

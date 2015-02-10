@@ -1,0 +1,84 @@
+- content_for :page_header do
+  %p= link_to t('back'), admin_product_requests_path, :class => "bright_link"
+  %h1
+    - if @product_request.new_record?
+      = "#{t 'add'} #{ProductRequest.model_name.human}"
+    - else
+      = "#{t 'edit'} #{ProductRequest.model_name.human}"
+
+= form_for [:admin, @product_request] do |f|
+  - if @product_request.errors.any?
+    #error_explanation
+      %h2= "#{t 'save_errors'}: #{@product_request.errors.count}"
+      %ul
+        - @product_request.errors.full_messages.each do |msg|
+          %li= msg
+  %table
+
+    %tr
+      %td{colspan:2}
+        %h2 Общая информация о товаре
+    %tr
+      %td= f.label :title
+      %td= f.text_field :title
+    %tr
+      %td= f.label :model
+      %td= f.text_field :model
+    %tr
+      %td= f.label :marking_of_goods
+      %td= f.text_field :marking_of_goods
+    %tr
+      %td= f.label :id_code
+      %td= f.text_field :id_code
+    %tr
+      %td= f.label :image
+      %td= f.file_field :image
+
+    %tr
+      %td{colspan:2}
+        %h2 Описание продукта
+    %tr
+      %td= f.label :application_field
+      %td= f.text_area :application_field, rows:2
+    %tr
+      %td= f.label :performance_attributes
+      %td= f.text_area :performance_attributes, rows:2
+    %tr
+      %td= f.label :material
+      %td= f.text_area :material, rows:2
+    %tr
+      %td= f.label :chemistry
+      %td= f.text_area :chemistry, rows:2
+    %tr
+      %td= f.label :net_weight
+      %td= f.number_field :net_weight
+    %tr
+      %td= f.label :gross_weight
+      %td= f.number_field :gross_weight
+    %tr
+      %td= f.label :package
+      %td= f.text_area :package, rows:2
+    %tr
+      %td{colspan:2}
+        = f.fields_for :product_properties do |builder|
+          = render 'product_property_fields', f: builder
+        = link_to_add_fields 'добавить характеристику', f, :product_properties
+    %tr
+      %td{colspan:2}
+        %h2 Торговые условия
+    %tr
+      %td= f.label :price
+      %td= f.number_field :price
+    %tr
+      %td= f.label :quantity
+      %td= f.number_field :quantity
+
+    %tr
+      %td{colspan:2}
+        %h2 Требования
+    %tr
+      %td= f.label :requirements
+      %td= f.text_area :requirements, rows: 2
+  
+  .actions
+    = f.submit t('save')

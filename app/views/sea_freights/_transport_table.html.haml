@@ -1,0 +1,18 @@
+%h2= t(:transport_units)
+%table.transport_units_table
+  %tr
+    %th.short= TransportUnit.human_attribute_name(:quantity)
+    %th= TransportUnit.human_attribute_name(:transport)
+    %th= TransportUnit.human_attribute_name(:max_weight)
+
+  - obj.transport_units.each do |transport_unit|
+    %tr
+      %td.short= transport_unit.quantity
+      %td= transport_unit.transport
+      %td
+        = transport_unit.max_weight
+        = transport_unit.weight_units
+
+      
+    
+    

@@ -1,0 +1,14 @@
+= content_for :centered do
+  %h2= t(:change_your_password)
+
+  = form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :put }, builder: MainFormBuilder) do |f|
+    = f.error_messages
+    = f.hidden_field :reset_password_token
+    .field
+      .third= f.label :password, t(:new_password)
+      .two_thirds= f.password_field :password, :autofocus => true
+    .field
+      .third= f.label :password_confirmation, t(:confirm_new_password)
+      .two_thirds= f.password_field :password_confirmation
+  
+    = f.submit t(:change_my_password), class: 'main_button'

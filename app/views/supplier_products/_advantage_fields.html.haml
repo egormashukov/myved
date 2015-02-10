@@ -1,0 +1,19 @@
+%fieldset.compact
+  .string
+    .third.left
+      = f.label :title
+    .third
+      = f.text_area :title, rows: 2, placeholder: "Product is made of high quality materials ..."
+      = required_field
+    .third.right
+      = f.destroy_field
+    .clear
+  -#
+    .string
+      .third.left
+        = f.label :body
+      .third
+        = f.text_area :body, rows: 2
+      .third.right
+
+    .clear

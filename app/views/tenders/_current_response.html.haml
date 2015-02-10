@@ -1,0 +1,21 @@
+%h3= "#{t(:your_offer)} #{t(:best) if current_contractor == tender_responses.best.try(:contractor)}"
+.string 
+  .third= t(:company)
+  .two_thirds.right= tender_responses.detect{|tr| tr.contractor_id == current_contractor.id}.try(:contractor).try(:title)
+.string 
+  .third= TenderResponse.human_attribute_name(:cost)
+  .two_thirds.right= tender.your_response(current_contractor)
+.string 
+  .third= Tender.human_attribute_name("terms_of_payment")
+  .two_thirds.right= tender_responses.detect{|tr| tr.contractor_id == current_contractor.id}.try(:terms_of_payment)
+.string 
+  .third= Tender.human_attribute_name("delivery_time")
+  .two_thirds.right 
+    = tender_responses.detect{|tr| tr.contractor_id == current_contractor.id}.try(:delivery_time_view)
+    = tender_date_unites(tender)
+.string
+  .half
+    = link_to edit_tender_tender_response_path(tender, tender.answer_by(current_contractor)), class: 'blue_link', "data-step" => 4, "data-intro" => tour_item("tender_update_response") do
+      %i.fa.fa-pencil
+      = t(:update_response)
+  .half

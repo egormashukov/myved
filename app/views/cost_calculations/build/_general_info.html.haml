@@ -1,0 +1,28 @@
+= autorun_help HelpItem.where(category: 'page', title: 'ved_tender_or_cost_calc').first if params[:window] == 'true'
+
+%h2= t(:basic_information)
+= f.text_field_inline_with_value :title, @deal.tender
+
+= f.select_inline :conditions_of_supply, grouped_options_for_select(Tender.conditions_of_supply_options, @cost_calculation.conditions_of_supply || @tender_response.try(:conditions_of_supply)), {include_blank: true}, class: 'selectto'
+
+= f.text_field_inline_with_value :terms_of_payment, @tender_response
+
+- if @cost_calculation.has_tender?
+  .field
+    .third= f.label :currency
+    .two_thirds.right
+      = raw @deal.tender.currency
+      = f.hidden_field :currency, value: @deal.tender.currency
+- else
+  = f.select_inline :currency, Tender.currency_options.collect{|co| [raw(co), co]}
+= f.text_field_inline :shipment_port
+= f.text_field_inline :destination
+= f.text_area_inline :note, rows: 3
+
+%h2
+  = f.help_item(:transport_units)
+  = t(:transport_units)
+- (f.object.transport_units.build) if f.object.transport_units.empty?
+= f.fields_for :transport_units do |builder|
+  = render 'cost_calculations/transport_unit_fields', f: builder
+= link_to_add_fields t(:add_transport_unit), f, :transport_units, 'cost_calculations/transport_unit_fields', 'minor_button most_wide_button'

@@ -1,0 +1,10 @@
+= render 'pages/main_page/abroad_map'
+= render 'pages/main_page/abroad_solutions'
+
+= render 'pages/main_page/sell_to_russia'
+= render 'pages/main_page/door_to_door_russia'
+= render 'pages/main_page/all_for_world_trade'
+
+= render 'pages/main_page/registration', profile: 'supplier'  unless contractor_signed_in?
+
+= link_to raw("&uarr; #{t(:to_top)}"), '#', class: 'to_top red_button small_button'

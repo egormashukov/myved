@@ -1,0 +1,3 @@
+%h2= t(:contracts_with_myved)
+- resource.myved_documents.each do |myved_document|
+  %p= link_to_attachment myved_document

@@ -1,0 +1,10 @@
+%h2= t(:extra)
+
+= two_colums_string(contractor, :main_markets)
+.string
+  .third= Contractor.human_attribute_name(:shipment_types)
+  .two_thirds.right= Contractor.shipment_types_options.detect{|st| st[1] == contractor.shipment_types }.try(:first)
+
+
+
+

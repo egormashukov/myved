@@ -1,0 +1,11 @@
+.string
+  .third= SeaFreight::OfflineOffer.human_attribute_name(:company)
+  .two_thirds= offline_offer.company
+.string
+  .third= SeaFreight::OfflineOffer.human_attribute_name(:cost)
+  .two_thirds
+    = offline_offer.cost
+    = offline_offer.currency
+.string
+  .third= SeaFreight::OfflineOffer.human_attribute_name(:transport)
+  .two_thirds= SeaFreightResponse.category_options.find { |sf| sf[1] == offline_offer.try(:transport) }.try(:first)

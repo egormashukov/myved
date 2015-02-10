@@ -1,0 +1,56 @@
+.header_in
+  .logo= link_to image_tag('logo.png', alt: 'NS'), root_path 
+  %nav.lk-nav
+    %ul.clearfix
+      - if contractor_signed_in?
+        - if current_contractor.supplier?
+          %li
+            = link_to participate_tender_pth, class: 'basket' do
+              %i.fa.fa-gavel
+              = t(:sell_to_russia)
+          %li
+            = link_to ved_request_pth, class: 'calculator', method: :post do
+              %i.fa.fa-calculator
+              = t(:door_to_door_russia)
+          %li
+            = link_to ved_tender_pth, class: 'question', method: :post do
+              %i.fa.fa-anchor
+              = t(:all_for_world_trade)
+        - elsif current_contractor.buyer?
+          %li
+            = link_to buy_product_pth, class: 'basket' do
+              %i.fa.fa-gavel
+              = t(:buy_product)
+          %li
+            = link_to ved_request_pth, class: 'question', method: :post do
+              %i.fa.fa-calculator
+              = t(:ved_request)
+          %li
+            = link_to ved_tender_pth, class: 'calculator', method: :post do
+              %i.fa.fa-anchor
+              = t(:ved_tender)
+              
+              -#fa-globe
+
+        - elsif current_contractor.ved_contractor?
+          %li
+            = link_to  "#", class: 'basket find_suppliers_link' do
+              %i.fa.fa-calculator
+              = "Котировки"
+          %li
+            = link_to "#", class: 'calculator find_suppliers_link' do
+              %i.fa.fa-anchor
+              = "Запросы на исполнении"
+
+      - elsif I18n.locale == :ru
+        %li= link_to t(:buy_product), buy_product_pth, class: 'basket find_suppliers_link'
+        %li= link_to t(:solve_ved_problems), ved_tender_pth, class: 'question ved_request_link'
+        %li= link_to t(:get_best_offer), ved_request_pth, class: 'calculator get_best_offer_link'
+      - else
+        %li= link_to t(:sell_to_russia), buy_product_pth, class: 'basket find_suppliers_link'
+        %li= link_to t(:door_to_door_russia), ved_tender_pth, class: 'question ved_request_link'
+        %li= link_to t(:all_for_world_trade), ved_request_pth, class: 'calculator get_best_offer_link'
+        
+    .clear
+  = start_tour_link
+  = start_tour_trigger

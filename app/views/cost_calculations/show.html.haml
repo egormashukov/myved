@@ -1,0 +1,67 @@
+= render 'layouts/bar', header_t: "#{CostCalculation.model_name.human}. #{@cost_calculation.title}", background_image: 'top_panel_card', left: true
+- if @cost_calculation.waiting?
+  .google_translate= raw "#{t(:cost_calc_sent)} #{link_to(t(:projects), deals_path, class: 'blue_link')}"
+
+- if notice 
+  %p#notice= raw notice
+  
+%h2= t(:basic_information)
+= two_colums_string(@cost_calculation, :title)
+= two_colums_string(@cost_calculation, :contractor_title)
+.string
+  .third= CostCalculation.human_attribute_name("current_state")
+  .two_thirds
+    = @cost_calculation.current_state
+    - if @cost_calculation.declined?
+      = "(Причина отказа: #{@cost_calculation.failure_cause_txt})"
+
+= two_colums_string(@tender, :title) if @tender
+= two_colums_string(@cost_calculation, :conditions_of_supply)
+= two_colums_string(@cost_calculation, :terms_of_payment)
+= two_colums_string(@cost_calculation, :destination)
+= two_colums_string(@cost_calculation, :shipment_port)
+%br
+= render 'table', cost_calculation: @cost_calculation
+%br
+= render "transport_table", cost_calculation: @cost_calculation
+
+.clear
+- if @cost_calculation.cost_calculation_response.presence
+  %br
+  %h2 Себестоимость доставки товара по запросу
+
+  В расчет включены все расходы, включая организацию закупки товара, доставку, таможенное оформление и подготовку полного комплекта документов.
+  %br
+  %br
+  - if @cost_calculation.cost_calculation_response.presence
+    %table.report
+      %tr
+        %th Наименование
+        %th Стоимость
+        %th Примечания
+      = cost_cals_response_row(@cost_calculation.cost_calculation_response, :delivery_cost, :delivery_comment)
+      = cost_cals_response_row(@cost_calculation.cost_calculation_response, :custom_duty_cost, :custom_duty_comment)
+      = cost_cals_response_row(@cost_calculation.cost_calculation_response, :customs_cost, :customs_comment)
+      = cost_cals_response_row(@cost_calculation.cost_calculation_response, :ns_outsourcing_cost, :ns_outsourcing_comment)
+      = cost_cals_response_row(@cost_calculation.cost_calculation_response, :currency_transactions_cost, :currency_transaction_comment)
+      = cost_cals_response_row(@cost_calculation.cost_calculation_response, :permits_cost , :permits_comment)
+      
+      %tr
+        %td= t(:total)
+        %td.center{colspan:2}= price_string(@cost_calculation.cost_calculation_response.try(:summ_cost), @cost_calculation.cost_calculation_response.try(:currency))
+  %br
+  %h3 Риски
+  = @cost_calculation.cost_calculation_response.risks
+  .clear
+
+  .right Данный рассчет подготовлен компанией ООО "ЭНЭСКОР"
+  .clear
+  = link_to "Задать вопрос", '#', class: 'main_button ask_button', :data => {title: "Расчет себестоимости #{@cost_calculation.title}", receiver: Contractor.ns.id}
+  - unless @cost_calculation.completed?
+    .actions
+      %br
+      = link_to "Принять предложение", [:accept, @cost_calculation], class: 'main_button wide_button', method: :put, onclick: "yaCounter23557672.reachGoal('ACCEPT_COST_CALCULATION'); return true;"
+      = link_to "Отклонить предложение", [:new, @cost_calculation, :decline], class: 'minor_button right wide_button'
+
+  -#= link_to t(:back), cost_calculations_path, class: 'minor_button'
+  -#= link_to t(:edit), [:edit, @cost_calculation], class: 'main_button right'

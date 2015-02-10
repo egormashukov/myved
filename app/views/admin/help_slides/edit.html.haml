@@ -1,0 +1,26 @@
+- content_for :page_header do
+  %p= link_to t('back'), [:edit, :admin, @help_item], :class => "bright_link"
+  %h1
+    - if @help_item.new_record?
+      = "#{t 'add'} #{HelpSlide.model_name.human}"
+    - else
+      = "#{t 'edit'} #{HelpSlide.model_name.human}"
+
+= form_for [:admin, @help_item, @help_slide], builder: AdminFormBuilder do |f|
+  = f.error_messages
+  %table
+    = f.check_box_row :visible
+    = f.text_field_row :title
+    = f.redactor_field :body
+    %tr
+      %td{colspan: 2}
+        %h3 ENGLISH
+    = f.globalize_fields_for :en do |g|
+      %tr
+        %th= g.label :title
+        %td= g.text_field :title
+      %tr
+        %td{colspan: 2}
+          = g.label :body
+          = g.text_area :body, class: 'redactor'
+  = f.submit_main

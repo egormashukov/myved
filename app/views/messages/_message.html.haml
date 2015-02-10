@@ -1,0 +1,27 @@
+- agreement ||= nil
+%div{class: "message_collected #{'my_message' if message.sender == current_contractor} #{'not_read' if !message.read?}"}
+  
+  .message_info
+    -#
+      = hidden_field_tag "agreement[message_ids][]", nil
+      = check_box_tag "agreement[message_ids][]", message.id, agreement.try{ |a| a.message_ids.include?(message.id) }, {class: 'agreement_checkbox'}
+    %span.message_title
+      - if message.sender == current_contractor
+        = t(:to)
+        = link_to message.receiver.title, message.receiver
+      - else
+        = t(:from)
+        = link_to message.sender.title, message.sender
+
+    .message_time= message.created_at.strftime('%H:%M %d.%m.%Y')
+  = link_to messages_path(contractor: contractor.id), class: "message_dialogue_link", "data-contractor" => contractor.id, "data-messagable-type" => resource.class.name.try(:underscore),"data-messagable-id" => "#{resource.id if resource.presence}" do 
+    .message_content
+      %span.message_title= strip_tags raw("#{message.title.presence || t(:no_topics)}")
+      %br
+      = truncate strip_tags(message.body), length: 70, separator: ' '
+    .clear
+      -#
+        - if message.agreements.for_contractor(current_contractor).presence
+          .message_agreements
+            соглашения:
+            = strip_tags raw(message.agreements.for_contractor(current_contractor).collect{|a| link_to(a.title, a)}.join(', '))

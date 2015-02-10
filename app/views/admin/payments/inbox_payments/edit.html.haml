@@ -1,0 +1,9 @@
+- content_for :page_header do
+  %p= link_to t('back'), admin_payments_path, :class => "bright_link"
+  %h1
+    - if @payment.new_record?
+      = action_accusative("inbox_payments", "add")
+    - else
+      = action_accusative("inbox_payments", "edit")
+
+= render 'admin/payments/form', obj: @payment

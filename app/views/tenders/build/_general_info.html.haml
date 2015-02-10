@@ -1,0 +1,28 @@
+.dashed_container
+  = render :layout => 'layouts/main_left' do
+    %h3 Общая информация
+
+    = f.text_field_inline :title
+    = f.text_area_inline :body, rows: 4
+    = f.number_field_inline :duration, value: 5, in: 1..365
+    = f.select_inline :currency, Tender.currency_options.collect{|co| [raw(co), co]}
+
+    %h3 
+      = f.help_item('tender_contractors')
+      Условия рассылки
+    - if current_contractor.ns?
+      = f.select_multiple_contractors( Contractor.suppliers.collect{|x| [x.title, x.id]})
+    - else
+      = f.select_multiple_contractors( current_contractor.contact_suppliers.collect{|x| [x.title, x.id]})
+    = hidden_field_tag 'tender[contractor_ids][]', current_contractor.id
+        
+    -#%h4= f.check_box_inline :need_help
+
+  = render :layout => 'layouts/main_right' do
+    %h3
+      = f.help_item('attachments')
+      Добавить файлы
+    = f.fields_for :attachments do |builder|
+      = render 'tenders/attachment_fields', f: builder
+
+    = link_to_add_fields 'загрузить еще файл', f, :attachments, 'tenders/attachment_fields', 'minor_button centered wide_button'

@@ -1,0 +1,13 @@
+%ul
+  - if controller.action_name == 'home'
+    %li= profile_link
+    %li{"data-step" => 5, "data-intro" => tour_item("messages"), class: 'home_page_tour'}= notifications_link(@notifications)
+    %li= contacts_link
+    %li{"data-step" => 4, "data-intro" => tour_item("projects"), class: 'home_page_tour'}= projects_link
+  - else
+    %li= profile_link
+    %li= notifications_link(@notifications)
+    %li= contacts_link
+    %li= projects_link
+  %li= finances_link
+  %li= signout_link

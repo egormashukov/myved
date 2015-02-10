@@ -1,0 +1,37 @@
+%h2= t("report_l.contacts")
+%table.report.eq_tds
+  %tr
+    %td= Contractor.human_attribute_name("orderer")
+    %td= link_to orderer.title, orderer
+    %td= Contractor.human_attribute_name("performer")
+    %td= link_to performer.title, performer
+  %tr
+    %td= Contractor.human_attribute_name("legal_address")
+    %td= orderer.legal_address
+    %td= Contractor.human_attribute_name("legal_address")
+    %td= performer.legal_address
+  %tr
+    %td= Contractor.human_attribute_name("register_number")
+    %td= orderer.register_number
+    %td= Contractor.human_attribute_name("register_number")
+    %td= performer.register_number
+  %tr
+    %td= Contractor.human_attribute_name("contact_person")
+    %td= orderer.contact_person
+    %td= Contractor.human_attribute_name("contact_person")
+    %td= performer.contact_person
+  %tr
+    %td= Contractor.human_attribute_name("appointment")
+    %td= orderer.appointment
+    %td= Contractor.human_attribute_name("appointment")
+    %td= performer.appointment
+  %tr
+    %td= Contractor.human_attribute_name("telephone_number")
+    %td= orderer.telephone_number
+    %td= Contractor.human_attribute_name("telephone_number")
+    %td= performer.telephone_number
+  %tr
+    %td= Contractor.human_attribute_name("email")
+    %td= mail_to orderer.email
+    %td= Contractor.human_attribute_name("email")
+    %td= mail_to performer.email

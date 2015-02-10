@@ -1,0 +1,44 @@
+.dashed_container
+
+  = render :layout => 'layouts/main_left' do
+    = @authorization.labeled_field :title
+
+    %fieldset
+      .field
+        .half= f.label :logo
+        .right.half
+          = f.file_field_as_button :logo
+          = f.hidden_field :logo_cache
+      .field
+        .half= t(:file_name)
+        .right.half.file_location= f.object.logo_url.split('/').last if f.object.try(:logo_url)
+
+    - if @authorization.logo.presence
+      = image_tag @authorization.logo_url(:profile), class: 'profile-img'
+
+    = f.text_field_inline :number
+    = f.text_field_inline :site
+    = f.select_with_label :country, Country.all.sort, {prompt: t(:choose_country), selected: f.object.country.presence || 'RU'}, class: 'selectto'
+    
+    = f.text_area_inline :fact_address, rows: 2
+    = f.text_area_inline :description, rows: 3
+    = f.text_area_inline :filials, rows: 3
+
+  = render :layout => 'layouts/main_right' do
+    - if current_contractor.buyer?
+      = f.text_area_inline :main_markets, rows: 2
+    = f.select_with_label :business_kind, f.object.business_kind_options, {}, class: 'selectto', multiple: true
+    = f.select_with_label :shipment_types, f.object.shipment_types_options, {}, class: 'selectto', multiple: true
+    - if current_contractor.ved_contractor?
+      = f.select_with_label :transport, Contractor.transport_options, {}, class: 'selectto', multiple: true
+    - if current_contractor.buyer?
+      = f.select_with_label :direction, Contractor.direction_options, { include_blank: true }, class: 'selectto'
+    = f.text_area_inline :shipments_number, rows: 2
+
+  - if current_contractor.ved_contractor?
+    .dashed_container
+      = render :layout => 'layouts/main_left' do
+        = render 'devise/registrations/certificates', f: f
+
+      = render :layout => 'layouts/main_right' do
+        = render 'devise/registrations/contractor_documents', f: f

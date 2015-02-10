@@ -1,0 +1,11 @@
+- property ||= nil
+- standart_title ||= nil
+%fieldset
+  - if standart_title
+    = f.text_field_inline_with_value :title, property, value: standart_title
+  - else
+    = f.text_field_inline_with_value :title, property
+
+  = f.text_field_inline_with_value :body, property
+  - unless property
+    = f.destroy_field

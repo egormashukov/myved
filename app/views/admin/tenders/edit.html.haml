@@ -1,0 +1,61 @@
+- content_for :page_header do
+  %p= link_to t('back'), admin_tenders_path, :class => "bright_link"
+  %h1
+    - if @tender.new_record?
+      = "#{t 'add'} #{Tender.model_name.human}"
+    - else
+      = "#{t 'edit'} #{Tender.model_name.human}"
+
+= form_for [:admin, @tender], builder: AdminFormBuilder do |f|
+  = f.error_messages
+  %table
+    = tr_header 'Общая информация'
+    = f.text_field_row :title
+    = f.text_area_row :body, rows: 3
+    = f.number_field_row :duration, value: 5, in: 5..365
+    = f.select_field_row :currency, Tender.currency_options.collect{|co| [raw(co), raw(co)]}
+    = tr_header 'Торговые условия'
+    %tr
+      %th= f.label :delivery_time
+      %td
+        = f.text_field :delivery_time
+        = f.select :delivery_time_unit, Tender.terms_of_payment_units  
+    = f.text_field_row :conditions_of_supply
+    = f.text_field_row :terms_of_payment
+    = f.select_field_row :service, ['','OEM Service', 'ODM Service']
+    = tr_header 'Условия рассылки'
+    = f.check_box_row :need_help
+    %tr
+      %td
+      %td
+        = f.select :contractor_ids, Contractor.find(@tender.owner.contacts_pairs.collect{|c| c[0]}).collect{|x| [x.title, x.id]}, {}, :multiple => true, :html_options => {class: "multiselect"}
+  
+  = f.fields_for :product_requests do |builder|
+    = render 'admin/tenders/product_request_fields', f: builder
+  = link_to_add_fields 'добавить запрос товара', f, :product_requests, 'admin/tenders/product_request_fields', 'black_button'
+  = f.submit_main
+
+- content_for :page_sidebar do
+  - if @tender_responses.presence
+    .bordered_box
+      %h2 Ответы по тендеру
+      %table.zebra
+        %tr
+          %th 
+          %th компания
+          %th дата
+          %th цена
+          %th
+        - @tender_responses.each do |tender_response|
+          %tr
+            %td= link_to 'открыть ответ', [:edit, :admin, tender_response]
+            %td= link_to tender_response.contractor.title, [:edit, :admin, tender_response.contractor]
+            %td= tender_response.created_at.strftime("%d.%m.%y")
+            %td= tender_response.summ_cost
+            %td= link_to_toggle_approve tender_response
+
+  -#
+    .bordered_box
+      %h2 Переписка по тендеру
+      = render 'admin/messages/resource_message_form', resource: @tender, title: @tender.message_title
+      = render @messages

@@ -1,0 +1,194 @@
+// Place all the styles related to the Messages controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+$dark_grey:#363636;
+$light_grey: #e1e1e1;
+$wr_width: 1200px;
+$blue_color: #3179AE;
+$light_blue:#1991bf;
+$left_width:150px;
+$border_color:#999;
+$blue_bg:#448ccb;
+
+@mixin regular {
+  font-family: "Trebuchet MS" !important;
+}
+@mixin bold {
+  font-weight: normal;
+  font-family: "Trebuchet MS Bold" !important;
+}
+@mixin italic {
+  font-family: "Trebuchet MS Italic" !important;
+}
+
+.wide_messages .messages_menu {
+  border-top: 1px solid $blue_color;
+}
+.messages_menu {
+  width: 100%;
+  margin-bottom: 1em;
+  font-size: 1.0em;
+  text-transform: uppercase;
+  display: block;
+  z-index: 10;
+  position: absolute;
+  top: 0;
+  left: 0;
+  ul {
+    margin: 0;
+    padding: 0;
+    display: block;
+    background: #d7dee3;
+    border-bottom: 1px solid $blue_color;
+    float: left;
+    width: 100%;
+  }
+  li {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    float: left;
+    display: block;
+    width: 33.33333%;
+    a {
+      color: $blue_color;
+      display: block;
+      padding: 0.5em 0;
+      width: 100%;
+      text-align: center;
+      text-decoration: none;
+      &.active {
+        background: $blue_bg;
+        color: #FFF;
+      }
+    }
+  }
+}
+.wide_messages {
+  .dialogue.window_dialogue {
+    float: none;
+    overflow: visible;
+  }
+}
+
+.main_message {
+  width: 100%;
+  position: absolute;
+  top: 40px;
+  left: 0;
+  overflow-x: visible;
+  overflow-y: scroll;
+}
+.column2 .main_message{
+  border-bottom: 1px solid $blue_color;
+}
+.wide_messages .main_message{
+  overflow: auto;
+  position: relative;
+  top: 0;
+}
+.dialogue {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #EFEFEF;
+  display: block;
+  &.window_dialogue {
+    
+  }
+  textarea {
+    background: #e8e8e8 !important;
+  }
+}
+.dialogue_form {
+  width: 100%;
+  .fields {
+    width: 75%;
+    float: left;
+  }
+  .actions {
+    
+  }
+}
+.dialogue_inset, .dialogues_inset, .messagable_new {
+  padding: 0.5em 4%;
+}
+.dialogue_message {
+  width: 96%;
+  margin-bottom: 0.5em;
+  &:hover {
+    background: #DDF;
+  }
+  padding: 0.5em 2%;
+  .logo_small {
+    width: 40px;
+    height: 40px;
+    text-indent: -9999px;
+  }
+  .message_content {
+    margin-left: 55px;
+    margin-right: 10px;
+    a {
+      color: $blue_color;
+    }
+  }
+  .sender_logo {
+    width: 40px;
+    float: left;
+  }
+  .message_time {
+    font-size: 0.8em;
+    float: right;
+  }
+}
+.messages_block {
+  margin-top: 1em;
+}
+.message_collected {
+  margin: 0 0 0.5em 0;
+  padding: 0.5em 1%;
+
+  .message_info {
+    float: left;
+    width: 25%;
+  }
+  .message_time {
+    font-size: 0.8em;
+  }
+  .message_content {
+    display: inline-block;
+    width:70%;
+    margin-left: 2%;
+    a {
+      color: $blue_color;
+    }
+  }
+  .messages_from {
+    margin-bottom: 1.5em;
+
+  }
+}
+.message_content {
+  a {
+    color: $blue_color;
+  }
+}
+.my_message  {
+  background: transparent;
+  &:hover {
+    background: #DDF;
+  }
+}
+.not_read {
+  background: #FFECEC;
+  .message_title {
+    @include bold;
+  }
+}
+.new_message_wr {
+  display: inline-block;
+  margin-bottom: 0.5em;
+  padding: 0.5em 1%;
+  width: 98%;
+}

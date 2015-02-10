@@ -1,0 +1,56 @@
+.bordered
+  .fieldset_title
+    .floated_right= f.destroy_field
+    .bold
+      Товар
+      %span.numerical_item
+    
+  %fieldset
+    .dashed_container
+      = render :layout => 'layouts/main_left' do
+        %h3= t(:description)
+        = f.text_field_inline :title
+        = f.text_area_inline :application_field, rows: 2
+
+        .field
+          = f.label_with_help(:nice_good_id)
+          -#= f.select :nice_good_id, option_groups_from_collection_for_select(NiceClass.for_select, :nice_goods, :numbered_title, :id, :coded_title, f.object.nice_good_id), {include_blank: true}, class: 'selectto'
+          %br
+          = f.object.try(:nice_good).try(:coded_title)
+          = f.text_field :nice_good_id, class: 'select_nice_goods'
+        = f.image_field
+        %h3 Цена/ Количество
+        = f.fielded do
+          .three_fourths
+            = f.label_with_help :price
+          .right.fourth
+            = raw @tender.currency
+            = f.short_text_field :price
+            = required_field
+        = f.fielded do
+          .left.half
+            = f.label_with_help :quantity
+            = f.short_text_field :quantity
+            = required_field
+          .right.half
+            = f.label_with_help :quantity_unit
+            = f.short_text_field :quantity_unit
+            = required_field
+
+
+      = render :layout => 'layouts/main_right' do
+        %h3
+          = f.help_item(:properties)
+          = t(:properties)
+        .form_properties.insertion_point{class: "properties_#{f.object.object_id}"}
+          - unless f.object.properties.any?
+            - f.object.properties << Property.new
+          = f.fields_for :properties do |builder|
+            = render 'tenders/property_fields', f: builder
+
+        = link_to_add_fields_to content_tag(:h3, 'Добавление характеристик'), f, :properties, 'tenders/property_fields', 'bold'
+        = link_to_add_fields_to raw("<i class='fa fa-plus'></i> добавить пустую характеристику"), f, :properties, 'tenders/property_fields', 'bold'
+
+        %br
+        = raw ProductProperty.standart.map{|title| link_to_add_standart_property title, f, :properties, 'tenders/property_fields'}.join(', ')
+        -#= toggle_link 'скрыть свойства', 'показать свойства', 'toggle_properties', "properties_#{f.object.object_id}"

@@ -1,0 +1,18 @@
+%table.zebra
+  %thead
+    %tr
+      %th= sortable_columns "body", Review.human_attribute_name("body")
+      %th Пользователь
+      %th Добавлен
+      %th
+      
+  %tbody
+    - @reviews.each do |review|
+      %tr
+        %td= link_to review.body, [:edit, :admin, review]
+        %td= link_to review.contractor.title, [:edit, :admin, review]
+        %td= link_to review.created_at.strftime("%H:%M - %d/%m/%y"), [:edit, :admin, review]
+        %td.right
+          = link_to [:admin, review], :method => :delete, :confirm => "#{t 'confirm.delete'}", class: :del do
+            %span Удалить
+            %i{:class => "icon-trash icon-large"}

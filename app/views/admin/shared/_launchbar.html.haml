@@ -1,0 +1,19 @@
+- @active = :section if %w{payments sea_freights certification_responses certification_requests pages help_items help_slides cost_calculations reviews product_requests supplier_products deals ns_helps tender_responses catalog_responses tenders catalog_requests contractors cost_calculation_responses payments inbox_payments outbox_payments procrastinators authorizations reports privacies}.include? controller.controller_name
+
+#launchbar
+  %li.arrow= link_to raw("&darr;"), "#"
+  %ul.menus
+    %li{:class => "#{'active' if @active == :section}"}= link_to "Материалы", admin_root_path
+    
+  %ul.user_panel
+    %li
+      Курсы:
+      - @ex = ExchangeRate.by_actual.first
+      Дата:
+      = "#{@ex.actual_date.strftime('%d.%m.%y')};"
+      eur-rub:
+      = "#{@ex.eur_rub};"
+      usd-rub:
+      = "#{@ex.usd_rub}"
+    %li= link_to current_user.email, "#"
+    %li= link_to t('sign_out'), destroy_user_session_path, :method => :delete

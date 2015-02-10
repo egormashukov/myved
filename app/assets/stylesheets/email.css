@@ -1,0 +1,57 @@
+body {
+  width: 100%;
+  background: #FFF;
+  margin: 0 auto;
+  padding: 0;
+  font-family: Verdana, Arial;
+  color: #000;
+}
+p {
+  margin: 0.6em 0;
+}
+h1, h2, h3 {
+  font-size: 1.25em;
+}
+table {
+  max-width: 500px;
+  width: 98%;
+  margin: 0 auto;
+  margin-top: 15px;
+  border: 1px solid #3179AE;
+  border-collapse: collapse;
+}
+table tbody {
+  width: 100%;
+}
+table a {
+  color: #3179AE;
+  text-decoration: underline;
+}
+table td {
+  padding: 1em 10px;
+  vertical-align: top;
+}
+tr td:first-child {
+  width: 33%;
+}
+tr td:last-child {
+  width: 67%;
+}
+table tr:first-child {
+  border-bottom: 1px solid #3179AE;
+  background: #3179AE;
+  color: #FFF;
+  font-size: 1.25em;
+}
+table tr:first-child td {
+  padding: 7px 10px;
+}
+.contractor_link {
+  text-decoration: none;
+  display: block;
+  vertical-align: top !important;
+}
+table tr:first-child a {
+  color: #FFF;
+  text-decoration: none;
+}

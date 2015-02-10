@@ -1,0 +1,15 @@
+- if tender_responses.presence && (current_contractor != tender_responses.best.try(:contractor))
+  %h3 Лучшее предложение
+  - if tender.deal.owner?(current_contractor)
+    .string 
+      .third Компания
+      .two_thirds= tender_responses.best.try(:contractor).try(:title)
+  .string 
+    .third Цена
+    .two_thirds= price_string(tender.best_response(tender_responses), tender.currency)
+  = two_colums_string(tender_responses.best, :terms_of_payment)
+  .string 
+    .third Сроки поставки
+    .two_thirds
+      = tender_responses.best.try(:delivery_time_view)
+      = tender_date_unites(@tender)

@@ -1,0 +1,42 @@
+= render 'layouts/bar', header_t: "Авторизация: #{@authorization.title}", background_image: 'top_panel_card', left: true
+
+
+= form_for @authorization, :html => {:multipart => true}, builder: MainFormBuilder do |f|
+  = f.error_messages
+
+  %h1 Профиль компании
+  
+  .dashed_container
+    = f.error_messages
+    = render :layout => 'layouts/main_left' do
+      = render 'account_info', f: f
+
+    = render :layout => 'layouts/main_right' do
+      = render 'contact_person', f: f
+  
+  Редактирование данных после авторизации возможно только при согласовании с myVED.
+  .js-accordion-wr
+    %h2.js-accordion-trigger
+      %i.fa.fa-chevron-up
+      %i.fa.fa-chevron-down
+      Общие сведения о компании
+    .js-accordion-content= render 'contractor/authorizations/general_info', f: f
+  
+  .js-accordion-wr
+    %h2.js-accordion-trigger
+      %i.fa.fa-chevron-up
+      %i.fa.fa-chevron-down
+      Юридические сведения о компании
+    .js-accordion-content= render 'contractor/authorizations/legacy_info', f: f
+  
+  .js-accordion-wr
+    %h2.js-accordion-trigger
+      %i.fa.fa-chevron-up
+      %i.fa.fa-chevron-down
+      Уставные документы компании
+    .js-accordion-content= render 'contractor/authorizations/documents', f: f
+      
+  - if current_contractor.ns?
+    = f.submit t(:save), class: 'main_button right'
+
+

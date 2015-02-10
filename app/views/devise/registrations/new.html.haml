@@ -1,0 +1,44 @@
+= content_for :centered do
+  - if params[:invitation_contrator_id].presence
+    %p#notice
+      = "Вас пригласила в партнеры компания #{Contractor.find(params[:invitation_contrator_id]).title}."
+      %br
+      Пожалуйста, зарегистрируйтесь на сайте и начните работать с системой.
+  %h1= t(:sign_up)
+  = form_for(resource, :as => resource_name, :url => registration_path(resource_name), builder: MainFormBuilder) do |f|
+    -#= f.error_messages
+    %h3= t(:contact_person_info)
+    = f.text_field_inline :full_name
+    = f.text_field_inline :telephone_number
+    %h3= t(:account_info)
+    = f.text_field_inline :title, size: 4
+    = f.email_field_inline :email, :autofocus => true
+    = f.password_field_inline :password
+    = f.password_field_inline :password_confirmation
+    = f.check_box_inline :agree
+
+    = link_to 'Политика конфиденциальности', HelpItem.find_by_title('main_page_privacy_poilcy'), class: 'blue_link', target: '_blank'
+
+    = f.hidden_field :reg_invitation_cod, value: params[:ic].presence || f.object.try(:reg_invitation_cod)
+    = f.hidden_field :http_referer, value: session[:http_referer] || 'no'
+    -#рабочий вариант
+      .bold= f.text_field_inline :reg_invitation_cod, value: params[:ic].presence || f.object.try(:reg_invitation_cod)
+      = f.hidden_field :invitation_tender_id, value: params[:td].presence || f.object.try(:invitation_tender_id)
+
+
+    -#
+      - if params[:invitation_contrator_id].presence
+        = f.hidden_field :invitation_contrator_id, value: params[:invitation_contrator_id]
+      - if params[:invitation_tender_id].presence
+        = f.hidden_field :invitation_tender_id, value: params[:invitation_tender_id]
+
+    - if params[:profile].presence
+      = f.hidden_field :prof, value: sign_up_profile(params[:profile].gsub('/', ''))
+    - else
+      = f.hidden_field :prof, value: f.object.try(:prof) || "buyer"
+
+    .hidden= t(params[:profile] || f.object.try(:prof) || "buyer")
+    .field
+      
+      = f.submit t(:sign_up), class: 'main_button'
+      -#= render "devise/shared/links"

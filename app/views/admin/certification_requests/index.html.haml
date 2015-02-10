@@ -1,0 +1,6 @@
+- content_for(:page_header) do
+  %h1= link_to plural_name("certification_requests"), admin_certification_requests_path
+-#= paginate @certification_requests
+
+#index_wr
+  = render 'index' 

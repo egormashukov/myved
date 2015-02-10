@@ -1,0 +1,25 @@
+%table.zebra
+  %thead
+    %tr
+      %th
+      %th= TenderResponse.human_attribute_name("tender_id")
+      %th= TenderResponse.human_attribute_name("contractor_id")
+      %th
+      %th= TenderResponse.human_attribute_name("created_at")
+      %th
+      %th
+      
+  %tbody
+    - @tender_responses.each do |tender_response|
+      %tr
+        %td= link_to 'открыть', [:edit, :admin, tender_response]
+        %td= link_to tender_response.tender.title, [:edit, :admin, tender_response.tender]
+
+        %td= link_to tender_response.contractor.title, [:edit, :admin, tender_response.contractor]
+        %td= link_to_toggle_approve tender_response
+        %td= tender_response.created_at.strftime("%d.%m.%y")
+        %td= link_to  'открыть на сайте', [tender_response.tender, tender_response], target: '_blank'
+        %td.right
+          = link_to [:admin, tender_response], :method => :delete, :confirm => "#{t 'confirm.delete'}", class: :del do
+            %span Удалить
+            %i{:class => "icon-trash icon-large"}

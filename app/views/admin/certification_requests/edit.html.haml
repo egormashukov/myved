@@ -1,0 +1,29 @@
+- content_for :page_header do
+  %p= link_to t('back'), admin_certification_requests_path, :class => "bright_link"
+  %h1
+    - if @certification_request.new_record?
+      = action_accusative("certification_requests", "add")
+    - else
+      = action_accusative("certification_requests", "edit")
+
+= form_for [:admin, @certification_request] do |f|
+  - if @certification_request.errors.any?
+    #error_explanation
+      %h2= "#{t 'save_errors'}: #{@certification_request.errors.count}"
+      %ul
+        - @certification_request.errors.full_messages.each do |msg|
+          %li= msg
+  %table
+    %tr
+      %th= f.label :title
+      %td= @certification_request.try :title    
+    %tr
+      %th= f.label :body
+      %td= @certification_request.try :body
+    %tr
+      %th Вложенные файлы
+      %td= raw @certification_request.attachments.collect{|a| link_to(a.title, a.file_location_url, target: "_blank")}.join("<br/>")
+  
+  
+  .actions
+    = f.submit t('save')

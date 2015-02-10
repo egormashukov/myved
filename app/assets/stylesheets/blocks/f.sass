@@ -1,0 +1,40 @@
+@import variables
+
+footer.f
+  width: 100%
+  border-top: 1px solid $blue_color
+  font-size: 0.8em
+  padding: 16px 0
+  height: 201px - 2*16px
+  position: absolute
+  bottom: 0
+  +dark_zone
+  +italic
+  .footer_in
+    width: $wr_width
+    margin: 0 auto
+    position: relative
+  table
+    width: 32%
+    tr td:first-child
+      text-align: right
+
+  .copyright
+    position: absolute
+    text-align: right
+    bottom: 0
+    right: 0
+
+  .footer_nav
+    width: 67%
+    float: right
+    vertical-align: top
+    text-align: right
+    ul
+      width: 100%
+    li
+      display: inline-block
+      padding: 0.5em 1%
+      margin-right: 2%
+      &:last-child
+        margin-right: 0

@@ -1,0 +1,25 @@
+- if notice
+  %p#notice= notice
+
+%p
+  %b Title:
+  = @message.title
+%p
+  %b Body:
+  = @message.body
+%p
+  %b Sender:
+  = @message.sender_id
+%p
+  %b Receiver:
+  = @message.receiver_id
+%p
+  %b Messagable:
+  = @message.messagable_id
+%p
+  %b Messagable type:
+  = @message.messagable_type
+
+= link_to 'Edit', edit_message_path(@message)
+\|
+= link_to 'Back', messages_path

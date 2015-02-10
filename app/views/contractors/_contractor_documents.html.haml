@@ -1,0 +1,4 @@
+%h2= t(:contractor_documents)
+%ul
+  - contractor.contractor_documents.each do |contractor_document|
+    %li= link_to_attachment contractor_document

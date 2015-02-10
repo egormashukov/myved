@@ -1,0 +1,64 @@
+- product_request ||= nil
+- tender_supplier_product ||= nil
+- product_response ||= nil
+
+.dashed_container
+  = render :layout => 'layouts/main_left' do
+    %h3= t(:description)
+    = f.hidden_field :contractor_id, value: current_contractor.id #хреновое место, юзер может исправить
+    = f.text_field_inline_with_value :title, tender_supplier_product, class: 'first_title_in_fieldset'
+    = f.text_field_inline_with_value :hs_code, tender_supplier_product
+    = f.text_field_inline_with_value :application_field, tender_supplier_product
+
+    .field
+      .half= f.label :image
+      .right.half
+        = f.file_field_as_button :image
+        = f.hidden_field :image_cache
+    = f.text_field_with_value_custom :package, tender_supplier_product, t(:required_if_avia)
+
+    %h3= t(:price_header)
+    = parent_f.fielded do
+      .half
+        = parent_f.label :price
+      .half.right
+        = raw(parent_f.object.cost_calculation.try(:currency)) || raw(product_request.try(:tender).try(:currency))
+        = parent_f.short_text_field_with_value :price, product_response
+        = required_field
+
+    = parent_f.fielded do
+      .left.half
+        = parent_f.label :quantity
+        = parent_f.short_text_field_with_value :quantity, product_request
+        = required_field
+      .right.half
+        = parent_f.label :quantity_unit
+        = parent_f.short_text_field_with_value :quantity_unit, product_request
+        = required_field
+    = parent_f.text_field_inline :sum_net_weight
+    = parent_f.text_field_inline :sum_gross_weight
+    = parent_f.text_field_inline :sum_volume
+    -#
+      = f.text_field_inline_with_value :net_weight, tender_supplier_product
+      = f.text_field_inline_with_value :gross_weight, tender_supplier_product
+      = f.text_field_with_value_custom :volume, tender_supplier_product, t(:required_if_avia)
+
+
+  = render :layout => 'layouts/main_right' do
+    %h3= t(:key_characteristics)
+    .form_properties.insertion_point{class: "properties_#{f.object.object_id}", 'data-id-numb'=> f.object.object_id}
+      - if tender_supplier_product.presence
+        - if f.object.properties.presence
+          = f.fields_for :properties do |builder|
+            = render 'cost_calculations/property_fields', f: builder   
+        - else
+          - tender_supplier_product.properties.each do |property|
+            = fields_for_nested_cost_calc_properties f, :properties, property
+      - else
+        = f.fields_for :properties do |builder|
+          = render 'cost_calculation_products/property_fields', f: builder
+
+    %h3= t(:add_characteristics)
+    = link_to_add_fields_to t(:add_a_characteristic), f, :properties, 'cost_calculation_products/property_fields', 'bold'
+    %br
+    = raw ProductProperty.standart.map{|title| link_to_add_standart_property title, f, :properties, 'cost_calculation_products/property_fields'}.join(', ')

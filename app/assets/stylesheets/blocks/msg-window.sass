@@ -1,0 +1,126 @@
+@import variables
+
+.msg-window
+  position: fixed
+  bottom: 15px
+  right: 100px
+  height: 400px
+  width: 320px
+  background: #FFF
+  border: 1px solid #999999
+  z-index: 100
+  box-shadow: 0 0 5px rgba(0,0,0,0.2)
+ 
+.msg-window__dialogue
+  +box-sizing
+  margin: 0 auto
+  height: 400px - 52px
+  overflow: scroll
+  +box-sizing
+  padding-top: 5px
+  font-size: 0.9em
+
+.msg-window__item
+  padding-left: 0
+  padding-right: 50px
+  margin-bottom: 10px
+  &._from-current
+    padding-left: 50px
+    padding-right: 0
+    .msg-window__item-in
+      background: rgba(120, 249, 86, 0.3)
+      // border: 1px solid #449C2D 
+  .msg-window__item-in
+    background: rgba(86, 120, 249, 0.3)
+    // border: 1px solid #434DA6 
+ 
+.msg-window__item-in
+  background: #DDD
+  padding: 0.25em 10px
+  
+.msg-window__form
+  +clearfix
+  border-top: 1px solid #999999
+  position: absolute
+  bottom: 0
+  left: 0
+  background: #FFF
+
+.msg-window__btn
+  background: transparent
+  border: none
+  height: 52px
+  width: 32px
+  float: left
+ 
+.msg-window__textarea
+  +box-sizing
+  height: 52px
+  -webkit-border-radius: 0
+  border-radius: 0
+  border: none
+  width: 320px - 34px
+  float: left
+  padding: 0.25em 10px 
+  outline-style: none
+  
+.msg-window__top-panel
+  position: absolute
+  left: 0
+  bottom: 100%
+  width: 320px
+  background: #006EBC
+  color: #FFF
+  padding: 0.25em 10px
+  border-left: 1px solid #999999
+  border-right: 1px solid #999999
+  border-top: 1px solid #999999
+  margin-left: -1px
+  
+.msg-window__top-panel__close
+  color: #FFF
+  position: absolute
+  top: 3px
+  right: 5px
+  &:hover
+    color: #FFF  
+
+.not-read-msgs
+  background: #FFF
+  width: 15px
+  height: 15px
+  line-height: 15px
+  text-align: center
+  position: absolute
+  bottom: 0
+  left: -5px
+  display: block
+  font-size: 0.66em
+  -webkit-border-radius: 100px 
+  border-radius: 100px
+  color: $blue_color
+  border: 1px solid $blue_color
+  +bold
+  
+  
+.not-read-msgs-link
+  position: relative
+  display: inline-block
+  color: $green_color !important
+  .fa
+    font-size: 1.5em
+    display: inline-block
+    margin-bottom: -5px
+  .dashed_container &
+    margin-right: 20px
+    margin-left: 6px
+
+.msg-window__info
+  padding-top: 0.33em
+  font-size: 0.9em
+  color: #777
+  +clearfix
+  
+.msg-window__info__date
+  float: right
+  font-size: 0.8em

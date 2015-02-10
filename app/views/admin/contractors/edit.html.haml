@@ -1,0 +1,57 @@
+- content_for :page_header do
+  %p= link_to t('back'), admin_contractors_path, :class => "bright_link"
+  %h1
+    - if @contractor.new_record?
+      = "#{t 'add'} #{Contractor.model_name.human}"
+    - else
+      = "#{t 'edit'} #{Contractor.model_name.human}"
+
+= form_for [:admin, @contractor], builder: AdminFormBuilder do |f|
+  = f.error_messages
+
+  %h2 Договоры с myVED
+  = f.fields_for :myved_documents do |builder|
+    = render 'contractors/documents/myved_documents_fields', f: builder
+  = link_to_add_fields t(:add_statutory_documents), f, :myved_documents, 'contractors/documents/myved_documents_fields', 'minor_button centered wide_button'
+  -#
+    %br
+    %br
+    %br
+    %table
+      = f.text_field_row :title
+      = f.email_field_row :email
+      = f.text_field_row :first_name
+      = f.text_field_row :contact_person_email
+      = f.text_field_row :telephone_number
+
+      = tr_header 'Контактные данные'
+      = f.text_field_row :site
+      = f.select_field_row :country, Country.all.sort, {selected:  "#{'RU' if @contractor.buyer?}", prompt: t(:choose_country)}, class: 'selectto'
+
+      = tr_header 'Основные сведения'
+      = f.text_field_row :pattern_of_ownership
+      = f.text_field_row :director
+      -#= f.text_field_row :business_kind
+      =# f.select_field_row :business_kind, @contractor.business_kind_options, {prompt: t(:choose_business_kind)}, class: 'selectto'
+      = f.text_field_row :register_number
+      = f.text_field_row :id_field
+      = f.text_area_row :description, rows: 3
+      = f.text_area_row :filials, rows: 3
+
+      = tr_header 'Дополнительные сведения'
+      = f.text_field_row :main_markets
+      %tr
+        %th= f.label :authorized_capital
+        %td
+          = f.number_field :authorized_capital
+          = f.select :authorized_capital_units, Contractor.currency_options.collect{|co| [raw(co), co]}
+      %tr
+        %th= f.label :foundation_year
+        %td= f.select :foundation_year, (((Time.now - 100.years).year)..Time.now.year).to_a.reverse,  {include_blank: true}
+      = f.text_field_row :belongings, rows: 3
+      = f.number_field_row :staff
+
+
+
+
+  %p= f.submit "сохранить"

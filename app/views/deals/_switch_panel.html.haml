@@ -1,0 +1,7 @@
+.switcher
+  %ul.bold
+    %li{class: "#{'grey' if controller.action_name == 'archive'}"}
+      = link_to t(:active_projects), deals_path
+      = '/'
+    %li{class: "#{'grey' if controller.action_name == 'index'}"}
+      = link_to t(:completed_projects), archive_deals_path

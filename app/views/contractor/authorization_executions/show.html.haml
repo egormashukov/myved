@@ -1,0 +1,58 @@
+- @authorization = Contractor::Authorization.find(@ved_request.contractor.id).decorate
+
+= render 'layouts/bar', header_t: "Авторизация: #{@ved_request.contractor.title}", background_image: 'top_panel_card', left: true
+
+- if current_contractor.ns?
+  = link_to 'ссылка на компанию', @ved_request.contractor, target: '_blank', class: 'blue_link'
+
+- if notice
+  #notice= notice
+
+= autorun_help(HelpItem.where(category: 'Contractor::Authorization', title: 'execution').first) if params[:autorun].presence
+
+.dashed_container._b-bordered
+  = render :layout => 'layouts/main_left' do
+    %h2 Статус
+    = @authorization.labeled_field :state_label
+
+= render "ved_requests/ved_request", ved_request: @ved_request
+
+%br
+%br
+%br
+
+= form_for @authorization, :html => {:multipart => true}, builder: MainFormBuilder do |f|
+  = f.error_messages
+  .js-accordion-wr
+    %h2.js-accordion-trigger
+      %i.fa.fa-chevron-up
+      %i.fa.fa-chevron-down
+      Общие сведения о компании
+    .js-accordion-content= render 'contractor/authorizations/general_info', f: f
+  
+  .js-accordion-wr
+    %h2.js-accordion-trigger
+      %i.fa.fa-chevron-up
+      %i.fa.fa-chevron-down
+      Юридические сведения о компании
+    .js-accordion-content= render 'contractor/authorizations/legacy_info', f: f
+  
+  .js-accordion-wr
+    %h2.js-accordion-trigger
+      %i.fa.fa-chevron-up
+      %i.fa.fa-chevron-down
+      Уставные документы компании
+    .js-accordion-content= render 'contractor/authorizations/documents', f: f
+      
+
+  = f.submit t(:save), class: 'main_button right'
+  = link_to t(:back), @authorization, class: 'minor_button'
+
+  
+
+
+
+
+
+
+

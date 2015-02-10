@@ -1,0 +1,4 @@
+- unless @help_items.empty?
+  %ul.horizontal_items
+    %li= link_to t('sort.by_position'), admin_help_items_path, :class => "bright_link"
+    %li= link_to t('sort.make_default'), sort_admin_help_items_path, :id => 'sort_button', :confirm => t('confirm.sort.make_default'), :class => "bright_link"

@@ -1,0 +1,14 @@
+%fieldset.compact
+
+  - if defined?(standart_title)
+    = f.text_field_inline :title, value: standart_title
+  - else
+    = f.text_field_inline :title
+
+  = f.text_area_inline :body, rows: 2
+  = f.fielded do
+    .left.half
+      = f.check_box_inline :obligatory
+    .right.half
+      = f.hidden_field :_destroy
+      = f.destroy_field

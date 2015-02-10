@@ -1,0 +1,13 @@
+- content_for(:page_header) do
+  %p
+    = link_to action_accusative("inbox_payments", "add"), new_admin_payments_inbox_payment_path, :class => 'bright_link'
+    = link_to action_accusative("outbox_payments", "add"), new_admin_payments_outbox_payment_path, :class => 'bright_link'
+  %h1= link_to plural_name("payments"), admin_payments_path
+-#= paginate @payments
+
+
+%h2 Входящие счета
+= render 'index', payments: @payments.where(type: 'InboxPayment')
+
+%h2 Исходящие счета
+= render 'index', payments: @payments.where(type: 'OutboxPayment')

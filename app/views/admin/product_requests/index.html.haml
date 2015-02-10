@@ -1,0 +1,8 @@
+- content_for(:page_header) do
+  -#
+    %p= link_to "#{t 'add'}  #{ProductRequest.model_name.human}", new_admin_product_request_path, :class => "bright_link"
+  %h1= link_to 'Запросы товаров', admin_product_requests_path
+-#= paginate @product_requests
+
+#index_wr
+  = render 'index' 

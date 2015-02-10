@@ -1,0 +1,12 @@
+%h1= t(:edit_offer)
+.h_caption
+  - if (@tender_response.updated_left - 1) == 1
+    .warning= "#{t(:update_tender_response_times)} #{@tender_response.updated_left - 1} #{t(:time_one)}"
+  - elsif @tender_response.updated_left - 1 <= 1
+    .warning= t(:cant_change_response)
+  - else
+    = "#{t(:update_tender_response_times)} #{@tender_response.updated_left - 1} #{I18n.locale == :ru ? Russian.p(@tender_response.updated_left, 'раз', 'раза', 'раз') : t(:times)}"
+
+= tender_response_info_panel
+.tender_response_f= render 'form'
+

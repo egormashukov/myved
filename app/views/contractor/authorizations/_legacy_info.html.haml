@@ -1,0 +1,31 @@
+.dashed_container
+  = render :layout => 'layouts/main_left' do
+    = f.text_field_inline :pattern_of_ownership
+    = f.text_field_inline :director
+    = f.text_field_inline :proxy_person
+    = f.text_field_inline :proxy_number
+    = f.text_area_inline :legal_address, rows: 2
+    = f.text_field_inline :register_number
+    .field
+      .third= f.label :authorized_capital
+      .two_thirds.right
+        = f.number_field :authorized_capital
+        = f.select :authorized_capital_units, Contractor.currency_options.collect{|co| [raw(co), co]}
+    .field
+      .third= f.label :foundation_year
+      .two_thirds.right= f.select :foundation_year, (((Time.now - 100.years).year)..Time.now.year).to_a.reverse,  {include_blank: true}
+    = f.number_field_inline :staff
+    = f.text_area_inline :belongings, rows: 2
+
+  = render :layout => 'layouts/main_right' do
+    = f.text_area_inline :bank_title, rows: 2
+    = f.text_field_inline :bic
+    = f.text_field_inline :settlement_account
+    = f.text_field_inline :correspondent_account
+    - if current_contractor.ved_contractor?
+      %h3 Для иностранного банка
+      = f.text_area_inline :foreign_bank_title, rows: 2
+      = f.text_area_inline :foreign_bank_address, rows: 2
+      = f.text_field_inline :foreign_bank_swift
+      = f.text_field_inline :foreign_bank_account_number
+

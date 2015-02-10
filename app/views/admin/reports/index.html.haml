@@ -1,0 +1,45 @@
+- content_for(:page_header) do
+  %p= link_to action_accusative("sea_freights", "add"), new_admin_sea_freight_path, :class => 'bright_link'
+  %h1= link_to plural_name("sea_freights"), admin_sea_freights_path
+-#= paginate @sea_freights
+
+#index_wr
+
+  = form_tag '/admin/reports', method: :get do
+    = text_field_tag 'report[from]', @report.from, class: 'datepicker', data: {'max-date' => '+0'}
+    = text_field_tag 'report[to]', @report.to, class: 'datepicker', data: {'max-date' => '+0'}
+    = submit_tag 'вывести отчёт', class: 'black_button'
+
+  %table.zebra
+    %thead
+      %tr
+        %th Параметр 
+        %th Количество
+    %tr
+      %td Количество регистраций
+      %td= @report.registrations_count
+    %tr
+      %td Количество авторизаций (по времени регистрации клиента)
+      %td= @report.authorizations_count
+    %tr
+      %td Торги по товару (по дате открытия формы)
+      %td= @report.tenders_count
+    %tr
+      %td Расчеты себестоимости (по дате открытия формы)
+      %td= @report.cost_calculations_count
+    %tr
+      %th Торги по морской доставке (по дате открытия формы)
+      %th= @report.sea_freights_count
+    %tr
+      %td 
+        Повторные запросы по следующим условиям:
+        %br
+        Пример: Вне выбранного периода пользователь создал 10 торгов, в отчетный добавил еще 3. Выводится число <b>3</b>
+
+      %td= @report.sea_freights_repeated_count
+    %tr
+      %td Перешедшие к исполнению  (по дате перехода к исполнению)
+      %td= @report.sea_freight_executions_count
+         
+          
+

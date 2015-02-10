@@ -1,0 +1,65 @@
+%table.numero
+  %tr
+    %th №
+    %th= t(:tasks)
+    %th= t(:task_status)
+    %th= t(:start_date)
+    %th= t(:end_date)
+    %th
+
+  - projects.each do |project|
+    %tr
+      %td
+        %dt
+      %td.left= project.project_link
+      %td= project.project_status
+      %td= project.projectable.created_at.strftime("%d/%m/%y")
+      %td= project.dateable(:end_at)
+      %td= project.action_link
+
+  - if projects.select{|p| p.projectable_type == 'Tender'}.empty? && !@current_contractor.ved_contractor?
+    %tr.fake_info
+      %td{colspan: 6} Здесь размещается информация о ваших торгах. Примеры:
+    %tr.fake_info
+      %td= 1
+      %td.left Закупка: "Тележки багажные"
+      %td= I18n.t('statuses.tender.new')
+      %td= Time.now.strftime("%d/%m/%y")
+      %td= (Time.now + 5.days).strftime("%d/%m/%y")
+      %td= t(:remove)
+    %tr.fake_info
+      %td= 2
+      %td.left Закупка: "Ручки шариковые"
+      %td= t('statuses.tender.waiting')
+      %td= (Time.now - 4.days).strftime("%d/%m/%y")
+      %td= (Time.now + 2.days).strftime("%d/%m/%y")
+      %td= t(:remove)
+
+  - if projects.select{|p| p.projectable_type == 'CostCalculation'}.empty? && !@current_contractor.ved_contractor?
+    %tr.fake_info
+      %td{colspan: 6} Здесь размещается информация о ваших запросах расчета себестоимости. Примеры:
+    %tr.fake_info
+      %td= 3
+      %td.left Расчет себестоимости: Тележки багажные
+      %td= t('statuses.cost_calculation.waiting')
+      %td= (Time.now - 2.days).strftime("%d/%m/%y")
+      %td= (Time.now + 4.days).strftime("%d/%m/%y")
+      %td= t(:remove)
+
+  - if projects.select{|p| p.projectable_type == 'SeaFreight'}.empty?
+    %tr.fake_info
+      %td{colspan: 6} Здесь размещается информация о торгах по доставке и исполнении сделок
+    %tr.fake_info
+      %td= 1
+      %td.left исполнение: место - место (товар)
+      %td= t('statuses.cost_calculation.waiting')
+      %td= (Time.now - 2.days).strftime("%d/%m/%y")
+      %td= (Time.now + 4.days).strftime("%d/%m/%y")
+      %td= t(:remove)
+    %tr.fake_info
+      %td= 2
+      %td.left торги по доставке: место - место (товар)
+      %td= t('statuses.cost_calculation.waiting')
+      %td= (Time.now - 2.days).strftime("%d/%m/%y")
+      %td= (Time.now + 4.days).strftime("%d/%m/%y")
+      %td= t(:remove)

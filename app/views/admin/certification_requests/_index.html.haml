@@ -1,0 +1,25 @@
+%table.zebra
+  %thead
+    %tr
+      %th= sortable_columns "title", CertificationRequest.human_attribute_name("title")
+      %th= sortable_columns "created_at", CertificationRequest.human_attribute_name("created_at")
+      %th= sortable_columns "contractor_id", CertificationRequest.human_attribute_name("contractor_id")
+      %th= sortable_columns "state", CertificationRequest.human_attribute_name("state")
+      %th
+      %th
+      %th
+      
+  %tbody
+    - @certification_requests.each do |certification_request|
+      %tr
+        %td= certification_request.ved_messages.first.try(:title)
+        %td= certification_request.created_at.strftime("%H:%M, %d.%m.%Y")
+        %td= certification_request.contractor.try(:title)
+        %td= t("statuses.certification_request.#{certification_request.state}")
+
+        %td= link_to 'открыть на сайте', certification_request, target: "_blank"
+
+        %td.right
+          = link_to [:admin, certification_request], :method => :delete, :confirm => "#{t 'confirm.delete'}", class: :del do
+            %span Удалить
+            %i{:class => "icon-trash icon-large"}

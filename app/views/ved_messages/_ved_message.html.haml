@@ -1,0 +1,25 @@
+.dashed_container{class:  "_ved-request #{'_from_myved' if (@admin_contractor.id == ved_message.contractor_id)} #{'_from_ved_contractor' if (ved_message.contractor.ved_contractor?)}"}
+  
+
+  .clearfix
+    = render :layout => 'layouts/main_left' do
+      %h3
+        - if (@admin_contractor.id == ved_message.contractor_id)
+          = "от #{@admin_contractor.title}"
+        - else
+          = ved_message.contractor.title
+    = render :layout => 'layouts/main_right' do
+      .lk-column__time
+        = ved_message.created_at.strftime('%H:%M, %d.%m.%y')
+        =# raw "(#{content_tag(:i, '', class: 'fa fa-check')} просмотрено)"
+
+  
+  .clearfix
+    = render :layout => 'layouts/main_left' do
+      .string.redact
+        %p.bold= ved_message.title
+        = raw ved_message.body
+    = render :layout => 'layouts/main_right' do
+      -#%h3.ved-request__title= t(:attachments) if ved_message.attachments.presence
+      - ved_message.attachments.each do |a|
+        .string= link_to_attachment a

@@ -1,0 +1,57 @@
+= form_for @supplier_product do |f|
+  - if @supplier_product.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@supplier_product.errors.count, "error")} prohibited this supplier_product from being saved:"
+      %ul
+        - @supplier_product.errors.full_messages.each do |msg|
+          %li= msg
+  %table
+    %tr
+      %td{colspan:2}
+        %h2 Общая информация о товаре
+    %tr
+      %td= f.label :title
+      %td= f.text_field :title
+    %tr
+      %td= f.label :model
+      %td= f.text_field :model
+    %tr
+      %td= f.label :marking_of_goods
+      %td= f.text_field :marking_of_goods
+    %tr
+      %td= f.label :hs_code
+      %td= f.text_field :hs_code
+    %tr
+      %td= f.label :id_code
+      %td= f.text_field :id_code
+    %tr
+      %td= f.label :image
+      %td= f.file_field :image
+
+    %tr
+      %td{colspan:2}
+        %h2 Описание продукта
+    %tr
+      %td= f.label :application_field
+      %td= f.text_area :application_field, rows:2
+    %tr
+      %td= f.label :performance_attributes
+      %td= f.text_area :performance_attributes, rows:2
+    %tr
+      %td= f.label :net_weight
+      %td= f.number_field :net_weight
+    %tr
+      %td= f.label :gross_weight
+      %td= f.number_field :gross_weight
+    %tr
+      %td= f.label :package
+      %td= f.text_area :package, rows:2
+
+    = f.fields_for :properties do |builder|
+      = render 'property_fields', f: builder
+
+    %tr
+      %td{colspan:2}= link_to_add_fields_with_partial 'добавить характеристику', f, :properties, 'property_fields'
+      
+  .actions
+    = f.submit t(:save)

@@ -1,0 +1,11 @@
+= render 'pages/main_page/map'
+-#= render 'pages/main_page/top_slide'
+.clear
+= render 'pages/main_page/solutions'
+= render 'pages/main_page/buy_product'
+= render 'pages/main_page/ved_request'
+= render 'pages/main_page/best_offer'
+
+= render 'pages/main_page/registration', profile: 'buyer' unless contractor_signed_in?
+
+= link_to raw("&uarr; #{t(:to_top)}"), '#', class: 'to_top red_button small_button'

@@ -1,0 +1,78 @@
+= form_for [@tender, @tender_response], builder: MainFormBuilder do |f|
+  = f.error_messages
+  .bordered_block
+    %h3
+      = f.help_item(:general_info)
+      = t(:basic_information)
+
+    .string
+      .third= Tender.human_attribute_name(:owner_id)
+      .two_thirds= link_to_if @tender.owner.in_contacts?(current_contractor), @tender.owner.title, @tender.owner
+    = two_colums_string(@tender, :title)
+    = two_colums_string(@tender, :body)
+    = render 'tenders/best_response_panel', tender: @tender, tender_responses: @tender.tender_responses.sent.approved
+
+  .bordered_block
+    %h3
+      = f.help_item(:trading_conditions)
+      = t(:trading_conditions)
+    .string
+      .third.left
+        = f.label_with_help(:delivery_time) + ':'
+        %span#delivery_time= @tender.delivery_time_view
+      .two_thirds.right
+        = attr_equal_check_box('delivery_time', @tender)
+        .inline= f.text_field_cornered :delivery_time, placeholder: @tender.delivery_time_view.presence
+        = required_field
+    .string
+      .third.left
+        = f.label_with_help(:terms_of_payment) + ':'
+        %span#terms_of_payment= @tender.terms_of_payment
+      .two_thirds.right
+        = attr_equal_check_box('terms_of_payment', @tender)
+        .inline= f.text_field_cornered :terms_of_payment, placeholder: @tender.terms_of_payment.presence
+        = required_field
+    .string
+      .third.left
+        = f.label_with_help(:conditions_of_supply) + ':'
+        %span#conditions_of_supply= @tender.conditions_of_supply
+      .two_thirds.right
+        = @tender.conditions_of_supply
+        = f.hidden_field :conditions_of_supply, value: @tender.conditions_of_supply
+    - if @tender.requirements.presence
+      .string
+        .third= f.label_with_help(:requirements)
+        .two_thirds= @tender.requirements
+    - if @tender.service.presence
+      .string
+        .third.left
+          = Tender.human_attribute_name(:service) + ':'
+          %span#service= @tender.service
+        .two_thirds.right
+          = @tender.service
+          = f.hidden_field :service, value: @tender.service
+    
+
+    = f.text_area_inline :body, rows: 3
+
+  = f.fields_for :product_responses do |builder|
+    = render 'product_response_fields', f: builder
+
+  - @tender.product_requests.each do |product_request|
+    - unless f.object.product_responses.detect{|pr| pr.product_request_id == product_request.id}.presence
+      = fields_for_nested_responses f, :product_responses, product_request
+
+  .bordered_block.block_top_margined
+    %h3
+      = f.help_item(:attachments) 
+      = t(:add_files)
+    = f.fields_for :attachments do |builder|
+      = render 'attachment_fields', f: builder
+    = link_to_add_fields t(:add_file), f, :attachments, 'attachment_fields', 'plus_button'
+  - unless @tender_response.new_record? || @tender_response.new?
+    .right
+      = f.label :ready
+      = f.check_box :ready
+  .actions
+    = link_to t(:back), @tender, class: 'minor_button'
+    = f.submit (@tender_response.new_record? ? t(:save) : t(:send)), class: 'main_button right'

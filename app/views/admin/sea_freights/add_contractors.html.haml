@@ -1,0 +1,21 @@
+- content_for :page_header do
+  %p= link_to t('back'), admin_sea_freights_path, :class => "bright_link"
+  %h1 Добавить контрагентов
+
+- responses = @sea_freight.sea_freight_responses
+= form_for [:send_invitations, :admin, @sea_freight], method: :post do |f|
+  %table
+    %tr
+      %td
+      %th название компании
+      %th
+    - Contractor.ved_contractors.each do |contractor|
+      %tr
+        %td= check_box_tag "contractor_ids[]", contractor.id, false, id: "contractor_ids_#{contractor.id}" 
+        %td= label_tag "contractor_ids_#{contractor.id}", contractor.title
+        %td
+          - if responses.collect(&:contractor_id).include?(contractor.id)
+            приглашен к участию
+
+  .actions
+    = f.submit 'Разослать приглашения'

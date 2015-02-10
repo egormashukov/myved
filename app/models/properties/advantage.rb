@@ -1,0 +1,3 @@
+class Advantage < ProductProperty
+  
+end

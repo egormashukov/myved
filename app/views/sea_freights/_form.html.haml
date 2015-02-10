@@ -1,0 +1,7 @@
+= form_for @sea_freight, :html => {:multipart => true}, builder: MainFormBuilder do |f|
+  = f.error_messages
+  = render 'sea_freights/build/general_info', f: f
+      
+  .actions
+    = f.submit t(:save), class: 'main_button right'
+    = link_to t(:back), @sea_freight, class: 'minor_button'

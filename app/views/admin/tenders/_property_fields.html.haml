@@ -1,0 +1,9 @@
+%fieldset
+  = f.text_field_inline :title
+  = f.text_field_inline :body
+  .field
+    .left.half
+      = f.check_box_inline :obligatory
+    .right.half
+      = f.hidden_field :_destroy
+      = link_to 'удалить хар-ку', '#', class: 'remove_fields black_button'

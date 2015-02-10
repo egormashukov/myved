@@ -1,0 +1,31 @@
+%tr
+  %td 
+    .contractor_link
+      = image_tag("#{root_url}#{@contractor.logo.presence ? @contractor.logo_url(:icon) : asset_path(@contractor.logo_url(:icon))}", alt: @contractor.title, class: 'small_image')
+      = @contractor.title
+  %td
+    #form_ns_body
+      %h2= raw @mail_title.first
+      - if @mail_body.count == 1
+        %p myVED - профессиональная площадка по решению любых вопросов импорта-экспорта.
+        %p Подтвердите Ваш email, перейдя по следующей ссылке
+        %p= link_to 'Подтвердить мой аккаунт', confirmation_path(@resource, :confirmation_token => @resource.confirmation_token, hello: true)
+        %br
+      - else
+        %p myVED - professional platform to address any issues of imports and exports.
+        %p Please confirm your account email through the link below:
+        %p= link_to 'Confirm my account', confirmation_path(@resource, :confirmation_token => @resource.confirmation_token, hello: true)
+        %br
+      = raw @mail_body.first
+
+      - if @mail_body.count > 1
+        %br
+        %br
+        %h2= raw @mail_title.last
+        %p Подтвердите Ваш email, перейдя по следующей ссылке
+        %p= link_to 'Подтвердить мой аккаунт', confirmation_path(@resource, :confirmation_token => @resource.confirmation_token, hello: true)
+        %br
+        = raw @mail_body.last
+      
+    %br
+    = link_to 'myVED.com', root_url, class: 'to_myved'

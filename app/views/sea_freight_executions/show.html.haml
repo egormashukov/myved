@@ -1,0 +1,61 @@
+= render 'layouts/bar', header_t: @sea_freight.full_title, background_image: 'top_panel_card', left: true
+
+- if notice
+  #notice= notice
+
+.dashed_container
+  = render :layout => 'layouts/main_left' do
+    %h2 Вы приняли предложение
+    %table
+
+      = @sea_freight.labeled_row(:end_date_execution)
+      %tr
+        %td.t оператор торгов
+        %td ООО "майВЭД"
+      %tr
+        %td.t место проведения
+        %td= link_to 'http://myved.com', 'http://myved.com'
+      - if @best_response.presence
+        = @best_response.labeled_row(:contractor_title)
+      %tr
+        %td.t ТЭО
+        %td= link_to File.basename(@ved_request.forwarding_service_file), @ved_request.forwarding_service.try(:real_file_location), target: '_blank'
+      %tr
+        %td.t Общие правила
+        %td= link_to File.basename(@ved_request.general_rule_file), @ved_request.general_rule.try(:real_file_location), target: '_blank'
+      %tr
+        %td.t= link_to 'Соглашение торгов', sea_freight_report_index_path(@sea_freight, format: :pdf), target: 'blank'
+        %td
+
+  = render :layout => 'layouts/main_right' do
+    %h2 Статусы
+
+    = form_for @sea_freight_execution_status, builder: MainFormBuilder do |f|
+      %table
+        %tr
+          %td.t оформление booking
+          %td= f.status_date :booking
+        %tr
+          %td.t загрузка товара
+          %td= f.status_date :loading
+        %tr
+          %td.t ETD
+          %td= f.status_date :etd
+        %tr
+          %td.t ETA
+          %td= f.status_date :eta
+        - if @sea_freight.sea_auto?
+          %tr
+            %td.t прибытие на склад
+            %td= f.status_date :warehouse
+      %br
+      - if current_contractor.ns? || current_contractor.ved_contractor?
+        = f.submit "сохранить статусы", class: "minor_button"
+
+
+= @ved_request.open_message_to_myved(@best_response.contractor)
+
+
+%br
+= render "sea_freights/best_response", best_response: @best_response, hideable: true
+= render "ved_requests/ved_request", ved_request: @ved_request

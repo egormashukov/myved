@@ -1,0 +1,35 @@
+%table.zebra#sort-list
+  %thead
+    %tr
+      %th{:class => 'position'}
+      %th{:class => 'visibility'}
+      %th= sortable_columns "title", HelpItem.human_attribute_name("title")
+      %th= sortable_columns "soon", HelpItem.human_attribute_name("soon")
+      %th= sortable_columns "url", HelpItem.human_attribute_name("url")
+      %th= sortable_columns "rating", HelpItem.human_attribute_name("rating")
+      %th= sortable_columns "wanted", HelpItem.human_attribute_name("wanted")
+      %th
+      
+  %tbody
+    - @help_items.each do |help_item|
+      %tr{:id => "help_item_#{help_item.id}"}
+        %td.icon.handle
+          %i{:class => "icon-move icon-large"}
+        %td.icon.visibility
+          = link_to [:toggleshow, :admin, help_item], :remote => true do
+            %i{:class => (help_item.visible? ? "icon-eye-open icon-large" : "icon-eye-close icon-large not-work")}
+        %td
+          - if help_item.column_help?
+            = link_to help_item.category.camelize.constantize.human_attribute_name(help_item.title), [:edit, :admin, help_item]
+          - else
+            = link_to help_item.title, [:edit, :admin, help_item]
+        %td= link_to "#{help_item.soon? ? 'да' : 'нет'}", [:edit, :admin, help_item] unless help_item.column_help?
+        %td= link_to help_item.url, [:edit, :admin, help_item] unless help_item.column_help?
+        %td= link_to help_item.rating, [:edit, :admin, help_item] unless help_item.column_help?
+        %td= help_item.wanted unless help_item.column_help?
+        %td.right
+          - unless help_item.column_help?
+            = link_to [:admin, help_item], :method => :delete, :confirm => "#{t 'confirm.delete'}", class: :del do
+              %span Удалить
+              %i{:class => "icon-trash icon-large"}
+  = sortable sort_admin_help_items_path

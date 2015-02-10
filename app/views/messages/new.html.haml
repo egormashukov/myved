@@ -1,0 +1,6 @@
+%h1 Новое сообщение
+
+= render 'messages/form', message: Message.new, resource: '', title: '', receivers: @receivers
+
+%br
+= link_to 'К сообщениям', messages_contractors_path

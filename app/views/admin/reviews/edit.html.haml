@@ -1,0 +1,28 @@
+- content_for :page_header do
+  %p= link_to t('back'), admin_reviews_path, :class => "bright_link"
+  %h1
+    - if @review.new_record?
+      = "#{t 'add'} #{Review.model_name.human}"
+    - else
+      = "#{t 'edit'} #{Review.model_name.human}"
+
+= form_for [:admin, @review] do |f|
+  - if @review.errors.any?
+    #error_explanation
+      %h2= "#{t 'save_errors'}: #{@review.errors.count}"
+      %ul
+        - @review.errors.full_messages.each do |msg|
+          %li= msg
+  %table
+
+    %tr
+      %td= f.label :body
+      %td= @review.body
+    %tr
+      %td= f.label :contractor_id
+      %td= @review.contractor.title
+    %tr
+      %td= f.label :created_at, 'добавлен'
+      %td= @review.created_at.strftime("%H:%M - %d/%m/%y")
+  .actions
+    = f.submit t('save')

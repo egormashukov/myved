@@ -1,0 +1,16 @@
+.new_message_wr
+  - create_path = resource.present? ? [resource, message] : message
+  = form_for create_path, remote: true, builder: MainFormBuilder do |f|
+    = f.error_messages
+
+    - if receivers.instance_of?(Contractor)
+      .field
+        = f.label :receiver_id
+        = link_to Contractor.find(receivers.id).title, Contractor.find(receivers.id)
+      = f.hidden_field :receiver_id, value: receivers.id
+    - else
+      = f.select_inline_wide :receiver_id, options_from_collection_for_select(receivers, 'id', 'title'), {}, class: 'selectto'
+
+    = f.text_field_inline :title, value: title
+    = f.redactor :body
+    = f.main_button t(:send)

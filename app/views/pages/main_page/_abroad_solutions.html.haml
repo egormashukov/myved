@@ -1,0 +1,17 @@
+.top_solutions
+  .top_solutions_in
+    .al_centered 
+      %h2.all_inclusive= t(:myved_can_help_you_to_solve_three_problems)
+      .solutions_list.abroad
+        = link_to "#", class: "find_suppliers_link solution_item sticker_cart" do
+          %strong= t(:sell_to_russia)
+          .italic Receive requests from Russian clients and participate in the bidding.
+
+        = link_to "#", class: "ved_request_link solution_item sticker_calculator" do
+          %strong= t(:door_to_door_russia)
+          .italic Help your client deliver goods to the warehouse in Russia.
+
+          -#.know_more= link_to t(:more), '#', class: 'red_bordered_button ved_request_link'
+        = link_to "#", class: "get_best_offer_link solution_item sticker_question" do
+          %strong= t(:all_for_world_trade)
+          .italic Solve any issues related to import-export operations in your country.

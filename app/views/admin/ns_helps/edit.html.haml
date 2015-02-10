@@ -1,0 +1,68 @@
+- content_for :page_header do
+  %p= link_to t('back'), admin_ns_helps_path, :class => "bright_link"
+  %h1
+    - if @ns_help.new_record?
+      = "#{t 'add'} #{NsHelp.model_name.human}"
+    - else
+      = "#{t 'edit'} #{NsHelp.model_name.human}"
+
+= form_tag [:distribution, :admin, :ns_helps], method: :post do
+  ТЕСТОВАЯ РАССЫЛКА ПИСЕМ
+  = text_field_tag 'emails'
+  = submit_tag "send", class: 'black_button'
+
+= form_for [:send_invitation, :admin, @ns_help], method: :post, builder: AdminFormBuilder do |f|
+  %h2= "Торги: #{@ns_help.tender.title}"
+  %h3 Отправка письма с приглашением к участию в торгах
+  %table
+    %tr
+      %td Ссылка
+      %td= new_contractor_registration_url(profile: 'supplier', ic: @ns_help.tender.owner.invitation_cod, td: @ns_help.tender.id, locale: "en")
+    %tr
+      %td отправленные
+      %td
+        = raw @ns_help.emails.split(" ").join("<br/>") if @ns_help.emails.presence
+        = @ns_help.emails
+    = f.email_field_row :email
+  = f.submit 'Отправить'
+
+- content_for :page_sidebar do
+
+  %h2 Все участники тендера
+  %table.zebra
+    %tr
+      %th название
+      %th email
+      %th ответ
+    - @contractors.each do |contractor|
+      %tr
+        %td= link_to contractor.title, [:edit, :admin, contractor]
+        %td= mail_to contractor.email
+        %td= @tender_responses.collect(&:contractor_id).include?(contractor.id) ? 'да' : 'нет'
+
+  %h2 Все контакты компании "#{@ns_help.contractor.title}"
+  %table.zebra
+    %tr
+      %th название
+      %th email
+    - @contactor_friends.each do |contractor_friend|
+      %tr
+        %td= link_to contractor_friend.title, [:edit, :admin, contractor_friend]
+        %td= mail_to contractor_friend.email
+
+  - contractors_array = Contractor.suppliers.order('title').to_a.select{|c| !@contactor_friends.collect(&:id).include?(c.id) && !(@ns_help.contractor_id == c.id)}.collect{|c| [c.title, c.id]}
+
+  - if contractors_array.any?
+    = form_for [:admin, Contact.new] do |f|
+      = f.hidden_field :contractor_id, value: @ns_help.contractor.id
+      = f.select :contractor_contact_id, contractors_array
+      = hidden_field_tag "tender_id", "tender_id", value: @ns_help.tender.id
+      = f.submit 'добавить', class: 'black_button'
+
+  -#
+    %h2 Ссылка приглашения в систему
+    - if @ns_help.tender
+      = invite_link(nil, @ns_help.tender) #registrations helper
+    - else
+      = invite_link(@ns_help.contractor)
+

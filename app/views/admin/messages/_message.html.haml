@@ -1,0 +1,8 @@
+.bordered_box
+  from
+  %b= link_to message.sender.title, [:edit, :admin, message.sender]
+  to
+  %b= link_to message.receiver.title, [:edit, :admin, message.receiver]
+  = raw message.created_at.strftime('(%H:%M %d.%m.%y)')
+  %br
+  = raw message.body

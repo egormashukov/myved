@@ -1,0 +1,9 @@
+= form_for offline_offer, url: (offline_offer.new_record? ? sea_freight_offline_offers_path(sea_freight) : sea_freight_offline_offer_path(sea_freight, offline_offer)), builder: MainFormBuilder, method: (offline_offer.new_record? ? :post : :put) do |f|
+  = f.text_field_inline :company
+  .field
+    .third= f.label :cost
+    .two_thirds
+      .two_thirds= f.text_field :cost
+      .third= f.select_currency :currency
+  = f.select_inline :transport, options_for_select(SeaFreightResponse.category_options, f.object.try(:transport)), {include_blank: true}, class: 'selectto'
+  = f.submit 'сохранить', class: 'minor_button'

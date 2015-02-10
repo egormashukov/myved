@@ -1,0 +1,6 @@
+.msg-window__item{class: "#{'_from-current' if msg.sender_id == current_contractor.id}"}
+  .msg-window__item-in
+    = msg.body
+    .msg-window__info
+      = msg.sender.title
+      .msg-window__info__date= msg.created_at.strftime('%H:%M - %d.%m')

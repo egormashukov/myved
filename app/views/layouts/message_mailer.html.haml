@@ -1,0 +1,13 @@
+!!!
+
+%html
+  %head
+    %title myVED
+    %meta{charset: "utf-8"}
+    %meta{name: "viewport", content: "width=device-width"}
+    %style{type: "text/css", 'data-immutable' => true}
+  %body
+    %table
+      %tr
+        %td{colspan: 2}= link_to "myVED", root_url
+      = yield

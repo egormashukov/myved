@@ -1,0 +1,23 @@
+%h3 Торговые условия
+= render :layout => 'layouts/main_half_centered' do
+
+  = f.select2_inline :conditions_of_supply, grouped_options_for_select(Tender.conditions_of_supply_options, @tender.conditions_of_supply), {}
+  = f.text_field_inline :terms_of_payment
+
+  = f.text_field_inline :delivery_time
+
+  = f.hidden_field :delivery_time_unit, value: 'days'
+
+  = f.fielded do
+    .left.half= f.label_with_help(:service)
+    .right_as_block
+      = f.radio_button :service, nil
+      = f.label :service, 'нет значения'
+      %br
+      = f.radio_button :service, 'OEM Service'
+      = f.label :service_oem_service, 'OEM Service'
+      %br
+      = f.radio_button :service, 'ODM Service'
+      = f.label :service_odm_service, 'ODM Service'
+
+  = f.text_area_inline :requirements, rows: 3

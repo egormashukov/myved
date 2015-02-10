@@ -1,0 +1,158 @@
+= render 'layouts/bar', header_t: @sea_freight.full_title, background_image: 'top_panel_card', left: true
+= ved_info_panel
+
+= autorun_help(HelpItem.where(category: 'page', title: 'sea_freight_autorun_help').first) if params[:autorun].presence
+
+- if notice
+  %p#notice= raw notice
+
+.dashed_container._b-bordered
+  = render :layout => 'layouts/main_left' do
+    %h2 Статус
+    = @sea_freight.labeled_field(:state_label)
+    = @sea_freight.labeled_field(:decline_string, :failure_cause)
+    = @sea_freight.labeled_date(:start_date)
+    = @sea_freight.labeled_date(:end_date)
+    = @sea_freight.participants_number(@sea_freight_responses)
+    = @sea_freight.open_message_link(@current_response)
+
+    %br
+    %br
+
+  = render :layout => 'layouts/main_right' do
+    = @sea_freight.best_label(@best_response)
+    - if @best_response.presence
+      - unless current_contractor.ved_contractor? && @sea_freight_responses.try(:first).try(:new?)
+        = @best_response.labeled_field(:contractor_for_current)
+        = @best_response.labeled_field(:total_currecied)
+        = @best_response.labeled_field(:transit)
+    
+    - unless @best_response == @sea_freight_responses.first && current_contractor.ved_contractor?
+      = @sea_freight.add_response_btn(@current_response)
+    = @sea_freight.execution_btn
+
+    - if @sea_freight.owner_or_ns? && @offline_offer.new_record?
+      %h3= @sea_freight.best_offline_label
+      .caption Если Вы получили лучшие цены вне площадки myVED, сообщите об этом участникам торгов
+      %br
+      = render 'sea_freights/offline_offers/form', sea_freight: @sea_freight, offline_offer: @offline_offer 
+      %br
+
+    - unless @offline_offer.new_record?
+      %h3= @sea_freight.best_offline_label
+      = render 'sea_freights/offline_offers/offline_offer', offline_offer: @offline_offer
+      - if @sea_freight.owner_or_ns?
+        = link_to 'изменить offline-предложение', edit_sea_freight_offline_offer_path(@sea_freight, @offline_offer), class: 'minor_button most_wide_button'
+        %br
+        %br
+
+
+- if @sea_freight.owner_or_ns?
+  %h2 Сводная таблица
+  .summary-block
+  
+    %table.summary2
+      %tbody.general
+        %tr
+          %th
+          - @sea_freight_responses.each_with_index do |sea_freight_response, i|
+            %th
+              - if current_contractor.ns? || @sea_freight.contractor.authorized?
+                = link_to sea_freight_response.contractor.title, sea_freight_response.contractor, target: "_blank"
+              - else
+                = "Участник #{i+1}"
+
+          - if @sea_freight_responses.count <= SeaFreight::FAKE_PARTICIPANTS && @sea_freight.owner_or_ns?
+            - (SeaFreight::FAKE_PARTICIPANTS - @sea_freight_responses.count).times do |i|
+              %th= "Участник #{@sea_freight_responses.count + i + 1}"
+
+        %tr
+          %td
+          - @sea_freight_responses.each_with_index do |sea_freight_response, i|
+            - if current_contractor.ns? || @sea_freight.contractor.authorized?
+              %td= link_to_messages(@sea_freight, sea_freight_response.contractor)
+          = @sea_freight.empty_cells(@sea_freight_responses.count)
+          
+
+        - if @sea_freight.owner_or_ns? && !@sea_freight.has_winner?
+          %tr
+            %td= @sea_freight.reject_all_link
+
+            - @sea_freight_responses.each do |sea_freight_response|
+              %td= @sea_freight.decide_link(sea_freight_response)
+
+            - if @sea_freight_responses.count <= SeaFreight::FAKE_PARTICIPANTS && @sea_freight.owner_or_ns?
+              - (SeaFreight::FAKE_PARTICIPANTS - @sea_freight_responses.count).times do |i|
+                %td В ожидании ответа
+
+        - if current_contractor.ns?
+          %tr
+            %td
+            - @sea_freight_responses.each do |sea_freight_response|
+              %td= link_to "редактировать", [:edit, @sea_freight, sea_freight_response]
+            = @sea_freight.empty_cells(@sea_freight_responses.count)
+
+
+        = @sea_freight.sum_table_row(@sea_freight_responses, :attemptes_left) 
+        = @sea_freight.sum_table_row(@sea_freight_responses, :filo_currecied) if @sea_freight.sea?
+        = @sea_freight.sum_table_row(@sea_freight_responses, :port_charges_currecied) if @sea_freight.sea?
+        = @sea_freight.sum_table_row(@sea_freight_responses, :tracking_currecied) if @sea_freight.auto?
+        = @sea_freight.sum_table_row(@sea_freight_responses, :railway_charges_currecied) if @sea_freight.railway?
+
+
+
+        =# @sea_freight.sum_table_row(@sea_freight_responses, :total_currecied)
+        %tr
+          %td
+            = SeaFreightResponse.human_attribute_name(:total_currecied)
+            = render('sea_freights/currency_info', sea_freight: @sea_freight)
+          = @sea_freight.sum_table_cells(@sea_freight_responses, :total_currecied)
+        %tr.main
+          %td{colspan: "#{@sea_freight.owner_or_ns? ? (@sea_freight_responses.count + 1 + SeaFreight::FAKE_PARTICIPANTS) : 2 }"} 
+            %h3 Условия
+
+        = @sea_freight.sum_table_row(@sea_freight_responses, :category_string)
+        = @sea_freight.sum_table_row(@sea_freight_responses, :destination_port)
+        = @sea_freight.sum_table_row(@sea_freight_responses, :end_date)
+        = @sea_freight.sum_table_row(@sea_freight_responses, :transit)
+        = @sea_freight.sum_table_row(@sea_freight_responses, :free_container)
+        = @sea_freight.sum_table_row(@sea_freight_responses, :free_port)
+
+        = @sea_freight.sum_table_row(@sea_freight_responses, :free_car)
+        = @sea_freight.sum_table_row(@sea_freight_responses, :stoppage)
+        = @sea_freight.sum_table_row(@sea_freight_responses, :overbalance)
+        = @sea_freight.sum_table_row(@sea_freight_responses, :additional_charges)
+        -# = @sea_freight.sum_table_row(@sea_freight_responses, :payment_conditions)
+
+- else
+  .dashed_container
+    = render :layout => 'layouts/main_left' do
+      %h2 Ваше предложение
+      %table
+        = @current_response.labeled_row(:filo_currecied)
+        = @current_response.labeled_row(:port_charges_currecied)
+        = @current_response.labeled_row(:tracking_currecied)
+        = @current_response.labeled_row(:railway_charges_currecied)
+        = @current_response.labeled_row(:total_currecied)
+
+    = render :layout => 'layouts/main_right' do
+      %h2 Условия
+      %table
+        - if @current_response.sea_auto?
+          = @current_response.labeled_row(:destination_port)
+        = @current_response.labeled_row(:transit)
+        = @current_response.labeled_row(:free_container)
+        = @current_response.labeled_row(:free_port)
+        = @current_response.labeled_row(:free_car)
+        = @current_response.labeled_row(:stoppage)
+        = @current_response.labeled_row(:overbalance)
+        = @current_response.labeled_row(:additional_charges)
+
+.info._t-bordered= render "info", sea_freight: @sea_freight
+
+.clear
+._t-bordered= render "sea_freights/transport_table", obj: @sea_freight
+.actions
+  = @sea_freight.add_response_btn(@current_response)
+  = @sea_freight.edit_btn
+  = @sea_freight.execution_btn

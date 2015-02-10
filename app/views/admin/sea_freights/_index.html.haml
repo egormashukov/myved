@@ -1,0 +1,50 @@
+%table.zebra
+  %thead
+    %tr
+      %th= sortable_columns "title", SeaFreight.human_attribute_name("title")
+      %th= sortable_columns "state", SeaFreight.human_attribute_name("state_string")
+      %th Статус <br> исполнения
+      %th= sortable_columns "contractor_id", SeaFreight.human_attribute_name("contractor_id")
+      %th= sortable_columns "id", SeaFreight.human_attribute_name("id")
+      %th= sortable_columns "transport", SeaFreight.human_attribute_name("transport")
+      %th= sortable_columns "shipping_port", SeaFreight.human_attribute_name("shipping_port")
+      %th= sortable_columns "destination_port", SeaFreight.human_attribute_name("destination_port")
+      %th= sortable_columns "destination", SeaFreight.human_attribute_name("destination")
+      
+      %th
+      %th
+      %th
+      %th
+      %th
+
+  %tbody
+    - @sea_freights.each do |sea_freight|
+      %tr{class: "#{'_highlighted' if ['step2_1', 'step2_2', 'step4_1',  'step4_2'].include?(sea_freight.sea_freight_execution.try(:state)) || sea_freight.waiting?}"}
+        %td= sea_freight.title
+        %td= sea_freight.state_string
+        %td= sea_freight.sea_freight_execution.try(:human_state)
+        %td= sea_freight.contractor.try(:title)
+        %td= sea_freight.id
+        %td= sea_freight.transport
+        %td= sea_freight.shipping_port
+        %td= sea_freight.destination_port
+        %td= sea_freight.destination
+
+        %td= link_to "одобрить", [:approve, :admin, sea_freight], method: :put unless sea_freight.approved?
+        %td
+          - if sea_freight.approved?
+            = link_to "список КА", [:add_contractors, :admin, sea_freight] , target: "_blank"
+            %p -----
+            = link_to "добавить КА", [:add_contractors, :admin, sea_freight] , target: "_blank"
+        %td= link_to "ред.", [:edit, sea_freight], target: "_blank"
+        %td
+          = link_to "открыть торги", sea_freight , target: "_blank"
+          - if sea_freight.successful? && sea_freight.sea_freight_execution.present?
+            %p -----
+            = link_to "открыть исполнение", sea_freight_execution_path(sea_freight.sea_freight_execution), target: "_blank"
+            
+
+        %td.right
+          = link_to [:admin, sea_freight], :method => :delete, :confirm => "#{t 'confirm.delete'}", class: :del do
+            %span Удалить
+            %i{:class => "icon-trash icon-large"}

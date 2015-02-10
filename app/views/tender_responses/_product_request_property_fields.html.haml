@@ -1,0 +1,26 @@
+- property = property || request_properties.find_by_title(f.object.title)
+- if property
+  .string
+    .third.left
+      %span.property_title= property.try(:title) || f.object.title
+    .third.middle
+      = attr_products_equal_check_box("body", property) unless property && property.obligatory?
+      %span{class: "property_body_#{property.try(:id)}"}= property.body.presence || '-'
+      - if property && property.obligatory?
+        %span.required_span
+          (
+          = f.help_item('obligatory')
+          = t(:mandatory_requirement)
+          )
+
+    .third.right
+      %div{class: "property_body_#{property.try(:id)}"}
+        - if property && property.obligatory? && property.body.presence
+          = f.text_field_cornered :body, value: "#{property.body if property && property.obligatory?}",rows: 2, class: "property_body_in_fieldset #{'obligatory' if property && property.obligatory?}", readonly: ''
+        - else
+          = f.text_field_cornered :body, class: "property_body_in_fieldset", placeholder: t(:confirm_placeholder)
+      - if property && property.obligatory?
+        = required_field
+        
+    .clear
+  = f.hidden_field :title, value: (f.object.title || property.title)

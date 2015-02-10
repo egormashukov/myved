@@ -1,0 +1,5 @@
+= render :layout => 'layouts/main_half_centered' do
+  .field
+    %h2 Редактирование офлайн-предложения
+  %br
+  = render 'form', sea_freight: @sea_freight, offline_offer: @offline_offer

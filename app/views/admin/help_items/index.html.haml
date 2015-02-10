@@ -1,0 +1,22 @@
+- content_for(:page_header) do
+  %p= link_to action_accusative("help_items", "add"), new_admin_help_item_path, :class => 'bright_link'
+  %h1= link_to plural_name("help_items"), admin_help_items_path
+-#= paginate @help_items
+
+%ul.horizontal_items{style: "display:block;"}
+  - HelpItem.categories.each do |category|
+    %li= link_to t(category), admin_help_items_path(category: category), class: "black_button #{'selected' if @category == category}"
+
+  %li= link_to 'B: Торги', admin_help_items_path(category: "tender"), class: "black_button #{'selected' if @category == 'tender'}"
+  %li= link_to 'B: Запросы товаров в торгах', admin_help_items_path(category: "product_request"), class: "black_button #{'selected' if @category == 'product_request'}"
+  %li= link_to 'B: Ключевые хар-ки в торгах', admin_help_items_path(category: "property"), class: "black_button #{'selected' if @category == 'property'}"
+  %li= link_to 'B/S: Расчеты себестоимости', admin_help_items_path(category: "cost_calculation"), class: "black_button #{'selected' if @category == 'cost_calculation'}"
+  %li= link_to 'B/S: Товары в ответе на торги и расчете себестоимости', admin_help_items_path(category: "supplier_product"), class: "black_button #{'selected' if @category == 'supplier_product'}"
+  %li= link_to 'S: Ответы на торги', admin_help_items_path(category: "tender_response"), class: "black_button #{'selected' if @category == 'tender_response'}"
+  %li= link_to "B/S: Общие", admin_help_items_path(category: "page"), class: "black_button #{'selected' if @category == 'page'}"
+  %li= link_to "Авторизация", admin_help_items_path(category: "Contractor::Authorization"), class: "black_button #{'selected' if @category == 'Contractor::Authorization'}"
+
+  -#%li= link_to t(:cost_calculation), admin_help_items_path(category: "cost_calculation"), class: "black_button #{'selected' if @category == 'cost_calculation'}"
+= render 'sort_buttons' 
+#index_wr
+  = render 'index' 

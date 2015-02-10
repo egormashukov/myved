@@ -1,0 +1,3 @@
+= render 'layouts/bar', header_t: 'Редактирование товара', background_image: 'top_panel_card', left: true, current_step: @step
+= render 'form'
+= link_to t(:back), cost_calculation_build_path(@cost_calculation, 'products'), class: 'minor_button'

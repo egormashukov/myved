@@ -1,0 +1,21 @@
+!!!
+
+%html
+  %head
+    %title= t(:myved_title)
+    = stylesheet_link_tag    "application", :media => "all"
+    = javascript_include_tag "application"
+    = csrf_meta_tags
+    %meta{:charset=>"utf-8"}
+    - if Rails.env.production?
+      = render "layouts/metrics/google_analytics"
+
+  %body.landing_page
+    #wrapper
+      .top_bar_wr
+        .top_bar= render 'layouts/topbar'
+      %header= render 'layouts/header'
+      %section.main= yield
+      %footer.f= render "layouts/footer"
+    .clear
+    = render "shared/siteheart"

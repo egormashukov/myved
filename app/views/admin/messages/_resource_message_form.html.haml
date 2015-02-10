@@ -1,0 +1,6 @@
+= form_for [:admin, resource, Message.new] do |f|
+  = f.label :body
+  = f.text_area :body, rows: 3
+  = f.hidden_field :title, value: title
+  = f.hidden_field :receiver_id, value: resource.deal.owner.id
+  = f.submit t(:send), class: 'black_button'

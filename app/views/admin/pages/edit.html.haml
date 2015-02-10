@@ -1,0 +1,40 @@
+- content_for :page_header do
+  %p= link_to t('back'), admin_pages_path, :class => "bright_link"
+  %h1
+    - if @page.new_record?
+      = action_accusative("pages", "add")
+    - else
+      = action_accusative("pages", "edit")
+
+= form_for [:admin, @page] do |f|
+  - if @page.errors.any?
+    #error_explanation
+      %h2= "#{t 'save_errors'}: #{@page.errors.count}"
+      %ul
+        - @page.errors.full_messages.each do |msg|
+          %li= msg
+  %table
+
+    %tr
+      %th= f.label :title
+      %td= f.text_field :title
+
+    %tr
+      %td{colspan: 2}
+        = f.label :body
+        %br
+        = f.text_area :body, class: 'redactor'
+    %tr
+      %td{colspan: 2}
+        %h3 ENGLISH
+    = f.globalize_fields_for :en do |g|
+      %tr
+        %th= g.label :title
+        %td= g.text_field :title
+      %tr
+        %td{colspan: 2}
+          = g.label :body
+          %br
+          = g.text_area :body, class: 'redactor'  
+  .actions
+    = f.submit t('save')

@@ -1,0 +1,14 @@
+- ved_request.states.each_with_index do |state, i|
+  .js-accordion-wr
+    = ved_request.header i
+    .js-accordion-content{class: "#{'js-open' if ved_request.that_state?(i)}"}
+      = ved_request.step_explanation(i)
+      = render partial: 'ved_messages/ved_message', collection: ved_request.messages_by_state(state)
+      - if ved_request.has_form?(state)
+        = form_for [ved_request, @ved_message], method: :post, builder: MainFormBuilder, html: {class: 'js-submit-hidable' } do |f|
+          = render "ved_messages/ved_message_fields", f: f
+          .actions.not-bt
+            = f.submit "Отправить", class: 'main_button wide_button js-submit-hidable'
+            = ved_request.next_step_link
+            
+            

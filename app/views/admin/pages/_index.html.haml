@@ -1,0 +1,15 @@
+%table.zebra
+  %thead
+    %tr
+      %th= sortable_columns "title", Page.human_attribute_name("title")
+      %th
+      
+  %tbody
+    - @pages.each do |page|
+      %tr
+        %td= link_to page.title, [:edit, :admin, page]
+        %td.right
+          - unless page.slug.presence
+            = link_to [:admin, page], :method => :delete, :confirm => "#{t 'confirm.delete'}", class: :del do
+              %span Удалить
+              %i{:class => "icon-trash icon-large"}

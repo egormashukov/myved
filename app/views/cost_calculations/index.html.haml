@@ -1,0 +1,5 @@
+%ul
+  - @cost_calculations.each do |cost_calculation|
+    %li= cost_calculation
+
+= link_to 'новый просчет себестомости', [:new, :cost_calculation]

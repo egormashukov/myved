@@ -1,0 +1,94 @@
+%h1= t("report_l.report_title")
+.string= "#{t('report_l.date')}: #{@tender.end_at.strftime("%d/%m/%y")}"
+.string= "#{t('report_l.deal')} №#{@tender.deal.big_id}"
+.string= t("report_l.bidding_operator")
+.string= t("report_l.venue")
+.string= raw "#{t('report_l.bid_initiator')}: #{link_to @tender.owner.title, @tender.owner}"
+.string= raw "#{t('report_l.successful_bidder')}: #{link_to @tender_response.contractor.title,@tender_response.contractor }"
+
+%br
+= render 'shared/report_contacts_table', orderer: @tender.owner, performer: @tender_response.contractor
+%br
+
+%h2= t("report_l.general_information")
+%table.report.first-col-bold
+  %tr
+    %td= TenderResponse.human_attribute_name(:cost)
+    %td= price_string(@tender_response.summ_cost, @tender.currency)
+  %tr
+    %td= TenderResponse.human_attribute_name(:terms_of_payment)
+    %td= @tender_response.try(:terms_of_payment)
+  %tr
+    %td= TenderResponse.human_attribute_name(:conditions_of_supply)
+    %td= @tender_response.try(:conditions_of_supply)
+  %tr
+    %td= TenderResponse.human_attribute_name(:delivery_time)
+    %td
+      = @tender_response.delivery_time_view
+      = tender_date_unites(@tender)
+  %tr
+    %td= TenderResponse.human_attribute_name(:service)
+    %td= @tender_response.try(:service)
+  %tr
+    %td= TenderResponse.human_attribute_name(:body)
+    %td= @tender_response.try(:body)
+  - @tender_response.attachments.each do |attachment|
+    %tr
+      %td= attachment.title
+      %td= link_to attachment.file_location_url, attachment.file_location_url, target: "_blank"
+      
+
+%br
+%h2= t("products")
+
+%table
+  %tr
+    %th= ProductRequest.model_name.human
+    %th= Product.human_attribute_name(:title)
+    %th= Product.human_attribute_name(:quantity)
+    %th= Product.human_attribute_name(:price)
+    %th= Product.human_attribute_name(:cost)
+    
+  - @tender_response.product_responses.each do |product_response|
+    %tr
+      %td= product_response.product_request.title#, [@tender, product_response.product_request]
+      %td= product_response.supplier_product.title#, product_response.supplier_product
+      %td= product_response.product_request.quantity_string
+      %td= raw price_string(product_response.price, product_response.tender_response.tender.currency)
+      %td= raw product_response.cost_string
+%br
+- @tender_response.product_responses.each do |product_response|
+  - supplier_product = product_response.supplier_product
+  %h3= supplier_product.title
+  %table.report
+    %tr
+      %td{colspan: 2}
+        %h4.bold= t(:basic_information)
+    %tr
+      %td{colspan: 2}
+        = supplier_product.nice_good.try(:coded_title)
+    %tr
+      %td= Product.human_attribute_name("image")
+      %td= image_tag supplier_product.image_url(:icon) if supplier_product.image.presence
+    %tr
+      %td= Product.human_attribute_name("application_field")
+      %td= supplier_product.application_field
+    %tr
+      %td{colspan: 2}
+        %h4.bold= t(:trading_conditions)
+    %tr
+      %td= Product.human_attribute_name("price")
+      %td= price_string(product_response.try(:price), @tender.currency )
+    %tr
+      %td= Product.human_attribute_name("quantity")
+      %td= price_string(product_response.product_request.try(:quantity_unit), product_response.product_request.try(:quantity) )
+    %tr
+      %td{colspan: 2}
+        %h4.bold= t(:product_description)
+    - supplier_product.properties.each do |property|
+      %tr
+        %td= property.title
+        %td= property.body
+    - supplier_product.advantages.each do |advantage|
+      %tr
+        %td{colspan: 2}= advantage.title

@@ -1,0 +1,7 @@
+- content_for(:page_header) do
+  -#%p= link_to "#{t 'add'}  #{Review.model_name.human}", new_admin_review_path, :class => "bright_link"
+  %h1= link_to 'Отзыв', admin_reviews_path
+-#= paginate @reviews
+
+#index_wr
+  = render 'index' 

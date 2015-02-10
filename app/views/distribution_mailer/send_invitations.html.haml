@@ -1,0 +1,88 @@
+!!!
+
+%html
+  %head
+    %title Приглашаем на тестирование профессиональной площадки в области ВЭД
+    %meta{charset: "utf-8"}
+    %meta{name: "viewport", content: "width=device-width"}
+    %style{type: "text/css", 'data-immutable' => true}
+  %body
+    %table
+      %tr
+        %td
+        %td
+          .fixed
+            = image_tag asset_path("logo.png")
+            %br
+            Решайте все вопросы ВЭД в одном месте
+      %tr
+        %td{colspan: 2}
+          Коллега, примите участие в тестировании новой профессиональной площадки myVED.com
+      %tr
+        %td.fourth= link_to image_tag(asset_path "home/home_ved_tender.png"), "http://myved.com/"
+        %td
+          %i.small-txt
+            myVED - это простой и понятный сайт, на котором Вы можете без посредников решить любые вопросы, связанные с закупкой иностранного  товара, его доставкой и таможенным оформлением, получением сертификатов, проверкой качества и многим другим.
+      %tr
+        %td{colspan: 2}
+          На myVED Вы сможете решить три ключевых вопроса: 
+          %ol.list
+            %li
+              = link_to image_tag(asset_path "menu/basket.png"), "http://myved.com/", class: 'icon_img'
+              %b Купить иностранный товар
+              %ul.sublist
+                %li Найти новых иностранных продавцов
+                %li Устроить торги среди иностранных продавцов
+            %li
+              = image_tag asset_path("menu/question.png"), class: 'icon_img'
+              %b Решить любые вопросы ВЭД
+              %ul.sublist
+                %li Просчитать себестоимость импорта-экспорта
+                %li Решить любые вопросы ВЭД (доставка образцов, сертификация, проверка качества…)
+            %li
+              = link_to image_tag(asset_path "menu/calculator.png"), "http://myved.com/", class: 'icon_img'
+              %b  Сократить затраты по ВЭД
+              %ul.sublist
+                %li Получить лучшие условия по международной доставке
+      %tr
+        %td{colspan: 2}
+          Сайт myVED только начинает свою работу и с каждой неделей количество рабочего функционала увеличивается. 
+      %tr
+        %td{colspan: 2}
+          %b В период тестирования на myVED Вы всем пользуетесь Бесплатно.
+      %tr
+        %td.pull-center{colspan: 2}
+          = link_to "http://myved.com/select_region" do
+            %div= image_tag asset_path("emails/steps.png")
+      %tr
+        %td{colspan: 2}
+          %b Нам Важно услышать Ваше профессиональное мнение
+          и Мы сделаем все возможное, чтобы
+          облегчить Вашу работу по импорту-экспорту.
+      %tr
+        %td{colspan: 2}
+          %i Нажмите на кнопку, чтобы начать тестирование.
+      %tr
+        %td.pull-center{colspan: 2}
+          %div
+            = link_to "http://myved.com/select_region" do
+              = image_tag asset_path("emails/test_myved.png"), class: 'test-myved-image'
+      %tr
+        %td{colspan: 2}
+          %i.small-txt
+            С уважением
+            %br
+            Александр Харьков
+            %br
+            основатель myVED.com
+            %br
+            Россия, Москва, ул. Новый Арбат 21, Бизнес Центр «Обновление Арбата»
+            %br
+            Mob: +7 926 383 07 35
+            %br
+            Tel: +7 499 686 01 86
+            %br
+            = raw "e-mail: #{mail_to'3830735@gmail.com'}"
+            %br
+            skype: myved.com
+

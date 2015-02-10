@@ -1,0 +1,17 @@
+- if payments.present?
+  %table
+    %tr
+      %th Название
+      %th Сумма к оплате
+      %th Дата выставления
+      %th Файл
+      %th Статус оплаты
+    - payments.each do |payment|
+      %tr
+        %td= link_to payment.paidable.title, payment.paidable.decorate.project_pth if payment.paidable.present?
+        %td= price_string(payment.currency, "#{payment.sum} ")
+        %td= payment.invoice_on.strftime("%d.%m.%y") if payment.invoice_on.present?
+        %td= link_to 'счет', payment.invoice_url, target: '_blank' if payment.invoice.present?
+        %td= payment.human_state
+- else
+  нет счетов

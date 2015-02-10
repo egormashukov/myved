@@ -1,0 +1,99 @@
+.header_with_logo
+  - if @authorization.logo.presence
+    = image_tag @authorization.logo_url(:icon), class: 'rounded_logo'
+  %h1= "Профиль. #{@contractor.title}"
+
+- if current_contractor.ns? || current_contractor.id == @authorization.id
+  .dashed_container
+    = render :layout => 'layouts/main_left' do
+      = render 'account_info', contractor: @contractor
+    = render :layout => 'layouts/main_right' do
+      = render 'contact_person', contractor: @contractor
+  
+  - if  @authorization.myved_documents.count > 0
+    %h3 Договоры с myVED
+    %ul
+      - @authorization.myved_documents.each do |myved_document|
+        %li= link_to_attachment myved_document
+
+%h2.js-accordion-trigger
+  Общие сведения о компании
+
+.dashed_container
+  = render :layout => 'layouts/main_left' do
+    = @authorization.labeled_field :title
+    = @authorization.labeled_field :number
+    = @authorization.labeled_field :site
+    = @authorization.labeled_field :country_string, :country
+    = @authorization.labeled_field :fact_address
+    = @authorization.labeled_field :description
+    = @authorization.labeled_field :filials
+
+  = render :layout => 'layouts/main_right' do
+    = @authorization.labeled_field :main_markets 
+    = @authorization.labeled_options_array :business_kind #f.object.business_kind_options
+    = @authorization.labeled_options_array :shipment_types #f.object.shipment_types_options
+    = @authorization.labeled_options_array :transport, Contractor
+    = @authorization.labeled_field :direction_string, :direction #f.object.direction_options
+    - if current_contractor.buyer?
+      = @authorization.labeled_field :shipments_number #f.object.direction_options
+
+  - if @authorization.ved_contractor?
+    .dashed_container
+      = render :layout => 'layouts/main_left' do
+        = render 'certificates', contractor: @authorization
+
+      = render :layout => 'layouts/main_right' do
+        = render 'contractor_documents', contractor: @authorization
+
+- if profile_visible_for_contractor?(@authorization)
+  .js-accordion-wr
+    %h2.js-accordion-trigger
+      %i.fa.fa-chevron-up
+      %i.fa.fa-chevron-down
+      Юридические сведения о компании
+    .js-accordion-content
+      .dashed_container
+        = render :layout => 'layouts/main_left' do
+          = @authorization.labeled_field :pattern_of_ownership
+          = @authorization.labeled_field :director
+          = @authorization.labeled_field :proxy_person
+          = @authorization.labeled_field :proxy_number
+          = @authorization.labeled_field :legal_address
+          = @authorization.labeled_field :register_number
+          = @authorization.labeled_field :authorized_capital
+          = @authorization.labeled_field :foundation_year
+          = @authorization.labeled_field :staff
+          = @authorization.labeled_field :belongings
+
+        = render :layout => 'layouts/main_right' do
+          = @authorization.labeled_field :bank_title
+          = @authorization.labeled_field :bic
+          = @authorization.labeled_field :settlement_account
+          = @authorization.labeled_field :correspondent_account
+          - if @authorization.ved_contractor?
+            %h3 Для иностранного банка
+            = @authorization.labeled_field :foreign_bank_title
+            = @authorization.labeled_field :foreign_bank_address
+            = @authorization.labeled_field :foreign_bank_swift
+            = @authorization.labeled_field :foreign_bank_account_number
+
+  .js-accordion-wr
+    %h2.js-accordion-trigger
+      %i.fa.fa-chevron-up
+      %i.fa.fa-chevron-down
+      Уставные документы компании
+    .js-accordion-content
+      .dashed_container
+        = render :layout => 'layouts/main_left' do
+          = @authorization.labeled_file :doc_by_law
+          = @authorization.labeled_file :doc_ogrn
+          = @authorization.labeled_file :doc_inn
+          = @authorization.labeled_file :doc_egrul
+
+        = render :layout => 'layouts/main_right' do
+          = @authorization.labeled_file :doc_director
+          = @authorization.labeled_file :doc_proxy
+
+- if current_contractor.id == @authorization.id
+  .actions= link_to 'редактировать профиль', edit_contractor_registration_path, class: 'main_button wide_button right'

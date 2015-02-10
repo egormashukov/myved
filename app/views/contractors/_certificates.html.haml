@@ -1,0 +1,4 @@
+%h2= t(:certificates)
+%ul
+  - contractor.certificates.each do |certificate|
+    %li= link_to_attachment certificate

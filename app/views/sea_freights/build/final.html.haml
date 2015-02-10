@@ -1,0 +1,6 @@
+= render :layout => 'form' do |f|
+  Проверьте форму и нажмите "Отправить"
+  = render "sea_freights/info", sea_freight: @sea_freight
+  = render "sea_freights/transport_table", obj: @sea_freight
+  = back_button(previous_wizard_path, 'fixed_button')
+

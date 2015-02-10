@@ -1,0 +1,14 @@
+.registration_frame
+  .title= raw t(:start_work)
+  .main_page_registration_form
+    -#= form_for 'contractor', :as => 'contractor', :url => registration_path('contractor'), builder: RegistrationFormBuilder do |f|
+    = form_for 'contractor', :as => 'contractor', :url => "/contractors", method: :post, builder: RegistrationFormBuilder do |f|
+      = f.text_field_inline :title, 'star', placeholder: Contractor.human_attribute_name("title")
+      = f.email_field_inline :email, 'email', placeholder: Contractor.human_attribute_name("email")
+      = f.text_field_inline :telephone_number, 'phone', placeholder: Contractor.human_attribute_name("telephone_number")
+      = f.text_field_inline :last_name, 'user', placeholder: Contractor.human_attribute_name("last_name")
+      = f.text_field_inline :first_name, 'user', placeholder: Contractor.human_attribute_name("first_name")
+      = f.password_field_inline :password, 'psw', placeholder: Contractor.human_attribute_name("password")
+      = f.password_field_inline :password_confirmation, 'psw', placeholder: Contractor.human_attribute_name("password_confirmation")
+      = f.hidden_field :prof, value: t(:sign_up_profile)
+      = f.submit t(:start_for_free), class: 'upper red_button most_wide_button centered'

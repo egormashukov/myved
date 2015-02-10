@@ -1,0 +1,44 @@
+- c = controller.controller_name
+- a = controller.action_name
+%ul#nav
+  -case @active
+  -when :section
+    %li{:class => "#{'active' if c == 'sea_freights'}"}
+      = link_to plural_name('sea_freights'), admin_sea_freights_path
+      = "(#{SeaFreight.waiting_for_approving.size})" if SeaFreight.waiting_for_approving.size > 0
+
+    %li{:class => "#{'active' if c == 'contractors'}"}= link_to t(:contractors), admin_contractors_path
+
+    %li{:class => "#{'active' if c == 'authorizations'}"}
+      = link_to plural_name('Contractor::Authorization'), admin_authorizations_path
+      = "(#{Contractor::Authorization.sent.count})"
+
+    %li{:class => "#{'active' if c == 'tenders'}"}
+      = link_to t(:tenders), admin_tenders_path
+      = "(#{Tender.waiting_for_approving.size})" if Tender.waiting_for_approving.size > 0
+    -#
+      %li{:class => "#{'active' if c == 'ns_helps'}"}
+        = link_to 'запросы помощи', admin_ns_helps_path
+        = "(#{NsHelp.not_processed.size})" if NsHelp.not_processed.size > 0
+
+    %li{:class => "#{'active' if c == 'tender_responses'}"}
+      = link_to t(:tender_responses), admin_tender_responses_path
+      = "(#{TenderResponse.sent.non_approved.size})" if TenderResponse.sent.non_approved.size > 0
+    %li{:class => "#{'active' if c == 'cost_calculations' || c == 'cost_calculation_responses'}"}
+      = link_to 'расчеты себестоимости', admin_cost_calculations_path
+      = "(#{CostCalculation.waiting_for_approving.size})" if CostCalculation.waiting_for_approving.size > 0
+    %li{:class => "#{'active' if c == 'reviews'}"}= link_to 'отзывы', admin_reviews_path
+    %li{:class => "#{'active' if c == 'pages'}"}= link_to plural_name('pages'), admin_pages_path
+    %li{:class => "#{'active' if c == 'help_items' || c == 'help_slides'}"}= link_to plural_name('help_items'), admin_help_items_path
+    -#%li{:class => "#{'active' if c == 'messages'}"}= link_to t(:messages), admin_messages_path
+    %li{:class => "#{'active' if c == 'certification_requests'}"}= link_to plural_name('certification_requests'), admin_certification_requests_path
+    %li{:class => "#{'active' if c == 'payments'}"}
+      = link_to plural_name('payments'), admin_payments_path
+      = "(#{Payment.waiting.size})" if Payment.waiting.size > 0
+
+    %li{:class => "#{'active' if c == 'procrastinators'}"}
+      = link_to 'должники', admin_procrastinators_path
+    %li{:class => "#{'active' if c == 'reports'}"}
+      = link_to 'отчеты', admin_reports_path
+    %li{:class => "#{'active' if c == 'privacies'}"}
+      = link_to 'правила', admin_privacies_path

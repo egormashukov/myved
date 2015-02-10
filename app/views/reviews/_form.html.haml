@@ -1,0 +1,7 @@
+%h3.send_message
+  = t(:send_message)
+  %i.fa.fa-info-circle
+
+= form_for Review.new, remote: true do |f|
+  = f.text_area :body, rows: 9, placeholder: t(:review_placeholder)
+  = f.submit t(:send), class: 'minor_button'

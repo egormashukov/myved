@@ -1,0 +1,23 @@
+%h2= t(:register_info)
+
+= two_colums_string(contractor, :pattern_of_ownership)
+= two_colums_string(contractor, :director)
+
+
+- unless contractor.ved_contractor?
+  .string
+    .third= Contractor.human_attribute_name(:business_kind)
+    .two_thirds= @contractor.business_kind_options.detect{|st| st[1] == contractor.business_kind }.try(:first)
+
+= two_colums_string(contractor, :register_number)
+-#= f.text_field_inline :id_field
+
+.string
+  .third= Contractor.human_attribute_name(:authorized_capital)
+  .two_thirds
+    = contractor.try :authorized_capital
+    = Contractor.currency_options.detect{|st| st[1] == contractor.authorized_capital }.try(:first)
+
+= two_colums_string(contractor, :foundation_year)
+= two_colums_string(contractor, :belongings)
+= two_colums_string(contractor, :staff)

@@ -1,0 +1,19 @@
+%table.zebra
+  %thead
+    %tr
+      %th Видимость
+      %th Название
+      %th Ссылка на файл
+      %th Дата добавления
+      %th
+
+  %tbody
+    - @privacies.each do |privacy|
+      %tr
+        %td.icon.visibility
+          = link_to toggleshow_admin_privacy_path(privacy.id), method: :post, remote: true do
+            %i{class: (privacy.visible? ? 'icon-eye-open icon-large' : 'icon-eye-close icon-large not-work')}
+        %td= privacy.title
+        %td= link_to File.basename(privacy.file_location.to_s), privacy.file_location.to_s, target: '_blank'
+        %td= privacy.created_at
+        %td.right= link_to 'изменить', edit_admin_privacy_path(privacy), class: 'bright_link', target: '_blank'

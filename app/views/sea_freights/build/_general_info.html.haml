@@ -1,0 +1,64 @@
+= autorun_help HelpItem.where(category: 'page', title: 'ved_tender_or_cost_calc').first if params[:window] == 'true'
+
+.dashed_container
+  = render :layout => 'layouts/main_left' do
+    %h3 Общая информация
+
+    = f.select_inline :transport, options_for_select(SeaFreight.transport_options, params[:transport].presence || f.object.try(:transport)), {}, class: 'selectto js-sf-transport'
+
+    = f.text_field_inline :loading_date, class: 'datepicker', data: {'min-date' => '+1d'}
+    = f.text_field_inline :end_at, class: 'datepicker', data: {'min-date' => '+2d'}
+    = f.text_field_inline :title
+    
+    .field
+      .third.left= f.label_with_help(:hazard)
+      .two_thirds.right
+        = f.select :hazard, options_for_select(SeaFreight.hazard_options, f.object.try(:hazard).presence || 'no'), {include_blank: true}, class: 'selectto'
+        - if f.object.option(:hazard)
+          = f.text_field :own_hazard, f.placeholdered_args(:own_hazard)
+        - else
+          = f.text_field :own_hazard, f.placeholdered_args(:own_hazard, value: f.object.value_from_options(:hazard))
+
+        
+    = f.select_inline :requirements, options_for_select(SeaFreight.requirements_options, f.object.try(:requirements).presence || "terms_price"), {include_blank: true}, class: 'selectto'
+    = f.text_area_inline :description, rows: 4
+
+  = render :layout => 'layouts/main_right' do
+    %h3 Маршрут
+    = f.select_inline :incoterms, grouped_options_for_select(SeaFreight.incoterms_options, f.object.try(:incoterms).presence || "FOB"), {}, class: 'selectto'
+    = f.text_field_inline :shipping_place
+
+    .field
+      = content_tag(:div, f.label_with_help(:shipping_port), class: %w(third left))
+      .two_thirds.right
+        = f.field_cornered f.text_field :shipping_port
+        = f.error(:destination_port)
+
+    .field
+      = content_tag(:div, f.label_with_help(:destination_port), class: %w(third left))
+      .two_thirds.right
+        = f.field_cornered f.text_field :destination_port
+        %div
+          = f.check_box :any_port, class: 'js-cb-disable-field'
+          = f.label :any_port, 'любой порт'
+        = f.error(:destination_port)
+    .js-hidable-sea
+      .field
+        = content_tag(:div, f.label_with_help(:customs_clearance), class: %w(third left))
+        .two_thirds.right
+          = f.field_cornered f.text_field :customs_clearance
+          = f.error(:customs_clearance)
+
+      .field
+        = content_tag(:div, f.label_with_help(:destination), class: %w(third left))
+        .two_thirds.right
+          = f.field_cornered f.text_field :destination
+          = f.error(:destination)
+
+%h2
+  = f.help_item(:transport_units)
+  = t(:transport_units)
+- (f.object.transport_units.build) if f.object.transport_units.empty?
+= f.fields_for :transport_units do |builder|
+  = render 'sea_freights/transport_unit_fields', f: builder
+= link_to_add_fields t(:add_transport_unit), f, :transport_units, 'sea_freights/transport_unit_fields', 'minor_button most_wide_button'

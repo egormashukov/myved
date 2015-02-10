@@ -1,0 +1,14 @@
+%table.zebra
+  %thead
+    %tr
+      %th= sortable_columns "successful", Deal.human_attribute_name("successful")
+      %th
+      
+  %tbody
+    - @deals.each do |deal|
+      %tr
+        %td= link_to deal.successful, [:edit, :admin, deal]
+        %td.right
+          = link_to [:admin, deal], :method => :delete, :confirm => "#{t 'confirm.delete'}", class: :del do
+            %span Удалить
+            %i{:class => "icon-trash icon-large"}

@@ -1,0 +1,20 @@
+= render 'layouts/bar', header_t: @page.title, background_image: 'top_panel_card', left: true, current_step: ''
+= raw @page.body
+
+%h2 Запросы
+%table
+  %tr
+    %th Название
+    %th Дата создания
+    %th Сумма к оплате
+    %th Статус оплаты
+  - @ved_requests.each do |ved_request|
+    - if ved_request.bill.presence
+      %tr
+        %td= link_to ved_request.title, ved_request
+        %td= ved_request.created_at.strftime("%d.%m.%y")
+        %td= ved_request.bill
+        %td= ved_request.pay_status
+
+.mycalculator-wr
+  #mycalculator

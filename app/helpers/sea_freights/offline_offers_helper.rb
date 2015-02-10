@@ -1,0 +1,2 @@
+module SeaFreights::OfflineOffersHelper
+end

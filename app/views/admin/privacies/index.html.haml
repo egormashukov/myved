@@ -1,0 +1,10 @@
+- content_for(:page_header) do
+  %p= link_to action_accusative('privacies', 'add'), new_admin_privacy_path(params), class: 'bright_link'
+  %h1= link_to plural_name('privacies'), admin_privacies_path(params)
+
+%ul.horizontal_items{style: 'display:block;'}
+  %li= link_to 'Общие', admin_privacies_path(type: 'general_rule'), class: "black_button #{'selected' if params[:type].blank? || params[:type] == 'general_rule'}"
+  %li= link_to 'ТЭО"', admin_privacies_path(type: 'forwarding_service'), class: "black_button #{'selected' if params[:type] == 'forwarding_service'}"
+
+#index_wr
+  = render 'index'

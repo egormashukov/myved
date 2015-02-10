@@ -1,0 +1,14 @@
+.dialogue.window_dialogue
+  = render 'messages/menu'
+  .main_message
+    .messagable_new
+      = render 'messages/form', message: Message.new, resource: resource, title: '', receivers: receivers
+    .dialogues_inset
+      - messages.each do |contractor, t_messages|
+
+        - if t_messages.presence
+          .messages_from{id: "messages_from_#{contractor.id}"}
+            = render 'messages/message', message: t_messages.first, contractor: contractor, resource: resource
+
+    .dialogue_inset
+

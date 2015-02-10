@@ -1,0 +1,20 @@
+%fieldset
+  .string
+    .third
+      = f.label :title
+    .third
+      = f.text_field_cornered :title
+      = required_field
+    .third.right
+    .clear
+  .string
+    .third= f.label :file_location
+    .third.right.file_location= f.object.file_location_url.split('/').last if f.object.try(:file_location_url)
+  .string
+    .third
+      = f.file_field_as_button :file_location
+      = f.hidden_field :file_location_cache
+    .third.right
+      = f.destroy_field
+    .third
+    .clear

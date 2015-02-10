@@ -1,0 +1,29 @@
+.dashed_container
+  = render :layout => 'layouts/main_left' do
+    %h3= t(:description)
+    = f.text_field_inline :title
+    = f.text_field_inline :ved_code
+    = f.text_field_inline :application_field
+
+    .field
+      .half= f.label :image
+      .right.half
+        = f.file_field :image
+        = f.hidden_field :image_cache
+
+    = f.text_field_inline :net_weight
+    = f.text_field_inline :gross_weight
+
+    = f.text_field_inline :volume
+    = f.text_field_inline :package
+
+  = render :layout => 'layouts/main_right' do
+    %h3= t(:properties)
+    .form_properties.insertion_point{class: "properties_#{f.object.object_id}", 'data-id-numb'=> f.object.object_id}
+      = f.fields_for :properties do |builder|
+        = render 'property_fields', f: builder
+
+    %h3 Добавление характеристик
+    = link_to_add_fields_to 'добавить пустую характеристику', f, :properties, 'property_fields', 'bold'
+    %br
+    = raw ProductProperty.standart.map{|title| link_to_add_standart_property title, f, :properties, 'property_fields'}.join(', ')

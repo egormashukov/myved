@@ -1,0 +1,6 @@
+- if sea_freight.exchange_rate.present?
+  %ul.annotation
+    %li.bold= "Ставки указываются для #{sea_freight.containers_amount} #{Russian.p(sea_freight.containers_amount, "контейнера", "контейнера", "контейнеров")}"
+    %li= "Фиксированный курс USD = #{content_tag :span, sea_freight.exchange_rate.usd_rub, class: 'js-currency-usd-rub'} руб".html_safe
+    %li= "Фиксированный курс Euro = #{content_tag :span, sea_freight.exchange_rate.eur_usd, class: 'js-currency-eur-usd'} USD".html_safe
+    %li= "Дата фиксации курса: #{sea_freight.exchange_rate.actual_date.strftime('%d.%m.%Y')}"

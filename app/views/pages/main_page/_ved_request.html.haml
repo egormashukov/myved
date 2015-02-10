@@ -1,0 +1,40 @@
+.ved_request_frame
+  .buy_button_frame_in
+    %h2.main_page_box= t(:solve_ved_problems)
+    %p.full_text При организации импорта или экспорта продукции приходится постоянно сталкиваться с большим количеством всевозможных проблем
+    .problem_title= t(:problem)
+    .problem_content
+      %p.span0
+        = image_tag 'main_page/arrow.png', class: 'arrow'
+        Как правильно оценить себестоимость импорта и возможные риски?
+      %p.span30
+        = image_tag 'main_page/arrow.png', class: 'arrow'
+        Как проверить надежность иностранного продавца?
+
+      %p.span150
+        = image_tag 'main_page/arrow.png', class: 'arrow'
+        Какие нужны сертификаты <br> и как их получить?
+      %p.span180
+        = image_tag 'main_page/arrow.png', class: 'arrow'
+        Как проконтролировать <br> качество товара?
+
+    .past_title= t(:help_from_myved)
+    .problem_title= t(:there_is_solvation)
+
+    .ved_solvation_content
+      %p.span0
+        = image_tag 'main_page/arrow.png', class: 'arrow'
+        Поможет правильно оценить затраты по импорту и снизить риски
+      %p.span90
+        = image_tag 'main_page/arrow.png', class: 'arrow'
+        Решить всевозможные вопросы ВЭД (сертификация, проверка продавцов, контроль качества <br/> и другое)
+      %p.span180
+        = image_tag 'main_page/arrow.png', class: 'arrow'
+        Получить лучшие решения от проверенных компаний со всего мира
+
+
+
+    %p.full_text Все это вы можете на сайте myVED
+    %br
+    -#.advertizing_self= t(:advertizing_self)
+    = start_for_free_button("buyer")

@@ -1,0 +1,29 @@
+- product_request ||= nil
+- tender_supplier_product ||= nil
+- product_response ||= nil
+= form_for [@cost_calculation, @cost_calculation_product], builder: MainFormBuilder do |f|
+  = f.error_messages
+  .bordered
+    .fieldset_title.bold= Product.model_name.human
+    %fieldset{class: "fs_#{f.object.object_id}"}
+      - unless current_contractor.ns?
+        = f.select :supplier_product_attr, options_from_collection_for_select(current_contractor.supplier_products, 'id', 'title', f.object.supplier_product_id || f.object.supplier_product_attr), {:include_blank => true}, {class: "selectto select_supplier_product", id: "fs_#{f.object.object_id}"}
+        .new_product_checkbox{class: "pnc_fs_#{f.object.object_id}"}
+          - if f.object.new_record? || product_response.try(:tender_response).presence
+            = f.check_box :edit_product
+          - else
+            = f.check_box :edit_product, checked: true
+          = f.label :edit_product, 'изменять выбранный шаблон товара (?)'
+
+      - if product_response.presence
+        - if f.object.supplier_product.presence
+          = f.fields_for :supplier_product do |builder|
+            = render 'supplier_product_fields', f: builder, parent_f: f
+        - else
+          = fields_for_nested_cost_calc_suppliers f, :supplier_product, product_response
+      - else
+        - f.object.supplier_product ||= SupplierProduct.new
+        = f.fields_for :supplier_product do |builder|
+          = render 'supplier_product_fields', f: builder, parent_f: f, product_response: product_response
+
+  = f.main_button t(:save)

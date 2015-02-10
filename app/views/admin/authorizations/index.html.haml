@@ -1,0 +1,35 @@
+- content_for(:page_header) do
+  -# %p= link_to "#{t 'add'}  #{Contractor.model_name.human}", new_admin_contractor_path, :class => "bright_link"
+  %h1= link_to plural_name('Contractor::Authorization'), admin_authorizations_path
+-#= paginate @contractors
+
+#index_wr
+  %table.zebra
+    %thead
+      %tr
+        %th= Contractor.human_attribute_name("title")
+        %th= Contractor.human_attribute_name("profile")
+        %th Статус
+        %th
+        %th
+        %th
+        %th
+
+    %tbody
+      - @authorizations.each do |authorization|
+
+        %tr{class: "#{'_highlighted' if authorization.authorized?}"}
+          %td= link_to authorization.title, contractor_path(authorization), target: '_blank'
+          %td= authorization.profile_title
+          %td= authorization.state_string
+          %td= link_to "открыть на сайте", contractor_path(authorization), target: "_blank"
+          %td
+            = "документов: #{authorization.myved_documents.count}"
+            %br
+            = link_to 'добавить документы', edit_admin_contractor_path(authorization)
+          %td= link_to 'диалог по авторизации', authorization.authorization_execution, target: "_blank"
+          %td
+            - if authorization.authorized?
+              %b авторизован
+            - else
+              = link_to 'авторизовать', authorize_admin_authorization_path(authorization), method: :post, class: "black_button"

@@ -1,0 +1,19 @@
+.dashed_container
+  = render :layout => 'layouts/main_left' do
+    %h2= t(:basic_information)
+    = sea_freight.labeled_field :contractor_title
+    = sea_freight.labeled_field :title
+    .bold= sea_freight.labeled_field(:transport_string, :transport)
+    = sea_freight.labeled_date :loading_date
+    = sea_freight.labeled_field(:hazard_string, :hazard)
+    = sea_freight.labeled_field(:requirements_string, :requirements)
+    = sea_freight.labeled_field :description
+
+  = render :layout => 'layouts/main_right' do
+    %h2 Маршрут
+    = sea_freight.labeled_field :incoterms
+    = sea_freight.labeled_field :shipping_place
+    = sea_freight.labeled_field :shipping_port
+    = sea_freight.labeled_field :destination_port
+    = sea_freight.labeled_field :customs_clearance
+    = sea_freight.labeled_field :destination

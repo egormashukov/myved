@@ -1,0 +1,7 @@
+- content_for(:page_header) do
+  %p= link_to action_accusative("pages", "add"), new_admin_page_path, :class => 'bright_link'
+  %h1= link_to plural_name("pages"), admin_pages_path
+-#= paginate @pages
+
+#index_wr
+  = render 'index' 

@@ -1,0 +1,18 @@
+= render 'layouts/bar', header_t: t(:bidding), background_image: 'top_panel_card', left: true, current_step: @step
+-#= google_translate_link unless @step == :final
+= tender_response_info_panel
+
+= form_for @tender, url: wizard_path, builder: MainFormBuilder, html: {onsubmit: "#{'yaCounter23557672.reachGoal(\'SEND_TENDER_TO_MYVED\'); return true;' if @step == :final}"} do |f|
+  = f.error_messages
+  = yield f
+  = f.hidden_field :status, value: @step
+
+  - if @step == :final
+    .final_step
+      = f.submit_or_send(@step)
+      .ready_box
+        = f.label :ready
+        = f.check_box :ready
+  - else
+    = f.submit_or_send(@step)
+.clear

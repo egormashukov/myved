@@ -1,0 +1,25 @@
+.bordered_box
+  .fieldset_title.bold Товар
+  %fieldset{class: "fs_#{f.object.object_id}"}
+    - f.object.supplier_product ||= SupplierProduct.new
+    = f.fields_for :supplier_product do |builder|
+      = render 'supplier_product_fields', f: builder
+
+    .dashed_container
+      = render :layout => 'layouts/main_left' do
+        .field
+          .left.half
+            = f.label :quantity
+            = f.number_field :quantity
+          .right.half
+            = f.label :quantity_unit
+            = f.text_field :quantity_unit, placeholder: 'шт, кг'
+        .field
+          .third
+            = f.label :price
+          .two_thirds.right
+            = raw(f.object.cost_calculation.try(:currency))
+            = f.number_field :price, step: "any"
+            = required_field
+
+        = f.destroy_field

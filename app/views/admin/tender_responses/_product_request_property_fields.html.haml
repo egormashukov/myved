@@ -1,0 +1,12 @@
+- property = property || request_properties.find_by_title(f.object.title)
+- if property
+  %tr
+    %td
+      = '*' if property && property.obligatory?
+      %span.property_title= property.try(:title) || f.object.title
+    %td
+      %span{class: "property_body_#{property.try(:id)}"}= property.try(:body)
+    %td
+      = f.label :body
+      .div{class: "property_body_#{property.try(:id)}"}= f.text_area :body, rows: 2, class: 'property_body_in_fieldset'
+      = f.hidden_field :title, value: (f.object.title || property.title)

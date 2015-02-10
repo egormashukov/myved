@@ -1,0 +1,20 @@
+%table.zebra
+  %thead
+    %tr
+      %th= sortable_columns "title", ProductRequest.human_attribute_name("title")
+      %th= sortable_columns "application_field", ProductRequest.human_attribute_name("application_field")
+      %th= sortable_columns "id_code", ProductRequest.human_attribute_name("id_code")
+
+      %th
+      
+  %tbody
+    - @product_requests.each do |product_request|
+      %tr
+        %td= link_to product_request.title, [:edit, :admin, product_request]
+        %td= link_to product_request.application_field, [:edit, :admin, product_request]
+        %td= link_to product_request.id_code, [:edit, :admin, product_request]
+
+        %td.right
+          = link_to [:admin, product_request], :method => :delete, :confirm => "#{t 'confirm.delete'}", class: :del do
+            %span Удалить
+            %i{:class => "icon-trash icon-large"}

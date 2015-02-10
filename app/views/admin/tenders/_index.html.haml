@@ -1,0 +1,30 @@
+%table.zebra
+  %thead
+    %tr
+      %th= sortable_columns "title", Tender.human_attribute_name("title")
+      %th= Tender.human_attribute_name("contractor_id")
+      %th= sortable_columns "state", Tender.human_attribute_name("state")
+      %th= sortable_columns "start_at", Tender.human_attribute_name("start_at")
+      %th= sortable_columns "end_at", Tender.human_attribute_name("end_at")
+      %th
+      %th
+      %th
+      
+  %tbody
+    - @tenders.each do |tender|
+      %tr{class: "#{'_highlighted' if tender.waiting?}"}
+        %td= tender.title
+        %td= link_to tender.owner.title, [:edit, :admin, tender.owner]
+        %td
+          = tender.current_state
+          - if tender.waiting? && !current_user.china?
+            = link_to '(одобрить)', [:toggle_approved, :admin, tender]
+        %td= tender.start_at.strftime("%d.%m.%y.") if tender.start_at
+        %td= tender.end_at.strftime("%d.%m.%y.") if tender.end_at
+        %td= link_to  'открыть на сайте', tender, target: '_blank'
+        %td= link_to  'редактировать торги', [:edit, tender], target: '_blank' unless current_user.china?
+        %td.right
+          - unless current_user.china?
+            = link_to [:admin, tender], :method => :delete, :confirm => "#{t 'confirm.delete'}", class: :del do
+              %span Удалить
+              %i{:class => "icon-trash icon-large"}

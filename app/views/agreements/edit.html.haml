@@ -1,0 +1,7 @@
+%h1 Редактирование соглашения
+
+= render 'form'
+
+= link_to 'просмотреть', @agreement
+\|
+= link_to 'другие соглашения по проекту', [@agreement.deal, :agreements]

@@ -1,0 +1,19 @@
+.top_slide
+  .top_slide_in
+    .text_block
+      %h1 myVED - поможет решить все вопросы импорта - экспорта (ВЭД)
+      %div
+        %p myVED - это простой и понятный сайт, на котором Вы можете без посредников решить любые вопросы, связанные с закупкой иностранного товара, его доставкой и таможенным оформлением, получением сертификатов, проверкой качества и многое другое.
+        %p myVED - поможет Вам получить напрямую лучшие цены на рынке и при этом сэкономить время.
+
+      .top_slide_frame
+        %h3
+          начните работать с системой 
+          %br
+          бесплатно 
+          %span.red прямо сейчас!
+        = link_to t(:start_for_free), new_contractor_registration_path, class: 'red_button most_wide_button'
+        .offer_contract_acceptance
+          = check_box_tag 'offer_contract_acceptance'
+          = label_tag 'offer_contract_acceptance', t(:offer_contract_acceptance)
+      .al_centered= link_to t(:or_know_more), '#', class: 'red_link'

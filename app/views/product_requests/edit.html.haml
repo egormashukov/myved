@@ -1,0 +1,29 @@
+= render 'layouts/bar', header_t: @tender.title, background_image: 'top_panel_card', left: false
+- if notice
+  #notice= notice
+%h2 Общая информация о товаре
+= two_colums_string(@product_request, :title)
+= two_colums_string(@product_request, :id_code)
+.string
+  .third= Product.human_attribute_name(:image)
+  .two_thirds= image_tag @product_request.image_url(:icon) if @product_request.image_url(:icon)
+= two_colums_string(@product_request, :application_field)
+%h2 Торговые условия
+.string
+  .third= Product.human_attribute_name(:price)
+  .two_thirds= raw price_string(@product_request.price, @tender.currency)
+.string
+  .third= Product.human_attribute_name(:quantity)
+  .two_thirds= raw price_string(@product_request.quantity_unit, @product_request.quantity)
+
+%h2 Описание товара
+= form_for @product_request, builder: MainFormBuilder do |f|
+  = f.error_messages
+  .form_properties.insertion_point{class: "properties_#{f.object.object_id}"}
+    = f.fields_for :properties do |builder|
+      = render 'tenders/property_fields', f: builder
+  = link_to_add_fields_to content_tag(:h3, 'Добавление характеристик'), f, :properties, 'tenders/property_fields', 'bold'
+  = link_to_add_fields_to 'добавить пустую характеристику', f, :properties, 'tenders/property_fields', 'bold'
+  .actions
+    = f.submit t(:save), class: 'main_button right'
+    = link_to t(:back), @product_request.tender, class: 'minor_button'

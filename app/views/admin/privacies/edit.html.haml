@@ -1,0 +1,9 @@
+- content_for :page_header do
+  %p= link_to t('back'), admin_privacies_path, class: 'bright_link'
+  %h1
+    = action_accusative('privacies', 'edit')
+
+-# TODO some error here
+-# undefined method `errors' for nil:NilClass
+= form_for admin_privacies_path(@privacy), method: :put, builder: AdminFormBuilder do |f|
+  = render 'form', f: f

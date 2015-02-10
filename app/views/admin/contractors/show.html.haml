@@ -1,0 +1,47 @@
+- content_for :page_header do
+  %p= link_to t('back'), admin_contractors_path, :class => "bright_link"
+  %h1
+    - if @contractor.new_record?
+      = "#{t 'add'} #{Contractor.model_name.human}"
+    - else
+      = "#{t 'edit'} #{Contractor.model_name.human}"
+
+= form_for [:admin, @contractor] do |f|
+  - if @contractor.errors.any?
+    #error_explanation
+      %h2= "#{t 'save_errors'}: #{@contractor.errors.count}"
+      %ul
+        - @contractor.errors.full_messages.each do |msg|
+          %li= msg
+  %table
+
+    %tr
+      %th= f.label :title
+      %td= f.text_field :title      
+
+    %tr
+      %th= f.label :email
+      %td= f.text_field :email    
+    %tr
+      %td= f.label :pattern_of_ownership
+      %td= f.text_field :pattern_of_ownership
+    %tr
+      %td= f.label :first_name
+      %td= f.text_field :first_name
+    %tr
+      %td= f.label :last_name
+      %td= f.text_field :last_name
+    %tr
+      %td= f.label :contact_person_email
+      %td= f.email_field :contact_person_email
+    %tr
+      %td= f.label :telephone_number
+      %td= f.text_field :telephone_number
+    %tr
+      %td{colspan: 2}
+        = f.label :description
+        %br
+        = f.text_area :description 
+  
+  .actions
+    = f.submit t('save')

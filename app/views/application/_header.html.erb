@@ -1,0 +1,55 @@
+    <!-- HEADER
+    ============================================= -->
+    
+    <header id="header">
+      <div class="navbar navbar-fixed-top"> 
+
+    <div class="row" style="background-color: #333;">
+        
+          <div class="col-md-12" >
+          
+        <div class="t-left">Нужна помощь? </br> <h3>(499) 686-01-86</h3></div>
+         
+                  <div class="t-right"><a href="/contractors/sign_in" title="Уже зарегистрированы? "> 
+            <button type="button" class="btn btn-primary2 btn-sm" > Войти в аккаунт</button>  </a>
+        </div>
+  
+        
+      </div> </div> 
+
+      
+        <div class="container">
+    
+          
+          <!-- Logo & Responsive Menu -->
+          <div class="navbar-header">
+            <button type="button" id="nav-toggle" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-menu">
+              <span class="sr-only">Меню</span> 
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/"><img src="/img/logo.png" alt="logo" role="banner"></a>
+            
+          </div>  <!-- /.navbar-header -->
+          
+          <!-- Navigation -->
+          <nav id="navigation-menu" class="collapse navbar-collapse"  role="navigation">
+            <ul class="nav navbar-nav navbar-right">
+            <!--<li><a id="GoToHome" class="selected-nav" href="#intro">Главная</a></li>-->
+            <li><%= link_to "О сервисе", root_path(anchor:"about-1"), class: "selected-nav", id: 'GoToAbout' %></li>
+            <li><%= link_to "Возможности", root_path(anchor:"features"), id: 'GoToFeatures' %></li>
+            <li><%= link_to "Преимущества", root_path(anchor:"about-2"), id: 'GoToAbout2' %></li>
+
+            <li><%= link_to "Блог", root_path(anchor:"blog"), id: 'GoToFaq' %></li>
+            <li><%= link_to "Контакты", root_path(anchor:"footer"), id: 'GoToFooter' %></li>
+            
+            </ul>
+          </nav>  <!-- /.navbar-collapse -->
+          
+        </div>  <!-- /.container -->
+      </div>  <!-- /.navbar -->
+      
+    </header>  <!-- END HEADER -->
+
+

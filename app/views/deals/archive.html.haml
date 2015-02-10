@@ -1,0 +1,6 @@
+%h1 Список завершенных проектов
+= render 'switch_panel'
+- if current_contractor.buyer?
+  = render 'deals_table', deals: @deals
+- else
+  = render 'supplier_deals_table', deals: @deals

@@ -1,0 +1,15 @@
+%tr
+  %td 
+    .contractor_link
+      = image_tag("#{root_url}#{@contractor.logo.presence ? @contractor.logo_url(:icon) : asset_path(@contractor.logo_url(:icon))}", alt: @contractor.title, class: 'small_image')
+      = @contractor.title
+  %td
+    - if @mail_title.presence
+      %p
+        %b= strip_tags(@mail_title)
+
+    #form_ns_body= raw @mail_body
+
+
+    %br
+    = link_to 'myVED.com', root_url, class: 'to_myved'

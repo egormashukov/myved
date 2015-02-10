@@ -1,0 +1,27 @@
+.footer_in
+  .footer_nav= render "layouts/footer/footer_nav"
+  .copyright= render "layouts/footer/copyright"
+  %table
+    %tr
+      %td= raw t(:contact_us)
+      %td
+
+    %tr
+      %td
+        %span.big= link_to "+7 (499) 686 01 86", 'tel:+74996860186' 
+        %br
+        %span.dark_text= t(:working_hours)
+      %td
+        = image_tag 'footer/mobile.png'
+    %tr
+      %td= mail_to 'admin@myved.com'
+      %td= image_tag 'footer/mail.png'
+    %tr
+      %td myved
+      %td= image_tag 'footer/skype.png'
+    %tr
+      %td
+        = t("address_first_part")
+        %br
+        = t("address_first_second")
+      %td= image_tag 'footer/gps.png'

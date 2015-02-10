@@ -1,0 +1,6 @@
+.messages_menu
+  %ul
+    %li= link_to t(:compose_message), new_message_path, class: "menu_messagable_new"
+    %li= link_to t(:conversations), "#", class: "menu_dialogues"
+    %li= link_to t(:active_conversations), "#", class: "menu_dialogue"
+    .clear

@@ -1,0 +1,21 @@
+%h1 Выписка по Соглашению торгов
+
+%table
+  = @sea_freight.labeled_row(:end_date_execution)
+  %tr
+    %td.t оператор торгов
+    %td ООО "майВЭД"
+  %tr
+    %td.t место проведения
+    %td= link_to 'http://myved.com', 'http://myved.com'
+  = @sea_freight.labeled_row(:contractor_title)
+  = @best_response.labeled_row(:contractor_title)
+
+
+= render 'shared/report_contacts_table', orderer: @sea_freight.contractor, performer: @best_response.contractor
+%br
+.info._t-bordered= render "sea_freights/info", sea_freight: @sea_freight
+.clear
+._t-bordered= render "sea_freights/transport_table", obj: @sea_freight
+
+= render "sea_freights/best_response", best_response: @best_response, hideable: false

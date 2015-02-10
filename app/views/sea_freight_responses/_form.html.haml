@@ -1,0 +1,67 @@
+= form_for [@sea_freight, @sea_freight_response], builder: MainFormBuilder do |f|
+  = f.error_messages
+  .dashed_container
+    = render :layout => 'layouts/main_left' do
+      %h3 Котировки
+
+      .field= render 'sea_freights/currency_info', sea_freight: @sea_freight
+      = f.select_inline :category, SeaFreightResponse.category_options, {selected: @sea_freight_response.selected_transport_option}, class: 'selectto js-sea-resp-selector', disabled: !@sea_freight_response.any_transport?
+
+      .field.js-sea-resp._sea
+        %div= f.label :filo
+        .two_thirds= f.text_area :filo, rows: 1, class: 'js-autosum'
+        .third._pl10.js-currency-vat-choose
+          = f.select_currency :filo_currency, 'js-currency'
+          = f.select_vat :filo_vat, 'js-vat'
+
+      .field.js-sea-resp._auto._railway
+        %div= f.label :port_charges
+        .two_thirds= f.text_area :port_charges, rows: 1, class: 'js-autosum'
+        .third._pl10.js-currency-vat-choose
+          = f.select_currency :port_charges_currency, 'js-currency'
+          = f.select_vat :port_charges_vat, 'js-vat'
+
+      .field.js-sea-resp._auto._railway
+        %div= f.label :tracking
+        .two_thirds= f.text_area :tracking, rows: 1, class: 'js-autosum'
+        .third._pl10.js-currency-vat-choose
+          = f.select_currency :tracking_currency, 'js-currency'
+          = f.select_vat :tracking_vat, 'js-vat'
+
+      .field.js-sea-resp._railway
+        %div= f.label :railway_charges
+        .two_thirds= f.text_area :railway_charges, rows: 1, class: 'js-autosum'
+        .third._pl10.js-currency-vat-choose
+          = f.select_currency :railway_charges_currency, 'js-currency'
+          = f.select_vat :railway_charges_vat, 'js-vat'
+      .string
+        ИТОГО:
+        %span.js-autosum-result
+
+      %br
+      - if @best_response.presence && !@sea_freight_response.try(:new?)
+        = @sea_freight.best_label(@best_response)
+        = @best_response.labeled_field(:contractor_for_current)
+        = @best_response.labeled_field(:total_currecied)
+        = @best_response.labeled_field(:transit)
+
+    = render :layout => 'layouts/main_right' do
+      %h3 Условия
+      = f.text_field_inline :end_date, class: 'datepicker', data: {'min-date' => '+10d'}
+
+      = f.text_area_inline :destination_port, rows: 2
+      = f.text_area_inline :transit, value: f.object.try(:transit).presence || "50 дней", rows: 2
+      = f.text_area_inline :max_weight, value: f.object.try(:max_weight).presence || "24 тонны!", rows: 2
+      = f.text_area_inline :overbalance, value: f.object.try(:overbalance).presence || "К автодоставке: за каждую тонну свыше 20 тонн = +100 USD/тонну", rows: 2
+      = f.text_area_inline :free_container, value: f.object.try(:free_container).presence || "21 день", rows: 2
+      = f.text_area_inline :free_port, value: f.object.try(:free_port).presence || "7 дней", rows: 2
+      = f.text_area_inline :free_car, value: f.object.try(:free_car).presence || "1+2 дня бесплатно на загрузке+разгрузке", rows: 2
+      = f.text_area_inline :stoppage, value: f.object.try(:stoppage).presence || "150 $/сутки", rows: 2, rows: 2
+      
+      = f.text_area_inline :additional_charges, rows: 2#, value: f.object.try(:additional_charges).presence || "возможна подстраховка на границе"
+
+  .actions
+    = link_to t(:back), @sea_freight, class: 'minor_button'
+    = f.submit t(:send), class: 'main_button right'
+  = render "sea_freights/info", sea_freight: @sea_freight.decorate
+  ._t-bordered= render "sea_freights/transport_table", obj: @sea_freight

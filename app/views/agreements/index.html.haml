@@ -1,0 +1,14 @@
+%h1 Список соглашений по проекту
+
+%table
+  %tr
+    %th
+    %th
+    %th
+
+  - @agreements.each do |agreement|
+    %tr
+      %td= agreement.title
+      %td= link_to 'Show', agreement
+      %td= link_to 'Edit', edit_agreement_path(agreement)
+      %td= link_to 'Destroy', agreement, :method => :delete, :data => { :confirm => 'Are you sure?' }

@@ -1,0 +1,145 @@
+-# Слишком большая страница. Нужен рефакторинг
+= render 'layouts/bar', header_t: @tender.title, background_image: 'top_panel_card', left: false
+
+- if notice
+  %p.notice= notice
+- if @tender.tender_contractors.size < 2
+  %p.notice._red
+    Обращаем Ваше внимание на то, что торги не могут начаться, пока в них не будет добавлено хотя бы две компании.
+
+.dashed_container._b-bordered
+  = render :layout => 'layouts/main_left' do
+    .bordered_blockd
+      .block
+        .string 
+          %h3= t(:basic_information)
+        .string
+          .three_fourths= Tender.human_attribute_name(:owner_id)
+          .fourth.right= link_to_if @tender.owner.in_contacts?(current_contractor), @tender.owner.title, @tender.owner, target: "_blank", class: 'blue_link'
+        .string
+          .fourth= Tender.human_attribute_name(:title)
+          .three_fourths.right= @tender.title
+        .string
+          .fourth= Tender.human_attribute_name(:body)
+          .three_fourths= @tender.attr_or_bip(:body, @tender.owner?(current_contractor))
+        .string= @tender.open_message_link
+
+      .block
+        %h3= Tender.human_attribute_name(:requirements)
+        .string
+          .fourth= Tender.human_attribute_name(:requirements)
+          .three_fourths= @tender.attr_or_bip(:requirements, @tender.owner?(current_contractor))
+        .string
+          .half= t(:attachments)
+          .half.right
+            - @tender.attachments.each do |a|
+              = link_to_attachment a
+              %br
+      .block
+        %h3= t(:trading_conditions)
+        .string
+          .three_fourths= Tender.human_attribute_name(:delivery_time)
+          .fourth.right
+            - if @tender.delivery_time.presence
+              = @tender.delivery_time_view
+              = tender_date_unites(@tender)
+        .string
+          .three_fourths= Tender.human_attribute_name(:conditions_of_supply)
+          .fourth.right= @tender.conditions_of_supply
+        .string
+          .third= Tender.human_attribute_name(:terms_of_payment)
+          .two_thirds.right= @tender.terms_of_payment
+        .string
+          .three_fourths= Tender.human_attribute_name(:service)
+          .fourth.right= @tender.service
+
+
+      %h3= t(:products)
+
+      %table
+        %tr
+          %th= Product.human_attribute_name(:title)
+          %th= Product.human_attribute_name(:quantity)
+          %th= Product.human_attribute_name(:price)
+          %th= TenderResponse.human_attribute_name(:cost)
+          %th
+
+        - @tender.product_requests.each do |p|
+          %tr
+            %td
+              - if @tender.deal.owner?(current_contractor)
+                = link_to p.title, [:edit, p]
+              - else
+                = link_to p.title, p
+            %td= p.quantity
+            %td= raw price_string(p.price, @tender.currency)
+            %td= raw p.cost_string
+            %td
+              - if p.image_url
+                = link_to p.image_url, class: "fancybox", target: "_blank", title: p.title do
+                  %i.fa.fa-picture-o
+      %br
+      %br
+
+  = render :layout => 'layouts/main_right' do
+
+    .bordered_blockd{"data-step" => 1, "data-intro" => tour_item("tender_state")}
+      .string 
+        %h3 Текущее состояние торгов
+      - if @tender.successful? && (@tender.deal.owner?(current_contractor) || @tender_responses.detect{|tr| tr.contractor_id == current_contractor.id}.try(:winner?))
+        .string
+          .third= t(:report)
+          .two_thirds.right= link_to t(:report), [:report, @tender], class: 'blue_link'
+      .string
+        .third
+          - if @tender.deal.owner?(current_contractor)
+            = t(:current_status)
+          - else
+            = t(:current_response_status) 
+        .two_thirds.right
+          %span.tender_status
+            - if @tender.deal.owner?(current_contractor)
+              = @tender.current_state
+            - else
+              = @tender.supplier_status(current_contractor)
+          = link_to "(#{t(:update)})", @tender, class: 'blue_link', "data-step" => 2, "data-intro" => tour_item("tender_update_status")
+          = link_to '#', class: 'print_link' do
+            %i.fa.fa-print
+
+      .string
+        .half= Tender.human_attribute_name("start_at")
+        .half.right= @tender.start_at.strftime("%d/%m/%y") if @tender.start_at
+      .string
+        .half= Tender.human_attribute_name("end_at")
+        .half.right= @tender.end_at.strftime("%d/%m/%y") if @tender.end_at 
+      - if @tender.deal.owner?(current_contractor) || @tender_responses.presence
+        .string 
+          .half= t(:participants_number)
+          .half.right= @tender.tender_contractors.size
+
+        - if @tender.tender_responses.sent.collect(&:contractor_id).include?(current_contractor.id) || (@tender.deal.owner?(current_contractor) && @tender_responses.presence)
+          = render 'tenders/best_response_panel', tender: @tender, tender_responses: @tender_responses
+        
+        - if @tender.tender_responses.sent.collect(&:contractor_id).include?(current_contractor.id)
+          - if current_contractor == @tender_responses.best.try(:contractor)
+            .tour.best_response{"data-step" => 3, "data-intro" => tour_item("tender_best")}
+              = render 'tenders/current_response', tender_responses: @tender_responses, tender: @tender
+          - else 
+            = render 'tenders/current_response', tender_responses: @tender_responses, tender: @tender
+
+  -#
+    .lk-column2
+      = render 'messages/messages', resource: '', messages: @messages, receivers: @receivers
+.clear
+
+- if @tender.owner?(current_contractor) && !@tender.approved?
+  .actions
+    = link_to "редактировать", [:edit, @tender], class: "main_button"
+    = link_to "добавить продавцов", [:edit, @tender], class: "main_button"
+
+- if (@tender.deal.owner?(current_contractor) || current_contractor.ns?) && @tender.tender_contractors.presence
+  = render 'summary_table', tender_responses: @tender_responses.to_a.sort_by {|x| [x.summ_cost, x.delivery_time.to_i]}, tender: @tender
+- elsif @tender_responses.presence && @tender_responses.select{|tr| tr.contractor_id == current_contractor.id}.presence
+  = render 'summary_table', tender_responses: @tender_responses.select{|tr| tr.contractor_id == current_contractor.id}.presence, tender: @tender
+  
+= @tender.control_panel(current_contractor)

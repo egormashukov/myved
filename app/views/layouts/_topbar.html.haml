@@ -1,0 +1,36 @@
+.auth_block
+  - if contractor_signed_in?
+    = link_to current_contractor do
+      .profile_logo= contractor_logo(current_contractor)
+      .user_titles
+        = current_contractor.first_name
+        = current_contractor.last_name
+        %br
+        = current_contractor.title
+  - if !current_contractor.authorized?
+    = link_to "необходима авторизация", authorization_path, class: 'auth_block__auth-link'
+  .acts
+    - if contractor_signed_in? && current_contractor.supplier?
+      .languages
+        = link_to 'eng', params.merge(locale: 'en')
+        |
+        = link_to 'rus', params.merge(locale: 'ru')
+    .top_menu
+      %ul
+        - if contractor_signed_in?
+          %li{"data-step" => 1, "data-intro" => tour_item("profiles"), class: 'home_page_tour'}= profile_link
+          -#%li= notifications_link(@notifications)
+          %li= blog_link
+          %li= signout_link
+        - else
+          %li= link_to t(:sign_up), select_region_path
+          %li= link_to t(:sign_in), new_contractor_session_path
+= link_to 'tel:+74996860186', class: 'tel' do
+  %span.top_reg (499)
+  %span.light_blue 686-01-86
+  <div class="feature-footer _header"><i class="fa fa-home"></i></div>
+  -#
+    %br
+    %span.support_mail= mail_to 'info@ns.ru', 'написать в техподдержку'
+.clear
+

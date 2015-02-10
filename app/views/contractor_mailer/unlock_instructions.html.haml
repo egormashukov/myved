@@ -1,0 +1,13 @@
+%tr
+  %td 
+    .contractor_link
+      = image_tag("#{root_url}#{@contractor.logo.presence ? @contractor.logo_url(:icon) : asset_path(@contractor.logo_url(:icon))}", alt: @contractor.title, class: 'small_image')
+      = @contractor.title
+  %td
+    %b= "Hello #{@resource.email}!"
+    %br
+
+    #form_ns_body
+      %p Your account has been locked due to an excessive number of unsuccessful sign in attempts
+      %p Click the link below to unlock your account:
+      %p= link_to 'Unlock my account', unlock_path(@resource, :unlock_token => @resource.unlock_token)

@@ -1,0 +1,29 @@
+%table.zebra
+  %thead
+    %tr
+      %th= sortable_columns "context", NsHelp.human_attribute_name("created_at")
+      %th= sortable_columns "contractor_id", NsHelp.human_attribute_name("contractor_id")
+      %th Торги
+      %th
+      %th
+      %th
+      
+  %tbody
+    - @ns_helps.each do |ns_help|
+      %tr
+        %td= link_to ns_help.created_at.strftime("%d.%m.%y %H:%M"), [:edit, :admin, ns_help]
+        %td= link_to ns_help.contractor.title, ns_help.contractor
+        %td
+          = link_to ns_help.tender.try(:title), ns_help.tender, target: "_blank"
+          = link_to "(просмотреть торги)", ns_help.tender, target: "_blank"
+          - unless current_user.china?
+            = link_to "(редактировать)", [:edit, ns_help.tender], target: "_blank"
+        %td
+          = ns_help.processed_string
+          - unless ns_help.processed?
+            = link_to '(готово)', [:toggle_processed, :admin, ns_help]
+        %td= link_to 'открыть', [:edit, :admin, ns_help]
+        %td.right
+          = link_to [:admin, ns_help], :method => :delete, :confirm => "#{t 'confirm.delete'}", class: :del do
+            %span Удалить
+            %i{:class => "icon-trash icon-large"}

@@ -1,0 +1,10 @@
+%fieldset
+  = f.text_field_inline :title
+  .field
+    .half= f.label :file_location
+    .half.right.file_location= f.object.file_location_url.split('/').last if f.object.try(:file_location_url)
+  .field
+    .half= f.file_field_as_button :file_location
+    .right.half
+      = f.destroy_field
+      = f.hidden_field :file_location_cache

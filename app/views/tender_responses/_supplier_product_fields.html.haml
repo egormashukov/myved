@@ -1,0 +1,86 @@
+- product_request = product_request || product_response.product_request
+
+%h3
+  = f.help_item(:general_info) 
+  = t(:basic_information)
+  
+.string
+  .third.left
+    = f.label_with_help :title
+  .third.middle
+    = attr_products_equal_check_box("title", product_request)
+    %span{class: "product_request_title_#{product_request.id}"}= product_request.title
+  .third.right
+    %div{class: "product_request_title_#{product_request.id}"}= f.text_field_cornered :title, class: 'first_title_in_fieldset', placeholder: t(:confirm_placeholder)
+    = required_field
+
+.string
+  .two_thirds.left= f.label_with_help :model
+  .third.right= f.text_field_cornered :model
+.string
+  .two_thirds.left= f.label_with_help :marking_of_goods
+  .third.right= f.text_field_cornered :marking_of_goods
+.string
+  .third.left= f.label_with_help :application_field
+  .third.middle
+    = attr_products_equal_check_box("application_field", product_request)
+    %span{class: "product_request_application_field_#{product_request.id}"}= product_request.application_field
+  .third.right
+    %div{class: "product_request_application_field_#{product_request.id}"}= f.text_field_cornered :application_field, placeholder: t(:confirm_placeholder)
+    = required_field
+.string
+  .two_thirds.left= f.label_with_help :hs_code
+  .third.right= f.text_field_cornered :hs_code
+.string
+  .third.left= f.label_with_help :nice_good_id
+  .third.middle
+    -#= attr_products_equal_check_box("id_code", product_request)
+    %span{class: "product_request_nice_good_id_#{product_request.id}"}= product_request.id_code
+  .third.right
+    -#%div{class: "product_request_nice_good_id_#{product_request.id}"}= f.select :nice_good_id, option_groups_from_collection_for_select(NiceClass.for_select, :nice_goods, :numbered_title, :id, :coded_title, f.object.nice_good_id), {include_blank: true}, class: 'selectto'
+    = f.object.try(:nice_good).try(:coded_title)
+    = f.text_field :nice_good_id, class: 'select_nice_goods'
+    = required_field
+.string
+  .two_thirds.left
+    - if product_request.image.presence
+      = link_to image_tag(product_request.image_url(:icon)), product_request.image_url, target: '_blank' 
+    - else
+      = t(:no_image)
+
+  .third.right
+    = image_tag(f.object.image_url(:icon)) if f.object.image_url
+    %br
+    = f.file_field :image
+
+%h3 
+  = f.help_item(:product_description)
+  = t(:product_description)
+
+= f.fields_for :properties do |builder|
+  = render 'product_request_property_fields', f: builder, request_properties: product_request.properties
+
+.string
+  .two_thirds.left= f.label_with_help :package
+  .third.right= f.text_field_cornered :package
+.string
+  .two_thirds.left= f.label_with_help :net_weight
+  .third.right= f.text_field_cornered :net_weight
+.string
+  .two_thirds.left= f.label_with_help :gross_weight
+  .third.right= f.text_field_cornered :gross_weight
+
+- product_request.properties.each do |property|
+  - unless f.object.properties.collect(&:title).include?(property.title)
+    = fields_for_nested_properties f, :properties, property
+
+%h3
+  = f.help_item('advantages')
+  = t(:competitive_advantages)
+
+= f.fields_for :advantages do |builder|
+  = render 'supplier_products/advantage_fields', f: builder
+= link_to_add_fields t(:add_competitive_advantage), f, :advantages, 'supplier_products/advantage_fields', 'plus_button'
+
+-# Слабое место! юзер может перебить значение
+= f.hidden_field :contractor_id, value: current_contractor.id

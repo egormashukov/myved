@@ -1,0 +1,9 @@
+= render 'layouts/bar', header_t: @page.title, background_image: 'top_panel_card', left: true, current_step: ''
+.page-body= raw @page.body
+
+%h2 Входящие счета
+= render 'table', payments: @outbox_payments
+
+%h2 Исходящие счета
+= render 'table', payments: @inbox_payments
+

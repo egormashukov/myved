@@ -1,0 +1,18 @@
+.bordered.removeable.transport_unit
+  .fieldset_title.bold= t(:transport_unit)
+  %fieldset{class: "fs_#{f.object.object_id}"}
+    .half= f.select_inline :transport, grouped_options_for_select(TransportUnit.sea_freight_transport_options, f.object.transport), {include_blank: true}, class: 'selectto', placeholder: 'выберите тип транспортной единицы'
+    .clear
+    .field.half
+      .third= f.label :max_weight
+      .third= f.number_field :max_weight, :step => 'any'
+      .third= f.select :weight_units, options_for_select(TransportUnit.weight_units_options, f.object.try(:weight_units).presence || "t" ), {}, class: 'selectto', placeholder: 'выберите единицы измерения'
+    .clear
+    .field
+      .half
+        .third= f.label :quantity
+        .third= f.form_field :quantity, f.number_field(:quantity, in: 1...100)
+        .third.right
+
+
+      .half.right= f.destroy_field

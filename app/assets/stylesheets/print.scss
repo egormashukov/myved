@@ -1,0 +1,45 @@
+@media print {
+  * {
+    background: none;
+    border-color: #000 !important;
+    border-width: 1px !important;
+    color: #000 !important;
+  }
+  a {text-decoration:underline;}
+  //a[href^="/"]:after {
+  //  content: " (http://www.myved.ru" attr(href) ") " !important;
+  //}
+  //a:link:after, a:visited:after {
+  //  content: " (" attr(href) ") ";
+  //}
+  .left_section, header, .header_in, .auth_block, .footer_nav, .red_button, .destroy_butto, .main_page_blue_butto, .actions, .minor_button, .main_button, .file_field_as_button, .top_bar_wr, footer, #footer, .messages_panel, .messages_panel_link, .lk-nav {
+    display: none;
+  }
+
+  i.fa {
+    display: none !important;
+  }
+  .main_in {
+    width:85% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .column2 {
+    display: none;
+  }
+  .column1{
+    width: 95% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .right_section {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 95% !important;
+    border: none !important;
+  }
+  .panel .top_panel_card {
+    padding: 1.0em 0 !important;
+    font-size: 1.5em;
+  }
+}

@@ -1,0 +1,33 @@
+%table.zebra
+  %thead
+    %tr
+      %th= sortable_columns "title", Contractor.human_attribute_name("title")
+      %th= sortable_columns "email", Contractor.human_attribute_name("email")
+      %th= sortable_columns "profile_type", Contractor.human_attribute_name("profile")
+      %th Дата регистрации
+      %th= sortable_columns "last_sign_in_at", Contractor.human_attribute_name("last_sign_in_at")
+      %th Источник
+      %th
+      %th
+      %th
+      
+  %tbody
+    - @contractors.each do |contractor|
+      %tr
+        %td= contractor.title
+        %td= contractor.email
+        %td= contractor.profile_title
+        %td= contractor.created_at.strftime("%d.%m.%y")
+        %td= link_to contractor.last_sign_in_at.strftime("%d.%m.%y"), [:edit, :admin, contractor] if contractor.last_sign_in_at
+        %td= contractor.http_referer
+        %td
+          %span= "документов: #{contractor.myved_documents.count}"
+          %br
+          = link_to 'добавить документы', edit_admin_contractor_path(contractor)
+        %td= link_to "открыть на сайте", contractor, target: "_blank"
+
+        %td.right
+          - unless current_user.china?
+            = link_to [:admin, contractor], :method => :delete, :confirm => "#{t 'confirm.delete'}", class: :del do
+              %span Удалить
+              %i{:class => "icon-trash icon-large"}

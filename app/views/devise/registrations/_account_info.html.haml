@@ -1,0 +1,15 @@
+%h2= t(:account_info)
+= f.text_field_inline :title
+= f.email_field_inline :email
+
+.password_changing
+  = f.password_field_inline :current_password
+  = f.password_field_inline :password, :autocomplete => "off", placeholder: 'оставьте пустым, если не хотите изменять'
+  = f.password_field_inline :password_confirmation
+.field
+  = toggle_link(t(:change_password), 'удалить', 'password_changing', 'password_changing')
+- if current_contractor.supplier?
+  = f.select_with_label :language, Contractor.language_options, {}, class: 'selectto'
+
+= f.fields_for :email_lists do |builder|
+  = render 'devise/registrations/email_lists_fields', f: builder

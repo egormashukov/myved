@@ -1,0 +1,40 @@
+= render 'layouts/bar', header_t: CertificationRequest.model_name.human, background_image: 'top_panel_card', left: true
+
+- if notice
+  #notice= notice
+
+%h3= t(:basic_information)
+.string
+  .third статус
+  .two_thirds= @ved_request.human_state
+
+- if current_contractor.ns?
+  = form_for @ved_request, builder: MainFormBuilder do |f|
+    .field
+      .third= f.label :bill
+      .third= f.text_field :bill
+      .third= f.submit 'сохранить', class: "main_button right"
+- elsif @ved_request.bill.presence
+  .string
+    .third к оплате
+    .two_thirds= @ved_request.bill
+
+- if @ved_request.bill.presence
+  .string
+    .third статус оплаты
+    .two_thirds
+      = @ved_request.pay_status
+      = link_to "оплата пришла", [:pay, @ved_request], method: :put, class: "blue_link" if current_contractor.ns? && !@ved_request.paid?
+
+- CertificationRequest.state_machine.states.map(&:name).each_with_index do |state, i|
+
+  %h2{class: "ved_req_step #{'_not-active' if i > CertificationRequest.state_machine.states.map(&:name).index(@ved_request.state.to_sym)}"}= t "statuses.certification_request.#{state.to_s}"
+  = render @ved_request.ved_messages.includes(:attachments).by_state(state.to_s)
+  - if @ved_request.current_state?(state) && !@ved_request.completed?
+    = form_for [@ved_request, @ved_message], builder: MainFormBuilder do |f|
+      = render "ved_messages/ved_message_fields", f: f
+
+      .actions.not-bt
+        = f.submit "Отправить", class: 'main_button wide_button'
+        - if current_contractor.ns? && !@ved_request.completed?
+          = link_to "Следующий шаг", [:next_step, @ved_request], class: 'main_button wide_button right', method: :put

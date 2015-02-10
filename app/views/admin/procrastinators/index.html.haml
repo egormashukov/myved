@@ -1,0 +1,25 @@
+%table.zebra
+  %thead
+    %tr
+      %th Тип
+      %th Название торгов
+      %th Статус
+      %th Компания
+      %th Email регистрации
+      %th Email контактного лица
+      %th Телефон контактного лица
+      %th Дата создания
+      %th
+      
+  %tbody
+    - @procrastinators.each do |procrastinator|
+      %tr
+        %td= procrastinator.class.model_name.human
+        %td= procrastinator.full_title
+        %td= procrastinator.state_string
+        %td= link_to procrastinator.contractor.try(:title), procrastinator.contractor, target: '_blank'
+        %td= procrastinator.contractor.try(:email)
+        %td= procrastinator.contractor.try(:contact_person_email)
+        %td= procrastinator.contractor.try(:telephone_number)
+        %td= Procrastinator.new.last_date(procrastinator).strftime('%d.%m.%Y')
+        %td.right= link_to 'открыть', Procrastinator.new.link_object(procrastinator), class: 'bright_link', target: '_blank'

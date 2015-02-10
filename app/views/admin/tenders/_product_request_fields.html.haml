@@ -1,0 +1,21 @@
+%fieldset.color
+  %h2 Товар
+  = f.text_field_inline :title
+  = f.text_field_inline :id_code
+  = f.text_field_inline :application_field
+  = f.number_field_inline :quantity, step: "any"
+  = f.text_field_inline :quantity_unit
+  .field
+    .third= f.label :price
+    .two_thirds= f.number_field :price, step: "any"
+  = f.image_field_with_preview_inline :image
+  %h3 Характеристики
+  = f.fields_for :properties do |builder|
+    = render 'admin/tenders/property_fields', f: builder
+  = link_to_add_fields 'добавить характеристику', f, :properties, 'admin/tenders/property_fields'
+  .field
+    = f.hidden_field :_destroy
+    = link_to 'удалить товар', '#', class: 'remove_fields black_button'
+
+
+        

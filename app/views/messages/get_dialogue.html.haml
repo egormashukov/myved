@@ -1,0 +1,7 @@
+%h2= raw "Messages. #{link_to @contractor.title, @contractor}"
+= render "messages/dialogue_form", message: Message.new, resource: @messagable, receiver: @contractor
+.messages_block
+  - @messages.each do |message|
+    = render "messages/dialogue_message", message: message
+- unless @messages.length < 10
+  = link_to "показать еще", "#", class: "show_more_messages", "data-contractor" => @contractor.id, "data-messagable-type" => @messagable.class.name.try(:underscore), "data-messagable-id" => "#{@messagable.id if @messagable.presence}"

@@ -1,0 +1,6 @@
+- current_step ||= nil
+.lk-panel{class: "#{'left_text' if left == true}"}
+  .panel_in{class: background_image}
+    - if current_step.presence
+      = current_step_string(current_step)
+    %h1= header_t

@@ -1,0 +1,34 @@
+.best_offer_frame
+  .buy_button_frame_in
+    %h2.main_page_box= t(:get_best_offer)
+    %p.full_text Транспортные расходы составляют существенную часть себестоимости для большинства товарных групп. От сокращения логистических издержек напрямую зависит, будет ли Ваш товар конкурентным на рынке.
+    %p.full_text Все участники ВЭД постоянно сталкиваются со следующими трудностями:
+    .problem_title= t(:problem)
+    .problem_content
+      %p.span0
+        = image_tag 'main_page/arrow.png', class: 'arrow'
+        Рынок транспортных услуг <br/> сильно спекулятивен и постоянно меняется
+      %p.span60
+        = image_tag 'main_page/arrow.png', class: 'arrow'
+        Как сократить затраты на доставку? 
+      %p.span120
+        = image_tag 'main_page/arrow.png', class: 'arrow'
+        Как постоянно быть в курсе актуальных предложений? 
+      %p.span180
+        = image_tag 'main_page/arrow.png', class: 'arrow'
+        Согласование цен на доставку и выбор транспортной компании занимает много времени и сил
+    .past_title= t(:help_from_myved)
+    .problem_title= t(:there_is_solvation)
+    .ved_solvation_content
+      %p.span0
+        = image_tag 'main_page/arrow.png', class: 'arrow'
+        Проведите торги по доставке только среди надежных компаний, лучших на рынке
+      %p.span90
+        = image_tag 'main_page/arrow.png', class: 'arrow'
+        Сократить затраты на доставку в среднем на 13,5%
+      %p.span180
+        = image_tag 'main_page/arrow.png', class: 'arrow'
+        За один шаг оцените ситуацию по рынку и получите лучшие предложения
+    -#.advertizing_self= link_to 'узнать больше о "Торгах по ВЭД"', page_path("torgi-po-ved")
+    -#.advertizing_self= t(:advertizing_self)
+    = start_for_free_button("buyer")
